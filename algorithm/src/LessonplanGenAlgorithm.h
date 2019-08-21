@@ -23,6 +23,7 @@ namespace lessonplans {
                     std::vector<int> teachers,
                     std::vector<int> classes
             );
+            std::vector<std::vector<int>> getLessonplan();
 
         private:
             std::vector<int> lessons, rooms, subjects, teachers, classes;

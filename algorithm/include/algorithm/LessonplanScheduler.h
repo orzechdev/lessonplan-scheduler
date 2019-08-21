@@ -1,14 +1,25 @@
 #ifndef ALGORITHM_LESSONPLANSCHEDULER_H
 #define ALGORITHM_LESSONPLANSCHEDULER_H
 
+#include <vector>
+
+#include "../../src/LessonplanGenAlgorithm.h"
+
 namespace lessonplans {
     class LessonplanScheduler {
         public:
-            int x0, x1;
             LessonplanScheduler();
-            LessonplanScheduler(int x0, int x1);
             ~LessonplanScheduler();
-            int scheduleLessonplan();
+            std::vector<std::vector<int>> scheduleLessonplan(
+                    std::vector<int> lessons,
+                    std::vector<int> rooms,
+                    std::vector<int> subjects,
+                    std::vector<int> teachers,
+                    std::vector<int> classes
+            );
+
+        private:
+             LessonplanGenAlgorithm* lessonplanGenAlgorithm;
     };
 }
 

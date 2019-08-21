@@ -12,4 +12,8 @@ namespace lessonplans {
         this->classes = classes;
     }
 
+    std::vector<std::vector<int>> LessonplanGenAlgorithm::getLessonplan() {
+
+    }
+
 }
