@@ -1,5 +1,5 @@
-#ifndef ALGORITHM_GENALGORITHM_H
-#define ALGORITHM_GENALGORITHM_H
+#ifndef ALGORITHM_GENALGORITHM_HPP
+#define ALGORITHM_GENALGORITHM_HPP
 
 namespace lessonplans {
     class GenAlgorithm {
@@ -35,4 +35,4 @@ namespace lessonplans {
         };
 }
 
-#endif //ALGORITHM_GENALGORITHM_H
+#endif //ALGORITHM_GENALGORITHM_HPP

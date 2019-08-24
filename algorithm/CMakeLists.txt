@@ -3,4 +3,4 @@ project(algorithm)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(algorithm main.cpp include/algorithm/LessonplanScheduler.h src/LessonplanScheduler.cpp src/GenAlgorithm.h src/GenAlgorithm.cpp src/LessonplanGenAlgorithm.h src/LessonplanGenAlgorithm.cpp)
+add_executable(algorithm main.cpp include/algorithm/LessonplanScheduler.hpp src/LessonplanScheduler.cpp src/GenAlgorithm.hpp src/GenAlgorithm.cpp src/LessonplanGenAlgorithm.hpp src/LessonplanGenAlgorithm.cpp)

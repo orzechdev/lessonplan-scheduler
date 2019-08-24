@@ -2,10 +2,22 @@
 
 from LessonplanScheduler cimport LessonplanScheduler
 
-def run_algorithm():
-    scheduler_ptr = new LessonplanScheduler(2, 5)  # Instantiate a LessonplanScheduler object on the heap
+def run_algorithm(
+        lessons,
+        rooms,
+        subjects,
+        teachers,
+        classes
+):
+    scheduler_ptr = new LessonplanScheduler()  # Instantiate a LessonplanScheduler object on the heap
     try:
-        scheduler_area = scheduler_ptr.scheduleLessonplan()
+        scheduler_area = scheduler_ptr.scheduleLessonplan(
+            lessons,
+            rooms,
+            subjects,
+            teachers,
+            classes
+        )
     finally:
         del scheduler_ptr  # delete heap allocated object
 

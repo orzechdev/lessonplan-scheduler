@@ -1,9 +1,9 @@
-#ifndef ALGORITHM_LESSONPLANGENALGORITHM_H
-#define ALGORITHM_LESSONPLANGENALGORITHM_H
+#ifndef ALGORITHM_LESSONPLANGENALGORITHM_HPP
+#define ALGORITHM_LESSONPLANGENALGORITHM_HPP
 
 #include <vector>
 
-#include "GenAlgorithm.h"
+#include "GenAlgorithm.hpp"
 
 namespace lessonplans {
     class LessonplanGenAlgorithm : public GenAlgorithm {
@@ -35,4 +35,4 @@ namespace lessonplans {
     };
 }
 
-#endif //ALGORITHM_LESSONPLANGENALGORITHM_H
+#endif //ALGORITHM_LESSONPLANGENALGORITHM_HPP

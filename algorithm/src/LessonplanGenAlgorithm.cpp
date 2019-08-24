@@ -1,4 +1,4 @@
-#include "LessonplanGenAlgorithm.h"
+#include "LessonplanGenAlgorithm.hpp"
 
 namespace lessonplans {
 

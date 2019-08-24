@@ -1,9 +1,9 @@
-#ifndef ALGORITHM_LESSONPLANSCHEDULER_H
-#define ALGORITHM_LESSONPLANSCHEDULER_H
+#ifndef ALGORITHM_LESSONPLANSCHEDULER_HPP
+#define ALGORITHM_LESSONPLANSCHEDULER_HPP
 
 #include <vector>
 
-#include "../../src/LessonplanGenAlgorithm.h"
+#include "../../src/LessonplanGenAlgorithm.hpp"
 
 namespace lessonplans {
     class LessonplanScheduler {
@@ -23,4 +23,4 @@ namespace lessonplans {
     };
 }
 
-#endif //ALGORITHM_LESSONPLANSCHEDULER_H
+#endif //ALGORITHM_LESSONPLANSCHEDULER_HPP

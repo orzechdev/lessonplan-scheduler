@@ -1,4 +1,4 @@
-#include "GenAlgorithm.h"
+#include "GenAlgorithm.hpp"
 
 namespace lessonplans {
 

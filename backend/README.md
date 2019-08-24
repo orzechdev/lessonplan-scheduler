@@ -10,4 +10,5 @@ https://visualstudio.microsoft.com/downloads/
     ```
     http://docs.cython.org/en/latest/src/quickstart/build.html
     http://docs.cython.org/en/latest/src/userguide/wrapping_CPlusPlus.html
-3. Then simply start a Python session and do `from algorithm import run_algorithm` and use the imported function as you see fit
+3. Then simply start a Python session and do `from algorithm import run_algorithm` and use the imported function as you see fit. 
+You can also simply start `python main.py` where this code is already used.
