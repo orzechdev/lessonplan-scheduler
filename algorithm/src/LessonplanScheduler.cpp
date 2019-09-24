@@ -16,7 +16,7 @@ namespace lessonplans {
         float mutationProb = 0.1;
 
         // In order to have following commented code working, maybe refer to https://stackoverflow.com/questions/52211699/cython-cmake-and-setup-py-python-in-a-subdirectory-compiles-twice
-        
+
 //        this->lessonplanGenAlgorithm = new LessonplanGenAlgorithm(populationCount, generationNumber, crossoverProb, mutationProb);
 //
 //        this->lessonplanGenAlgorithm->setAlgorithmData(lessons, rooms, subjects, teachers, classes);

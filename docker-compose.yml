@@ -3,7 +3,7 @@ version: "3.7"
 services:
     backend:
         build: ./backend
-        command: python ./backend/main.py
+        command: bash -c "cd ./backend && python ./setup.py build_ext --inplace && python ./main.py"
         volumes:
           - .:/backend
         ports:
