@@ -1,6 +1,6 @@
 #include "../include/algorithm/LessonplanScheduler.hpp"
 
-//#include "LessonplanGenAlgorithm.hpp"
+#include "LessonplanGenAlgorithm.hpp"
 
 namespace lessonplans {
     LessonplanScheduler::LessonplanScheduler() {}
@@ -17,22 +17,22 @@ namespace lessonplans {
 
         // In order to have following commented code working, maybe refer to https://stackoverflow.com/questions/52211699/cython-cmake-and-setup-py-python-in-a-subdirectory-compiles-twice
 
-//        this->lessonplanGenAlgorithm = new LessonplanGenAlgorithm(populationCount, generationNumber, crossoverProb, mutationProb);
-//
+        this->lessonplanGenAlgorithm = new LessonplanGenAlgorithm(populationCount, generationNumber, crossoverProb, mutationProb);
+
 //        this->lessonplanGenAlgorithm->setAlgorithmData(lessons, rooms, subjects, teachers, classes);
-//
+
 //        bool solutionFound = this->lessonplanGenAlgorithm->run();
-//
-//        if (solutionFound) {
-//            return this->lessonplanGenAlgorithm->getLessonplan();
-//        }
+
+        if (true) {
+            return this->lessonplanGenAlgorithm->getLessonplan();
+        }
 
         // TEST
-        std::vector<std::vector<int>> lessonplan(8, std::vector<int>(5));
-        for (int i = 0; i < lessonplan.size(); i++) {
-            for (int j = 0; j < lessonplan[i].size(); j++)
-                lessonplan[i][j] = i+j;
-        }
-        return lessonplan;
+//        std::vector<std::vector<int>> lessonplan(8, std::vector<int>(5));
+//        for (int i = 0; i < lessonplan.size(); i++) {
+//            for (int j = 0; j < lessonplan[i].size(); j++)
+//                lessonplan[i][j] = i+j;
+//        }
+//        return lessonplan;
     }
 }

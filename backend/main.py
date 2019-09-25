@@ -1,5 +1,5 @@
 import numpy as np
-from algorithm import run_algorithm
+from algorithm.algorithm import run_algorithm
 
 print("DOES IT PRINT ITSELF? - if yes, it works!")
 

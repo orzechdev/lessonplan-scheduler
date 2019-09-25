@@ -1,9 +1,9 @@
 from libcpp.vector cimport vector
 
-cdef extern from "../algorithm/src/LessonplanScheduler.cpp":
+cdef extern from "./src/LessonplanScheduler.cpp":
     pass
 
-cdef extern from "../algorithm/include/algorithm/LessonplanScheduler.hpp" namespace "lessonplans":
+cdef extern from "./include/algorithm/LessonplanScheduler.hpp" namespace "lessonplans":
     cdef cppclass LessonplanScheduler:
             LessonplanScheduler() except +
             vector[vector[int]] scheduleLessonplan(
