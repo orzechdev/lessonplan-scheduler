@@ -4,10 +4,12 @@ from skbuild import setup
 # from distutils.core import setup
 from Cython.Build import cythonize
 
-setup(name='Hello world app',
+setup(
+      name='Hello world app',
       ext_modules=cythonize("algorithm.pyx", language_level=3),
       # zip_safe=False,
-      requires=['Cython'],
-      cmake_install_dir='./',
-      cmake_source_dir='./')
+      # requires=['Cython'],
+      # cmake_install_dir='./',
+      # cmake_source_dir='./'
+)
 
