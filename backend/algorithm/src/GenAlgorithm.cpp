@@ -16,6 +16,7 @@ namespace lessonplans {
 
     bool GenAlgorithm::run() {
         //TODO: create generic run loop (execute for each iteration crossover, mutate, evaluate, select...)
+        return true;
     }
 
 }
