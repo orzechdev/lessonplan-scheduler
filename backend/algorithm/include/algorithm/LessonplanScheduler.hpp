@@ -8,9 +8,9 @@
 namespace lessonplans {
     class LessonplanScheduler {
         public:
-            LessonplanScheduler();
-            ~LessonplanScheduler();
-            std::vector<std::vector<int>> scheduleLessonplan(
+            LessonplanScheduler() {};
+            ~LessonplanScheduler() {};
+            inline std::vector<std::vector<int>> scheduleLessonplan(
                     std::vector<int> lessons,
                     std::vector<int> rooms,
                     std::vector<int> subjects,

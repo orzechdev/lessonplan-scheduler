@@ -3,9 +3,6 @@
 #include "LessonplanGenAlgorithm.hpp"
 
 namespace lessonplans {
-    LessonplanScheduler::LessonplanScheduler() {}
-
-    LessonplanScheduler::~LessonplanScheduler() {}
 
     std::vector<std::vector<int>> LessonplanScheduler::scheduleLessonplan(std::vector<int> lessons, std::vector<int> rooms,
                                                 std::vector<int> subjects, std::vector<int> teachers,
