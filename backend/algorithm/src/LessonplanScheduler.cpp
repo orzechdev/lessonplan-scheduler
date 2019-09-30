@@ -21,7 +21,7 @@ namespace lessonplans {
         bool solutionFound = this->lessonplanGenAlgorithm->run();
 
         if (solutionFound) {
-            return this->lessonplanGenAlgorithm->getLessonplan();
+            return this->lessonplanGenAlgorithm->getLessonplanFromBestIndividual();
         }
 
     }

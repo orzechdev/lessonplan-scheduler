@@ -27,7 +27,7 @@ namespace lessonplans {
                     std::vector<unsigned short> teachers,
                     std::vector<unsigned short> classes
             );
-            std::vector<std::vector<std::vector<unsigned short>>> getLessonplan();
+            std::vector<std::vector<std::vector<unsigned short>>> getLessonplanFromBestIndividual();
 
         private:
             unsigned short dayCount, lessonCount;
@@ -39,6 +39,9 @@ namespace lessonplans {
             void mutate() override;
             void evaluate() override;
             void select() override;
+            unsigned long int encodeIndividual(unsigned short room, unsigned short subject, unsigned short teacher, unsigned short classItem);
+            std::vector<unsigned short> decodeIndividual(unsigned long int individual);
+            std::vector<std::vector<unsigned long int>> getBestIndividual();
     };
 }
 

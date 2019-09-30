@@ -39,16 +39,47 @@ namespace lessonplans {
 
     }
 
-    std::vector<std::vector<std::vector<unsigned short>>> LessonplanGenAlgorithm::getLessonplan() {
-        std::vector<std::vector<std::vector<unsigned short>>> lessonplan(this->dayCount, std::vector<std::vector<unsigned short>>(this->lessonCount, std::vector<unsigned short>(4)));
-        for (long unsigned int i = 0; i < this->population[0].size(); i++) {
-            for (long unsigned int j = 0; j < this->population[0][i].size(); j++) {
-                unsigned long int popValue = 4026597120+i+j;
-                this->population[0][i][j] = popValue;
-                lessonplan[i][j][0] = (popValue&0xFFu); //extract first byte as room
-                lessonplan[i][j][1] = ((popValue>>8u)&0xFFu); //extract second byte as subject
-                lessonplan[i][j][2] = ((popValue>>16u)&0xFFu); //extract third byte as teacher
-                lessonplan[i][j][3] = ((popValue>>24u)&0xFFu); //extract fourth byte as class
+    unsigned long int LessonplanGenAlgorithm::encodeIndividual(unsigned short room, unsigned short subject,
+                                             unsigned short teacher, unsigned short classItem) {
+        // TODO: ...
+
+        return 0;
+    }
+
+    std::vector<unsigned short> LessonplanGenAlgorithm::decodeIndividual(unsigned long int individual) {
+        std::vector<unsigned short> data = *new std::vector<unsigned short>(
+                4 // Four different data encoded -> room, subject, teacher, class
+        );
+
+        data[0] = (individual & 0xFFu); // Extract first byte as room
+        data[1] = ((individual >> 8u) & 0xFFu); // Extract second byte as subject
+        data[2] = ((individual >> 16u) & 0xFFu); // Extract third byte as teacher
+        data[3] = ((individual >> 24u) & 0xFFu); // Extract fourth byte as class
+
+        return data;
+    }
+
+    std::vector<std::vector<unsigned long int>> LessonplanGenAlgorithm::getBestIndividual() {
+        return this->population[0];
+    }
+
+    std::vector<std::vector<std::vector<unsigned short>>> LessonplanGenAlgorithm::getLessonplanFromBestIndividual() {
+        std::vector<std::vector<std::vector<unsigned short>>> lessonplan = *new std::vector<std::vector<std::vector<unsigned short>>>(
+                this->dayCount, std::vector<std::vector<unsigned short>>(
+                        this->lessonCount, std::vector<unsigned short>(
+                                4 // Four different data encoded -> room, subject, teacher, class
+                        )
+                )
+        );
+
+        std::vector<std::vector<unsigned long int>> bestIndividual = this->getBestIndividual();
+        unsigned short bestIndividualDayCount = bestIndividual.size();
+        unsigned short bestIndividualLessonCount = bestIndividual[0].size();
+
+        for (unsigned short i = 0; i < bestIndividualDayCount; i++) {
+            for (unsigned short j = 0; j < bestIndividualLessonCount; j++) {
+                unsigned long int testIndividualValue = 4026597120+i+j; // TODO: instead of testValue, use bestIndividual[i][j]
+                lessonplan[i][j] = this->decodeIndividual(testIndividualValue);
             }
         }
 
