@@ -17,7 +17,11 @@ namespace lessonplans {
                     GenAlgorithm(populationCount, generationNumber, crossoverProb, mutationProb)
             {}
             void setAlgorithmData(
-                    std::vector<int> lessons,
+                    unsigned short int dayCount,
+                    unsigned short int lessonCount,
+                    // following data can be replaced by -> 255.255.255.255 -> 11111111.11111111.11111111.11111111
+                    // so max no. of rooms is 255, subjects is 255, teachers is 255, classes is 255
+                    // mutation would be created by replacing one of 255's with 255's in other's individuals in respective place
                     std::vector<int> rooms,
                     std::vector<int> subjects,
                     std::vector<int> teachers,
@@ -26,7 +30,8 @@ namespace lessonplans {
             std::vector<std::vector<int>> getLessonplan();
 
         private:
-            std::vector<int> lessons, rooms, subjects, teachers, classes;
+            unsigned short int dayCount, lessonCount;
+            std::vector<int> rooms, subjects, teachers, classes;
             std::vector<std::vector<std::vector<int>>> population;
             void initPopulation() override;
             void crossover() override;

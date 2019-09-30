@@ -3,7 +3,8 @@
 from LessonplanScheduler cimport LessonplanScheduler
 
 def run_algorithm(
-        lessons,
+        day_count,
+        lesson_count,
         rooms,
         subjects,
         teachers,
@@ -12,7 +13,8 @@ def run_algorithm(
     scheduler_ptr = new LessonplanScheduler()  # Instantiate a LessonplanScheduler object on the heap
     try:
         scheduler_area = scheduler_ptr.scheduleLessonplan(
-            lessons,
+            day_count,
+            lesson_count,
             rooms,
             subjects,
             teachers,

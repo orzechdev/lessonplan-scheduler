@@ -11,7 +11,8 @@ namespace lessonplans {
             LessonplanScheduler() {};
             ~LessonplanScheduler() {};
             inline std::vector<std::vector<int>> scheduleLessonplan(
-                    std::vector<int> lessons,
+                    unsigned short int dayCount,
+                    unsigned short int lessonCount,
                     std::vector<int> rooms,
                     std::vector<int> subjects,
                     std::vector<int> teachers,
