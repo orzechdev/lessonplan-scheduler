@@ -4,9 +4,9 @@
 
 namespace lessonplans {
 
-    std::vector<std::vector<int>> LessonplanScheduler::scheduleLessonplan(unsigned short int dayCount, unsigned short int lessonCount,
-                                                std::vector<int> rooms, std::vector<int> subjects,
-                                                std::vector<int> teachers, std::vector<int> classes) {
+    std::vector<std::vector<std::vector<unsigned short>>> LessonplanScheduler::scheduleLessonplan(unsigned short dayCount, unsigned short lessonCount,
+                                                std::vector<unsigned short> rooms, std::vector<unsigned short> subjects,
+                                                std::vector<unsigned short> teachers, std::vector<unsigned short> classes) {
         int populationCount = 10;
         int generationNumber = 10;
         float crossoverProb = 0.2;
