@@ -27,11 +27,12 @@ namespace lessonplans {
 
         private:
             std::vector<int> lessons, rooms, subjects, teachers, classes;
-//            void initPopulation() override;
-//            void crossover() override;
-//            void mutate() override;
-//            void evaluate() override;
-//            void select() override;
+            std::vector<std::vector<std::vector<int>>> population;
+            void initPopulation() override;
+            void crossover() override;
+            void mutate() override;
+            void evaluate() override;
+            void select() override;
     };
 }
 

@@ -27,11 +27,11 @@ namespace lessonplans {
         protected:
             int populationCount, generationNumber;
             float crossoverProb, mutationProb;
-//            virtual void initPopulation();
-//            virtual void crossover();
-//            virtual void mutate();
-//            virtual void evaluate();
-//            virtual void select();
+            virtual void initPopulation() = 0;
+            virtual void crossover() = 0;
+            virtual void mutate() = 0;
+            virtual void evaluate() = 0;
+            virtual void select() = 0;
         };
 }
 
