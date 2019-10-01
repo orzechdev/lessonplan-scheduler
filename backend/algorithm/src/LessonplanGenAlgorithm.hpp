@@ -58,6 +58,8 @@ namespace lessonplans {
             // 65535.65535.65535.65535 -> 1111111111111111.1111111111111111.1111111111111111.1111111111111111 -> room.subject.teacher.class
 //            std::vector<std::vector<std::vector<std::vector<unsigned long long>>>> population;
             std::vector<std::vector<std::vector<std::vector<std::vector<unsigned short>>>>> population;
+            std::vector<std::vector<std::vector<std::vector<unsigned short>>>> teachersAssignedToDaysAndLessons;
+            std::vector<std::vector<std::vector<std::vector<unsigned short>>>> roomsAssignedToDaysAndLessons;
             // Population constraints
             std::vector<unsigned short> populationIndividualsSubjectsTeachers;
 

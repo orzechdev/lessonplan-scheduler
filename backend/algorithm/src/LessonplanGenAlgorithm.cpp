@@ -44,7 +44,29 @@ namespace lessonplans {
                 )
         );
 
-        // TODO: remove or replace following test code
+        /*
+         * TODO: THE FOLLOWING CODE IS ONLY DONE FOR THE BEST INDIVIDUAL! IT SHOULD BE DONE TO ALL POPULATION!!!
+         */
+
+        this->teachersAssignedToDaysAndLessons = *new std::vector<std::vector<std::vector<std::vector<unsigned short>>>>(
+                this->populationCount, std::vector<std::vector<std::vector<unsigned short>>>(
+                        this->dayCount, std::vector<std::vector<unsigned short>>(
+                                this->lessonCount, std::vector<unsigned short>(
+                                        this->teachers.size() // Max different teachers to be assigned
+                                )
+                        )
+                )
+        );
+        this->roomsAssignedToDaysAndLessons = *new std::vector<std::vector<std::vector<std::vector<unsigned short>>>>(
+                this->populationCount, std::vector<std::vector<std::vector<unsigned short>>>(
+                        this->dayCount, std::vector<std::vector<unsigned short>>(
+                                this->lessonCount, std::vector<unsigned short>(
+                                        this->rooms.size() // Max different rooms to be assigned
+                                )
+                        )
+                )
+        );
+
         for (unsigned short i = 0; i < this->classCount; i++) {
             std::vector<std::vector<unsigned short>> subjectsIdsWithSubjectsHours = this->classesSubjectsIdsWithClassesSubjectsHours[i];
             long unsigned int currentClassSubject = 0;
@@ -54,8 +76,10 @@ namespace lessonplans {
             }
             // Take the first subject for class and remember how many hours it has to have
             int leftClassSubjectHours = subjectsIdsWithSubjectsHours[currentClassSubject][1];
-            for (unsigned short j = 0; j < this->dayCount; j++) {
-                for (unsigned short k = 0; k < this->lessonCount; k++) {
+            // Start from first lesson and iterate over all days, then proceed with second lesson, third, and so on,
+            // as it is good to start lessons from morning and spread them throughout all days
+            for (unsigned short j = 0; j < this->lessonCount; j++) {
+                for (unsigned short k = 0; k < this->dayCount; k++) {
                     // First check if there are some subject hours left to insert into the lessonplan
                     while (leftClassSubjectHours <= 0) {
                         // If no more subject hours left, try to take another subject if available
@@ -72,12 +96,12 @@ namespace lessonplans {
                     if (currentClassSubject >= subjectsIdsWithSubjectsHours.size()) {
                         break;
                     }
-                    this->population[0][i][j][k][0] = subjectsIdsWithSubjectsHours[currentClassSubject][0]; // subject
+                    this->population[0][i][k][j][0] = subjectsIdsWithSubjectsHours[currentClassSubject][0]; // subject
                     // Subject hour was assigned, thus decrease number of left hours to assign
                     leftClassSubjectHours--;
 
-                    this->population[0][i][j][k][1] = j; // TODO
-                    this->population[0][i][j][k][2] = k; // TODO
+                    this->population[0][i][k][j][1] = 0; // TODO teacher - maybe utilize this->teachersAssignedToDaysAndLessons
+                    this->population[0][i][k][j][2] = 0; // TODO room - maybe utilize this->roomsAssignedToDaysAndLessons
                 }
                 // If no more subjects, break to proceed with another class
                 if (currentClassSubject >= subjectsIdsWithSubjectsHours.size()) {
