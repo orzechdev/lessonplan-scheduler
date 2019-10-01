@@ -10,13 +10,14 @@ namespace lessonplans {
         public:
             LessonplanScheduler() {};
             ~LessonplanScheduler() {};
-            inline std::vector<std::vector<std::vector<unsigned short>>> scheduleLessonplan(
+            inline std::vector<std::vector<std::vector<std::vector<unsigned short>>>> scheduleLessonplan(
+                    unsigned short classCount,
                     unsigned short dayCount,
                     unsigned short lessonCount,
                     std::vector<unsigned short> rooms,
-                    std::vector<unsigned short> subjects,
+                    //std::vector<unsigned short> subjects,
                     std::vector<unsigned short> teachers,
-                    std::vector<unsigned short> classes
+                    std::vector<std::vector<std::vector<unsigned short>>> classesSubjectsIdsWithClassesSubjectsHours
             );
 
         private:

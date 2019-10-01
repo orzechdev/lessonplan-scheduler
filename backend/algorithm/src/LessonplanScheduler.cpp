@@ -4,9 +4,9 @@
 
 namespace lessonplans {
 
-    std::vector<std::vector<std::vector<unsigned short>>> LessonplanScheduler::scheduleLessonplan(unsigned short dayCount, unsigned short lessonCount,
-                                                std::vector<unsigned short> rooms, std::vector<unsigned short> subjects,
-                                                std::vector<unsigned short> teachers, std::vector<unsigned short> classes) {
+    std::vector<std::vector<std::vector<std::vector<unsigned short>>>> LessonplanScheduler::scheduleLessonplan(unsigned short classCount, unsigned short dayCount, unsigned short lessonCount,
+                                                std::vector<unsigned short> rooms, //std::vector<unsigned short> subjects,
+                                                std::vector<unsigned short> teachers, std::vector<std::vector<std::vector<unsigned short>>> classesSubjectsIdsWithClassesSubjectsHours) {
         int populationCount = 10;
         int generationNumber = 10;
         float crossoverProb = 0.2;
@@ -16,7 +16,7 @@ namespace lessonplans {
 
         this->lessonplanGenAlgorithm = new LessonplanGenAlgorithm(populationCount, generationNumber, crossoverProb, mutationProb);
 
-        this->lessonplanGenAlgorithm->setAlgorithmData(dayCount, lessonCount, rooms, subjects, teachers, classes);
+        this->lessonplanGenAlgorithm->setAlgorithmData(classCount, dayCount, lessonCount, rooms, teachers, classesSubjectsIdsWithClassesSubjectsHours);
 
         bool solutionFound = this->lessonplanGenAlgorithm->run();
 
