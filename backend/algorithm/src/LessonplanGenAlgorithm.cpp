@@ -14,13 +14,20 @@ namespace lessonplans {
     }
 
     void LessonplanGenAlgorithm::initPopulation() {
-        this->population = *new std::vector<std::vector<std::vector<unsigned long int>>>(
-                this->populationCount, std::vector<std::vector<unsigned long int>>(
-                        this->dayCount, std::vector<unsigned long int>(
+        this->population = *new std::vector<std::vector<std::vector<unsigned long long>>>(
+                this->populationCount, std::vector<std::vector<unsigned long long>>(
+                        this->dayCount, std::vector<unsigned long long>(
                                 this->lessonCount
                         )
                 )
         );
+
+        // TODO: remove or replace following test code
+        for (unsigned short i = 0; i < this->dayCount; i++) {
+            for (unsigned short j = 0; j < this->lessonCount; j++) {
+                this->population[0][i][j] = lessonplans::LessonplanGenAlgorithm::encodeIndividual(0, 0, 2, 15);
+            }
+        }
     }
 
     void LessonplanGenAlgorithm::crossover() {
@@ -39,27 +46,32 @@ namespace lessonplans {
 
     }
 
-    unsigned long int LessonplanGenAlgorithm::encodeIndividual(unsigned short room, unsigned short subject,
+    unsigned long long LessonplanGenAlgorithm::encodeIndividual(unsigned short room, unsigned short subject,
                                              unsigned short teacher, unsigned short classItem) {
-        // TODO: ...
+        unsigned long long individual = (
+                ((unsigned long long) classItem << 48u) // Set fourth byte as class
+                | ((unsigned long long) teacher << 32u) // Set third byte as teacher
+                | ((unsigned long long) subject << 16u) // Set second byte as subject
+                | (unsigned long long) room // Set first byte as room
+        );
 
-        return 0;
+        return individual;
     }
 
-    std::vector<unsigned short> LessonplanGenAlgorithm::decodeIndividual(unsigned long int individual) {
+    std::vector<unsigned short> LessonplanGenAlgorithm::decodeIndividual(unsigned long long individual) {
         std::vector<unsigned short> data = *new std::vector<unsigned short>(
                 4 // Four different data encoded -> room, subject, teacher, class
         );
 
         data[0] = (individual & 0xFFu); // Extract first byte as room
-        data[1] = ((individual >> 8u) & 0xFFu); // Extract second byte as subject
-        data[2] = ((individual >> 16u) & 0xFFu); // Extract third byte as teacher
-        data[3] = ((individual >> 24u) & 0xFFu); // Extract fourth byte as class
+        data[1] = ((individual >> 16u) & 0xFFu); // Extract second byte as subject
+        data[2] = ((individual >> 32u) & 0xFFu); // Extract third byte as teacher
+        data[3] = ((individual >> 48u) & 0xFFu); // Extract fourth byte as class
 
         return data;
     }
 
-    std::vector<std::vector<unsigned long int>> LessonplanGenAlgorithm::getBestIndividual() {
+    std::vector<std::vector<unsigned long long>> LessonplanGenAlgorithm::getBestIndividual() {
         return this->population[0];
     }
 
@@ -72,14 +84,14 @@ namespace lessonplans {
                 )
         );
 
-        std::vector<std::vector<unsigned long int>> bestIndividual = this->getBestIndividual();
+        std::vector<std::vector<unsigned long long>> bestIndividual = this->getBestIndividual();
         unsigned short bestIndividualDayCount = bestIndividual.size();
         unsigned short bestIndividualLessonCount = bestIndividual[0].size();
 
         for (unsigned short i = 0; i < bestIndividualDayCount; i++) {
+            std::vector<unsigned long long> bestIndividualValues = bestIndividual[i];
             for (unsigned short j = 0; j < bestIndividualLessonCount; j++) {
-                unsigned long int testIndividualValue = 4026597120+i+j; // TODO: instead of testValue, use bestIndividual[i][j]
-                lessonplan[i][j] = this->decodeIndividual(testIndividualValue);
+                lessonplan[i][j] = lessonplans::LessonplanGenAlgorithm::decodeIndividual(bestIndividualValues[j]);
             }
         }
 
