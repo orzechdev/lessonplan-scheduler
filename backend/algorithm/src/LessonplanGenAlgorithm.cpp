@@ -46,11 +46,42 @@ namespace lessonplans {
 
         // TODO: remove or replace following test code
         for (unsigned short i = 0; i < this->classCount; i++) {
+            std::vector<std::vector<unsigned short>> subjectsIdsWithSubjectsHours = this->classesSubjectsIdsWithClassesSubjectsHours[i];
+            long unsigned int currentClassSubject = 0;
+            // Class doesn't have any subject - proceed with another class
+            if (subjectsIdsWithSubjectsHours.empty()) {
+                continue;
+            }
+            // Take the first subject for class and remember how many hours it has to have
+            int leftClassSubjectHours = subjectsIdsWithSubjectsHours[currentClassSubject][1];
             for (unsigned short j = 0; j < this->dayCount; j++) {
                 for (unsigned short k = 0; k < this->lessonCount; k++) {
-                    this->population[0][i][j][k][0] = i;
-                    this->population[0][i][j][k][1] = j;
-                    this->population[0][i][j][k][2] = k;
+                    // First check if there are some subject hours left to insert into the lessonplan
+                    while (leftClassSubjectHours <= 0) {
+                        // If no more subject hours left, try to take another subject if available
+                        currentClassSubject++;
+                        if (currentClassSubject >= subjectsIdsWithSubjectsHours.size()) {
+                            // If no more subjects, break to proceed with another class
+                            break;
+                        } else {
+                            // If another subject is present, remember how many hours it has to have
+                            leftClassSubjectHours = subjectsIdsWithSubjectsHours[currentClassSubject][1];
+                        }
+                    }
+                    // If no more subjects, break to proceed with another class
+                    if (currentClassSubject >= subjectsIdsWithSubjectsHours.size()) {
+                        break;
+                    }
+                    this->population[0][i][j][k][0] = subjectsIdsWithSubjectsHours[currentClassSubject][0]; // subject
+                    // Subject hour was assigned, thus decrease number of left hours to assign
+                    leftClassSubjectHours--;
+
+                    this->population[0][i][j][k][1] = j; // TODO
+                    this->population[0][i][j][k][2] = k; // TODO
+                }
+                // If no more subjects, break to proceed with another class
+                if (currentClassSubject >= subjectsIdsWithSubjectsHours.size()) {
+                    break;
                 }
             }
         }
