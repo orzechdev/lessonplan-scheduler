@@ -1,11 +1,17 @@
 version: "3.7"
 
 services:
+    database:
+        image: postgres
     backend:
+        image: backend
         build: ./backend
-        command: bash -c "cd ./backend/algorithm && python ./setup.py build_ext --inplace && cd ../ && python ./main.py"
+        command: bash -c "cd ./backend && python ./manage.py runserver 0.0.0.0:8000"
+        #command: bash -c "cd ./backend/algorithm && python ./setup.py build_ext --inplace && cd ../ && python ./main.py"
         volumes:
           - .:/backend
         ports:
           - "8000:8000"
+        depends_on:
+          - database
         #command: bash -c "cd ./backend && python ./main.py"
