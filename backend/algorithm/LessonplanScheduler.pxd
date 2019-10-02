@@ -1,4 +1,5 @@
 from libcpp.vector cimport vector
+from libcpp cimport bool
 from numpy import ushort
 
 cdef extern from "./src/LessonplanScheduler.cpp":
@@ -12,7 +13,9 @@ cdef extern from "./include/algorithm/LessonplanScheduler.hpp" namespace "lesson
                     unsigned short int day_count,
                     unsigned short int lesson_count,
                     vector[unsigned short int] rooms,
-                    #vector[unsigned short int] subjects,
                     vector[unsigned short int] teachers,
-                    vector[vector[vector[ushort]]] classes_subjects_with_classes_subjects_hours
+                    vector[vector[vector[ushort]]] classes_subjects_with_classes_subjects_hours,
+                    vector[bool] rooms_exclusive_assignments,
+                    vector[vector[ushort]] subjects_rooms,
+                    vector[vector[ushort]] teachers_subjects
             )

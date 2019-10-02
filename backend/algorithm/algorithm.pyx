@@ -7,9 +7,11 @@ def run_algorithm(
         day_count,
         lesson_count,
         rooms,
-        #subjects,
         teachers,
-        classes_subjects_with_classes_subjects_hours
+        classes_subjects_with_classes_subjects_hours,
+        rooms_exclusive_assignments,
+        subjects_rooms,
+        teachers_subjects
 ):
     scheduler_ptr = new LessonplanScheduler()  # Instantiate a LessonplanScheduler object on the heap
     try:
@@ -18,9 +20,11 @@ def run_algorithm(
             day_count,
             lesson_count,
             rooms,
-            #subjects,
             teachers,
-            classes_subjects_with_classes_subjects_hours
+            classes_subjects_with_classes_subjects_hours,
+            rooms_exclusive_assignments,
+            subjects_rooms,
+            teachers_subjects
         )
     finally:
         del scheduler_ptr  # delete heap allocated object

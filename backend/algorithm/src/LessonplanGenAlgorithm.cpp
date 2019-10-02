@@ -3,13 +3,12 @@
 namespace lessonplans {
 
     void LessonplanGenAlgorithm::setAlgorithmData(unsigned short classCount, unsigned short dayCount, unsigned short lessonCount,
-                                                  std::vector<unsigned short> rooms, //std::vector<unsigned short> subjects,
-                                                  std::vector<unsigned short> teachers, std::vector<std::vector<std::vector<unsigned short>>> classesSubjectsIdsWithClassesSubjectsHours) {
+                                                  std::vector<unsigned short> rooms, std::vector<unsigned short> teachers,
+                                                  std::vector<std::vector<std::vector<unsigned short>>> classesSubjectsIdsWithClassesSubjectsHours) {
         this->classCount = classCount;
         this->dayCount = dayCount;
         this->lessonCount = lessonCount;
         this->rooms = rooms;
-//        this->subjects = subjects;
         this->teachers = teachers;
         this->classesSubjectsIdsWithClassesSubjectsHours = classesSubjectsIdsWithClassesSubjectsHours;
     }
@@ -20,6 +19,12 @@ namespace lessonplans {
         this->roomsExclusiveAssignments = roomsExclusiveAssignments;
         this->subjectsRooms = subjectsRooms;
         this->teachersSubjects = teachersSubjects;
+    }
+
+    std::vector<unsigned short> LessonplanGenAlgorithm::getRandomTakingSequence(unsigned short sequenceSize) {
+        // TODO: ... https://stackoverflow.com/questions/20734774/random-array-generation-with-no-duplicates
+
+        return std::vector<unsigned short>();
     }
 
     void LessonplanGenAlgorithm::initPopulation() {

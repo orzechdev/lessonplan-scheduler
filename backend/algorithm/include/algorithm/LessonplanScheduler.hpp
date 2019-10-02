@@ -15,9 +15,11 @@ namespace lessonplans {
                     unsigned short dayCount,
                     unsigned short lessonCount,
                     std::vector<unsigned short> rooms,
-                    //std::vector<unsigned short> subjects,
                     std::vector<unsigned short> teachers,
-                    std::vector<std::vector<std::vector<unsigned short>>> classesSubjectsIdsWithClassesSubjectsHours
+                    std::vector<std::vector<std::vector<unsigned short>>> classesSubjectsIdsWithClassesSubjectsHours,
+                    std::vector<bool> roomsExclusiveAssignments,
+                    std::vector<std::vector<unsigned short>> subjectsRooms,
+                    std::vector<std::vector<unsigned short>> teachersSubjects
             );
 
         private:

@@ -7,9 +7,11 @@ class_count = 3
 day_count = 5
 lesson_count = 6
 rooms = np.zeros(11, dtype=np.ushort)
-# subjects = np.zeros(11, dtype=np.ushort)
 teachers = np.zeros(11, dtype=np.ushort)
 classes_subjects_with_classes_subjects_hours = np.zeros((11, 11, 2), dtype=np.ushort)
+rooms_exclusive_assignments = np.zeros(11, dtype=np.bool)
+subjects_rooms = np.zeros((11, 11), dtype=np.ushort)
+teachers_subjects = np.zeros((11, 11), dtype=np.ushort)
 
 for i in range(11):
     for j in range(11):
@@ -21,7 +23,9 @@ run_algorithm(
     day_count,
     lesson_count,
     rooms,
-    # subjects,
     teachers,
-    classes_subjects_with_classes_subjects_hours
+    classes_subjects_with_classes_subjects_hours,
+    rooms_exclusive_assignments,
+    subjects_rooms,
+    teachers_subjects
 )

@@ -73,6 +73,7 @@ namespace lessonplans {
             void select() override;
             static unsigned long long encodeIndividualLesson(unsigned short room, unsigned short subject, unsigned short teacher, unsigned short classItem);
             static std::vector<unsigned short> decodeIndividualLesson(unsigned long long individualLesson);
+            std::vector<unsigned short> getRandomTakingSequence(unsigned short sequenceSize);
             std::vector<std::vector<std::vector<std::vector<unsigned short>>>> getBestIndividual();
             std::vector<unsigned short> initLessons(unsigned short classIndex, unsigned int lessonIndex, std::vector<unsigned short> alreadySelectedRooms);
     };
