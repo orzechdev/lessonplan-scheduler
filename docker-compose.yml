@@ -10,14 +10,16 @@ services:
     backend:
         image: backend
         build: ./backend
-        command: bash -c "cd ./backend/lessonplans/algorithm && python ./setup.py build_ext --inplace && cd ../../ && python ./manage.py migrate && python ./manage.py runserver 0.0.0.0:8000"
+        command: bash -c "cd ./backend/lessonplans/algorithm && python ./setup.py build_ext --inplace && cd ../../ && python ./main.py"
+        #command: bash -c "cd ./backend/lessonplans/algorithm && python ./setup.py build_ext --inplace && cd ../../ && python ./manage.py migrate && python ./manage.py runserver 0.0.0.0:8000"
+        
         #command: ["./wait-for-it.sh", "database:5432"]
         #command: ["./wait-for-it.sh", "database-norel:27017"]
         #command: bash -c "cd ./backend && python manage.py migrate"
         #command: bash -c "cd ./backend/lessonplans/algorithm && python ./setup.py build_ext --inplace"
         #command: bash -c "cd ./backend && python ./manage.py runserver 0.0.0.0:8000"
         #command: bash -c "cd ./backend && python manage.py migrate && python ./manage.py runserver 0.0.0.0:8000"
-        #command: bash -c "cd ./backend/algorithm && python ./setup.py build_ext --inplace && cd ../ && python ./main.py"
+        #command: bash -c "cd ./backend/lessonplans/algorithm && python ./setup.py build_ext --inplace && cd ../ && python ./main.py"
         volumes:
           - .:/backend
         ports:

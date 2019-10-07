@@ -17,33 +17,24 @@ namespace lessonplans {
                     GenAlgorithm(populationCount, generationNumber, crossoverProb, mutationProb)
             {}
             void setAlgorithmData(
-                    unsigned short classCount,
-                    unsigned short dayCount,
-                    unsigned short lessonCount,
-                    // following data can be replaced by -> 255.255.255.255 -> 11111111.11111111.11111111.11111111
-                    // so max no. of rooms is 255, subjects is 255, teachers is 255, classes is 255
-                    // mutation would be created by replacing one of 255's with 255's in other's individuals in respective place
-                    // following data can be replaced by -> 65535.65535.65535.65535 -> 1111111111111111.1111111111111111.1111111111111111.1111111111111111
-                    // so max no. of rooms is 65535, subjects is 65535, teachers is 65535, classes is 65535
-                    // mutation would be created by replacing one of 65535's with 65535's in other's individuals in respective place
-                    std::vector<unsigned short> rooms,
-//                    std::vector<unsigned short> subjects,
-                    std::vector<unsigned short> teachers,
-                    std::vector<std::vector<std::vector<unsigned short>>> classesSubjectsIdsWithClassesSubjectsHours // [ class[ subjectWithSubjectHours[ values[ id, hours ] ] ], class[ subjectWithSubjectHours[ values[ id, hours ] ] ] ]
+                    std::vector<std::vector<std::vector<std::vector<unsigned short>>>> lessonsRestrictionsForIndividuals,
+                    std::vector<std::vector<std::vector<std::vector<unsigned short>>>> weekDaysRestrictionsForIndividuals,
+                    std::vector<std::vector<std::vector<std::vector<unsigned short>>>> roomsRestrictionsForIndividuals,
+                    std::vector<std::vector<std::vector<std::vector<unsigned short>>>> teachersRestrictionsForIndividuals,
+                    std::vector<std::vector<std::vector<std::vector<unsigned short>>>> classesRestrictionsForIndividuals,
+                    std::vector<std::vector<std::vector<std::vector<unsigned short>>>> subjectsRestrictionsForIndividuals
             );
-            void setAlgorithmConstraints(
-                    std::vector<bool> roomsExclusiveAssignments,
-                    std::vector<std::vector<unsigned short>> subjectsRooms,
-                    std::vector<std::vector<unsigned short>> teachersSubjects
-            );
-            std::vector<std::vector<std::vector<std::vector<unsigned short>>>> getLessonplanFromBestIndividual();
+            std::vector<std::vector<unsigned short>> getLessonplanFromBestIndividual();
 
         private:
             /*
              * Pre initialized data
              */
             // Algorithm data
-            unsigned short classCount, dayCount, lessonCount;
+            std::vector<std::vector<std::vector<std::vector<unsigned short>>>> lessonsRestrictionsForIndividuals, weekDaysRestrictionsForIndividuals,
+                roomsRestrictionsForIndividuals, teachersRestrictionsForIndividuals, classesRestrictionsForIndividuals, subjectsRestrictionsForIndividuals;
+            unsigned short lessonCount, weekDayCount, roomCount, teacherCount, classCount, subjectCount;
+            std::vector<int> dataCounts;
             std::vector<unsigned short> rooms, subjects, teachers;
             // Algorithm constraints
             std::vector<bool> roomsExclusiveAssignments;
@@ -57,7 +48,8 @@ namespace lessonplans {
             // 255.255.255.255 -> 11111111.11111111.11111111.11111111 -> room.subject.teacher.class
             // 65535.65535.65535.65535 -> 1111111111111111.1111111111111111.1111111111111111.1111111111111111 -> room.subject.teacher.class
 //            std::vector<std::vector<std::vector<std::vector<unsigned long long>>>> population;
-            std::vector<std::vector<std::vector<std::vector<std::vector<unsigned short>>>>> population;
+            std::vector<std::vector<std::vector<unsigned short>>> population;
+            std::vector<std::vector<std::vector<unsigned short>>> populationPartnersCount;
             std::vector<std::vector<std::vector<std::vector<unsigned short>>>> teachersAssignedToDaysAndLessons;
             std::vector<std::vector<std::vector<std::vector<unsigned short>>>> roomsAssignedToDaysAndLessons;
             // Population constraints
@@ -74,8 +66,15 @@ namespace lessonplans {
             static unsigned long long encodeIndividualLesson(unsigned short room, unsigned short subject, unsigned short teacher, unsigned short classItem);
             static std::vector<unsigned short> decodeIndividualLesson(unsigned long long individualLesson);
             std::vector<unsigned short> getRandomTakingSequence(unsigned short sequenceSize);
-            std::vector<std::vector<std::vector<std::vector<unsigned short>>>> getBestIndividual();
+            std::vector<std::vector<unsigned short>> getBestIndividual();
             std::vector<unsigned short> initLessons(unsigned short classIndex, unsigned int lessonIndex, std::vector<unsigned short> alreadySelectedRooms);
+            std::vector<std::vector<unsigned short>> iterateThroughTypedDataList(std::vector<std::vector<std::vector<std::vector<unsigned short>>>> dataTypedList, unsigned short dataType, unsigned short populationIndividual);
+            std::vector<unsigned short> iterateThroughRelatedTypedDataList(
+                    std::vector<std::vector<std::vector<unsigned short>>> dataTypedRestrictionForIndividuals,
+                    unsigned short dataType,
+                    unsigned short relatedDataTypeIndex,
+                    unsigned short populationIndividual
+            );
     };
 }
 
