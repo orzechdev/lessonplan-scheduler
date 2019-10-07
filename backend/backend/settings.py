@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+import mongoengine
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -25,7 +26,9 @@ SECRET_KEY = '+ang_2m%_f09e#_!)dwt7s-=b0yetvt(p=@!@^ws=yiboq0m&a'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'database', 'database-norel', 'localhost', '127.0.0.1', '[::1]'
+]
 
 
 # Application definition
@@ -80,8 +83,16 @@ DATABASES = {
         'USER': 'postgres',
         'HOST': 'database',
         'PORT': 5432,
+    },
+    'mongodb': {
+        'ENGINE': 'django.db.backends.dummy',
     }
 }
+
+AUTHENTICATION_BACKENDS = (
+    'mongoengine.django.auth.MongoEngineBackend',
+)
+mongoengine.connect("database-norel", host="database-norel",  port=27017)
 
 
 # Password validation

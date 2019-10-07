@@ -31,4 +31,4 @@ def run_algorithm(
 
     cdef LessonplanScheduler scheduler_stack  # Instantiate a LessonplanScheduler object on the stack
 
-    print(scheduler_area)
+    return scheduler_area

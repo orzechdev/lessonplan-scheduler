@@ -1,7 +1,7 @@
 /build
 /venv
 /.idea
-/backend/__pycache__
+__pycache__
 algorithm.cpp
 algorithm.cp37-win_amd64.pyd
 algorithm.cpython-37m-x86_64-linux-gnu.so
