@@ -17,10 +17,10 @@ rooms_subjects_restriction_status = np.zeros(5, dtype=np.ushort)
 rooms_subjects = np.zeros((5, 3), dtype=np.ushort)
 
 classes_subjects[0][0] = 1
-classes_subjects[0][1] = 2
-classes_subjects[0][2] = 3
+classes_subjects[0][1] = 3
 classes_subjects[1][0] = 1
-classes_subjects[1][1] = 3
+classes_subjects[1][1] = 2
+classes_subjects[1][2] = 3
 
 teachers_subjects[0][0] = 1
 teachers_subjects[0][1] = 2
