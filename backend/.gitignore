@@ -1,6 +1,7 @@
 /build
 /venv
 /.idea
+/lessonplans/algorithm/cmake-build-debug
 __pycache__
 algorithm.cpp
 algorithm.cp37-win_amd64.pyd
