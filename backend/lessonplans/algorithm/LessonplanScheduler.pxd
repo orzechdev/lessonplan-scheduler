@@ -9,10 +9,16 @@ cdef extern from "./include/algorithm/LessonplanScheduler.hpp" namespace "lesson
     cdef cppclass LessonplanScheduler:
             LessonplanScheduler() except +
             vector[vector[ushort]] scheduleLessonplan(
-                    vector[vector[vector[vector[ushort]]]] lessons_restrictions_for_individuals,
-                    vector[vector[vector[vector[ushort]]]] weekdays_restrictions_for_individuals,
-                    vector[vector[vector[vector[ushort]]]] rooms_restrictions_for_individuals,
-                    vector[vector[vector[vector[ushort]]]] teachers_restrictions_for_individuals,
-                    vector[vector[vector[vector[ushort]]]] classes_restrictions_for_individuals,
-                    vector[vector[vector[vector[ushort]]]] subjects_restrictions_for_individuals
+                    unsigned short week_days_count,
+                    unsigned short lessons_count,
+                    unsigned short classes_count,
+                    unsigned short subjects_count,
+                    unsigned short teachers_count,
+                    unsigned short rooms_count,
+                    vector[ushort] classes_subjects_restriction_status,
+                    vector[vector[ushort]] classes_subjects,
+                    vector[ushort] teachers_subjects_restriction_status,
+                    vector[vector[ushort]] teachers_subjects,
+                    vector[ushort] rooms_subjects_restriction_status,
+                    vector[vector[ushort]] rooms_subjects
             )

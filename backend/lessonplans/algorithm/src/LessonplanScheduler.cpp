@@ -6,12 +6,18 @@ namespace lessonplans {
 
     std::vector<std::vector<unsigned short>>
     LessonplanScheduler::scheduleLessonplan(
-        std::vector<std::vector<std::vector<std::vector<unsigned short>>>> lessonsRestrictionsForIndividuals,
-        std::vector<std::vector<std::vector<std::vector<unsigned short>>>> weekDaysRestrictionsForIndividuals,
-        std::vector<std::vector<std::vector<std::vector<unsigned short>>>> roomsRestrictionsForIndividuals,
-        std::vector<std::vector<std::vector<std::vector<unsigned short>>>> teachersRestrictionsForIndividuals,
-        std::vector<std::vector<std::vector<std::vector<unsigned short>>>> classesRestrictionsForIndividuals,
-        std::vector<std::vector<std::vector<std::vector<unsigned short>>>> subjectsRestrictionsForIndividuals
+            unsigned short weekDaysCount,
+            unsigned short lessonsCount,
+            unsigned short classesCount,
+            unsigned short subjectsCount,
+            unsigned short teachersCount,
+            unsigned short roomsCount,
+            std::vector<unsigned short> classesSubjectsRestrictionStatus,
+            std::vector<std::vector<unsigned short>> classesSubjects,
+            std::vector<unsigned short> teachersSubjectsRestrictionStatus,
+            std::vector<std::vector<unsigned short>> teachersSubjects,
+            std::vector<unsigned short> roomsSubjectsRestrictionStatus,
+            std::vector<std::vector<unsigned short>> roomsSubjects
     ) {
         int populationCount = 10;
         int generationNumber = 10;
@@ -23,12 +29,18 @@ namespace lessonplans {
         this->lessonplanGenAlgorithm = new LessonplanGenAlgorithm(populationCount, generationNumber, crossoverProb, mutationProb);
 
         this->lessonplanGenAlgorithm->setAlgorithmData(
-                lessonsRestrictionsForIndividuals,
-                weekDaysRestrictionsForIndividuals,
-                roomsRestrictionsForIndividuals,
-                teachersRestrictionsForIndividuals,
-                classesRestrictionsForIndividuals,
-                subjectsRestrictionsForIndividuals
+                weekDaysCount,
+                lessonsCount,
+                classesCount,
+                subjectsCount,
+                teachersCount,
+                roomsCount,
+                classesSubjectsRestrictionStatus,
+                classesSubjects,
+                teachersSubjectsRestrictionStatus,
+                teachersSubjects,
+                roomsSubjectsRestrictionStatus,
+                roomsSubjects
             );
 
         bool solutionFound = this->lessonplanGenAlgorithm->run();

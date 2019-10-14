@@ -11,12 +11,18 @@ namespace lessonplans {
             LessonplanScheduler() {};
             ~LessonplanScheduler() {};
             inline std::vector<std::vector<unsigned short>> scheduleLessonplan(
-                std::vector<std::vector<std::vector<std::vector<unsigned short>>>> lessonsRestrictionsForIndividuals,
-                std::vector<std::vector<std::vector<std::vector<unsigned short>>>> weekDaysRestrictionsForIndividuals,
-                std::vector<std::vector<std::vector<std::vector<unsigned short>>>> roomsRestrictionsForIndividuals,
-                std::vector<std::vector<std::vector<std::vector<unsigned short>>>> teachersRestrictionsForIndividuals,
-                std::vector<std::vector<std::vector<std::vector<unsigned short>>>> classesRestrictionsForIndividuals,
-                std::vector<std::vector<std::vector<std::vector<unsigned short>>>> subjectsRestrictionsForIndividuals
+                unsigned short weekDaysCount,
+                unsigned short lessonsCount,
+                unsigned short classesCount,
+                unsigned short subjectsCount,
+                unsigned short teachersCount,
+                unsigned short roomsCount,
+                std::vector<unsigned short> classesSubjectsRestrictionStatus,
+                std::vector<std::vector<unsigned short>> classesSubjects,
+                std::vector<unsigned short> teachersSubjectsRestrictionStatus,
+                std::vector<std::vector<unsigned short>> teachersSubjects,
+                std::vector<unsigned short> roomsSubjectsRestrictionStatus,
+                std::vector<std::vector<unsigned short>> roomsSubjects
             );
 
         private:

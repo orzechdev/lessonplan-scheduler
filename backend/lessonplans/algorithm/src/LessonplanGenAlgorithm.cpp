@@ -6,31 +6,31 @@
 namespace lessonplans {
 
     void LessonplanGenAlgorithm::setAlgorithmData(
-        std::vector<std::vector<std::vector<std::vector<unsigned short>>>> lessonsRestrictionsForIndividuals,
-        std::vector<std::vector<std::vector<std::vector<unsigned short>>>> weekDaysRestrictionsForIndividuals,
-        std::vector<std::vector<std::vector<std::vector<unsigned short>>>> roomsRestrictionsForIndividuals,
-        std::vector<std::vector<std::vector<std::vector<unsigned short>>>> teachersRestrictionsForIndividuals,
-        std::vector<std::vector<std::vector<std::vector<unsigned short>>>> classesRestrictionsForIndividuals,
-        std::vector<std::vector<std::vector<std::vector<unsigned short>>>> subjectsRestrictionsForIndividuals
+        unsigned short weekDaysCount,
+        unsigned short lessonsCount,
+        unsigned short classesCount,
+        unsigned short subjectsCount,
+        unsigned short teachersCount,
+        unsigned short roomsCount,
+        std::vector<unsigned short> classesSubjectsRestrictionStatus,
+        std::vector<std::vector<unsigned short>> classesSubjects,
+        std::vector<unsigned short> teachersSubjectsRestrictionStatus,
+        std::vector<std::vector<unsigned short>> teachersSubjects,
+        std::vector<unsigned short> roomsSubjectsRestrictionStatus,
+        std::vector<std::vector<unsigned short>> roomsSubjects
     ) {
-        this->classesRestrictionsForIndividuals = std::move(classesRestrictionsForIndividuals);
-//        this->subjectsRestrictionsForIndividuals = std::move(subjectsRestrictionsForIndividuals);
-//        this->roomsRestrictionsForIndividuals = std::move(roomsRestrictionsForIndividuals);
-//        this->teachersRestrictionsForIndividuals = std::move(teachersRestrictionsForIndividuals);
-//        this->lessonsRestrictionsForIndividuals = std::move(lessonsRestrictionsForIndividuals);
-//        this->weekDaysRestrictionsForIndividuals = std::move(weekDaysRestrictionsForIndividuals);
-
-        /*
-         * TODO: HERE IS SOMETHONG WRONG WITH .size() !!!!!!!! and anywhere .size() may not be properly assigned to int!!!
-         */
-
-        this->dataCounts[0] = (int) this->classesRestrictionsForIndividuals.size();
-//        this->dataCounts[1] = this->subjectsRestrictionsForIndividuals.size();
-//        this->dataCounts[2] = this->roomsRestrictionsForIndividuals.size();
-//        this->dataCounts[3] = this->teachersRestrictionsForIndividuals.size();
-//        this->dataCounts[4] = this->lessonsRestrictionsForIndividuals.size();
-//        this->dataCounts[5] = this->weekDaysRestrictionsForIndividuals.size();
-
+        this->weekDaysCount = weekDaysCount;
+        this->lessonsCount = lessonsCount;
+        this->classesCount = classesCount;
+        this->subjectsCount = subjectsCount;
+        this->teachersCount = teachersCount;
+        this->roomsCount = roomsCount;
+        this->classesSubjectsRestrictionStatus = std::move(classesSubjectsRestrictionStatus);
+        this->classesSubjects = std::move(classesSubjects);
+        this->teachersSubjectsRestrictionStatus = std::move(teachersSubjectsRestrictionStatus);
+        this->teachersSubjects = std::move(teachersSubjects);
+        this->roomsSubjectsRestrictionStatus = std::move(roomsSubjectsRestrictionStatus);
+        this->roomsSubjects = std::move(roomsSubjects);
     }
 
     std::vector<unsigned short> LessonplanGenAlgorithm::getRandomTakingSequence(unsigned short sequenceSize) {
@@ -40,42 +40,217 @@ namespace lessonplans {
     }
 
     void LessonplanGenAlgorithm::initPopulation() {
+        int maxDataCount = this->classesCount * this->subjectsCount;
+
+        short dataTypes = 6;
+
         this->population = *new std::vector<std::vector<std::vector<unsigned short>>>(
                 this->populationCount, std::vector<std::vector<unsigned short>>(
-                        USHRT_MAX, std::vector<unsigned short>(
-                                (int) this->dataCounts.size()
+                        maxDataCount, std::vector<unsigned short>(
+                                dataTypes
                         )
                 )
         );
-        this->populationPartnersCount = *new std::vector<std::vector<std::vector<unsigned short>>>(
-                this->populationCount, std::vector<std::vector<unsigned short>>(
-                        (int) this->dataCounts.size(), std::vector<unsigned short>(
-                                USHRT_MAX
+        this->populationAssignedLessonAndDaysToClasses = *new std::vector<std::vector<std::vector<std::vector<unsigned short>>>>(
+                this->populationCount, std::vector<std::vector<std::vector<unsigned short>>>(
+                        this->weekDaysCount, std::vector<std::vector<unsigned short>>(
+                                this->lessonsCount, std::vector<unsigned short>(
+                                        this->classesCount
+                                )
                         )
                 )
         );
-
-//        for (unsigned int i = 0; i < this->populationCount; i++) {
-            for (unsigned int j = 0; j < USHRT_MAX; j++) {
-                for (int k = 0; k < (int) this->dataCounts.size(); k++) {
-                    this->population[0][j][k] = 1;
-                }
-            }
-//        }
-        return;
+        this->populationAssignedLessonAndDaysToTeachers = *new std::vector<std::vector<std::vector<std::vector<unsigned short>>>>(
+                this->populationCount, std::vector<std::vector<std::vector<unsigned short>>>(
+                        this->weekDaysCount, std::vector<std::vector<unsigned short>>(
+                                this->lessonsCount, std::vector<unsigned short>(
+                                        this->teachersCount
+                                )
+                        )
+                )
+        );
+        this->populationAssignedLessonAndDaysToRooms = *new std::vector<std::vector<std::vector<std::vector<unsigned short>>>>(
+                this->populationCount, std::vector<std::vector<std::vector<unsigned short>>>(
+                        this->weekDaysCount, std::vector<std::vector<unsigned short>>(
+                                this->lessonsCount, std::vector<unsigned short>(
+                                        this->roomsCount
+                                )
+                        )
+                )
+        );
 
         for (unsigned int i = 0; i < this->populationCount; i++) {
-            this->population[i] = this->iterateThroughTypedDataList(this->lessonsRestrictionsForIndividuals, 0, i);
-//            this->iterateThroughTypedDataList(this->weekDaysRestrictionsForIndividuals, this->dataCounts[1], i);
-//            this->iterateThroughTypedDataList(this->roomsRestrictionsForIndividuals, this->dataCounts[2], i);
-//            this->iterateThroughTypedDataList(this->teachersRestrictionsForIndividuals, this->dataCounts[3], i);
-//            this->iterateThroughTypedDataList(this->classesRestrictionsForIndividuals, this->dataCounts[4], i);
-//            this->iterateThroughTypedDataList(this->subjectsRestrictionsForIndividuals, this->dataCounts[5], i);
+            this->population[i] = this->initIndividual(i);
         }
 
 
-
     }
+
+    std::vector<std::vector<unsigned short>> LessonplanGenAlgorithm::initIndividual(unsigned short individualIndex) {
+        std::vector<std::vector<unsigned short>> individual = this->population[individualIndex];
+        unsigned short individualDataIdx = 0;
+        bool nextIterationRequired;
+
+        // Iterate through list of classes
+        for (unsigned short classIdx = 0; classIdx < this->classesCount; classIdx++) {
+            nextIterationRequired = false;
+
+            unsigned short classId = classIdx + 1;
+            std::vector<unsigned short> classSubjects = this->classesSubjects[classIdx];
+
+            // CLASS OK
+
+            // Iterate through list of classes subjects
+            for (unsigned short subjectIdx = 0; subjectIdx < this->subjectsCount; subjectIdx++) {
+                unsigned short subjectId = classSubjects[subjectIdx];
+
+                // No subjects left for class
+                if (!subjectId) {
+                    break;
+                }
+
+                // SUBJECT OK
+
+                // Iterate through list of teachers
+                for (unsigned short teacherIdx = 0; teacherIdx < this->teachersCount; teacherIdx++) {
+                    unsigned short teacherId = teacherIdx + 1;
+                    std::vector<unsigned short> teacherSubjects = this->teachersSubjects[classIdx];
+
+                    // Iterate through list of teachers subjects
+                    for (unsigned short subjectIdx2 = 0; subjectIdx2 < this->subjectsCount; subjectIdx2++) {
+                        unsigned short subjectId2 = teacherSubjects[subjectIdx2];
+
+                        // No subjects left for teacher
+                        if (!subjectId2) {
+                            break;
+                        }
+
+                        if (subjectId == subjectId2) {
+                            // TEACHER OK
+
+                            // Iterate through list of rooms
+                            for (unsigned short roomIdx = 0; roomIdx < this->roomsCount; roomIdx++) {
+                                unsigned short roomId = roomIdx + 1;
+                                unsigned short roomSubjectsRestrictionStatus = this->roomsSubjectsRestrictionStatus[roomIdx];
+
+                                if (roomSubjectsRestrictionStatus) {
+                                    std::vector<unsigned short> roomSubjects = this->roomsSubjects[roomIdx];
+
+                                    // Iterate through list of rooms subjects
+                                    for (unsigned short subjectIdx3 = 0; subjectIdx3 < this->subjectsCount; subjectIdx3++) {
+                                        unsigned short subjectId3 = roomSubjects[subjectIdx3];
+
+                                        // No subjects left for teacher
+                                        if (!subjectId3) {
+                                            break;
+                                        }
+
+                                        if (subjectId == subjectId3) {
+                                            // ROOM OK
+
+                                            std::vector<unsigned short> weekDayIdAndLessonId = this->initIndividualSetWeekDayAndLesson(individualIndex, classIdx, teacherIdx, roomIdx);
+
+                                            unsigned short weekDayId = weekDayIdAndLessonId[0];
+                                            unsigned short lessonId = weekDayIdAndLessonId[1];
+
+                                            if (weekDayId && lessonId) {
+                                                individual[individualDataIdx][0] = weekDayId;
+                                                individual[individualDataIdx][1] = lessonId;
+                                                individual[individualDataIdx][2] = classId;
+                                                individual[individualDataIdx][3] = subjectId;
+                                                individual[individualDataIdx][4] = teacherId;
+                                                individual[individualDataIdx][5] = roomId;
+
+                                                individualDataIdx++;
+                                                nextIterationRequired = true;
+                                            }
+                                        }
+
+                                        if (nextIterationRequired) {
+                                            break;
+                                        }
+                                    }
+                                } else {
+                                    // ROOM OK
+
+                                    std::vector<unsigned short> weekDayIdAndLessonId = this->initIndividualSetWeekDayAndLesson(individualIndex, classIdx, teacherIdx, roomIdx);
+
+                                    unsigned short weekDayId = weekDayIdAndLessonId[0];
+                                    unsigned short lessonId = weekDayIdAndLessonId[1];
+
+                                    if (weekDayId && lessonId) {
+                                        individual[individualDataIdx][0] = weekDayId;
+                                        individual[individualDataIdx][1] = lessonId;
+                                        individual[individualDataIdx][2] = classId;
+                                        individual[individualDataIdx][3] = subjectId;
+                                        individual[individualDataIdx][4] = teacherId;
+                                        individual[individualDataIdx][5] = roomId;
+
+                                        individualDataIdx++;
+                                        nextIterationRequired = true;
+                                    }
+                                }
+
+                                if (nextIterationRequired) {
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (nextIterationRequired) {
+                            break;
+                        }
+                    }
+
+                    if (nextIterationRequired) {
+                        break;
+                    }
+                }
+
+                if (nextIterationRequired) {
+                    break;
+                }
+            }
+        }
+
+        return individual;
+    }
+
+    std::vector<unsigned short> LessonplanGenAlgorithm::initIndividualSetWeekDayAndLesson(unsigned short individualIndex, unsigned short classIdx, unsigned short teacherIdx, unsigned short roomIdx) {
+        std::vector<unsigned short> weekDayIdAndLessonId = *new std::vector<unsigned short>(2);
+
+        // Iterate through list of week days
+        for (unsigned short weekDayIdx = 0; weekDayIdx < this->weekDaysCount; weekDayIdx++) {
+            unsigned short weekDayId = weekDayIdx + 1;
+
+            // Iterate through list of lessons
+            for (unsigned short lessonIdx = 0; lessonIdx < this->weekDaysCount; lessonIdx++) {
+                unsigned short lessonId = lessonIdx + 1;
+
+                if (
+                        !this->populationAssignedLessonAndDaysToClasses[individualIndex][weekDayIdx][lessonIdx][classIdx]
+                        && !this->populationAssignedLessonAndDaysToTeachers[individualIndex][weekDayIdx][lessonIdx][teacherIdx]
+                        && !this->populationAssignedLessonAndDaysToRooms[individualIndex][weekDayIdx][lessonIdx][roomIdx]
+                        ) {
+                    this->populationAssignedLessonAndDaysToClasses[individualIndex][weekDayIdx][lessonIdx][classIdx] = 1;
+                    this->populationAssignedLessonAndDaysToTeachers[individualIndex][weekDayIdx][lessonIdx][teacherIdx] = 1;
+                    this->populationAssignedLessonAndDaysToRooms[individualIndex][weekDayIdx][lessonIdx][roomIdx] = 1;
+
+                    weekDayIdAndLessonId[0] = weekDayId;
+                    weekDayIdAndLessonId[1] = lessonId;
+
+                    return weekDayIdAndLessonId;
+                }
+            }
+        }
+
+        weekDayIdAndLessonId[0] = 0;
+        weekDayIdAndLessonId[1] = 0;
+
+        return weekDayIdAndLessonId;
+    }
+
+
 
     std::vector<std::vector<unsigned short>> LessonplanGenAlgorithm::iterateThroughTypedDataList(
             std::vector<std::vector<std::vector<std::vector<unsigned short>>>> dataTypedList,
