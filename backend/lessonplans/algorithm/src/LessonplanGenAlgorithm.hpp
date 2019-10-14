@@ -37,15 +37,7 @@ namespace lessonplans {
              * Pre initialized data
              */
             // Algorithm data
-            std::vector<std::vector<std::vector<std::vector<unsigned short>>>> lessonsRestrictionsForIndividuals, weekDaysRestrictionsForIndividuals,
-                roomsRestrictionsForIndividuals, teachersRestrictionsForIndividuals, classesRestrictionsForIndividuals, subjectsRestrictionsForIndividuals;
-//            unsigned short lessonCount, weekDayCount, roomCount, teacherCount, classCount, subjectCount;
             std::vector<int> dataCounts;
-//            std::vector<unsigned short> rooms, subjects, teachers;
-            // Algorithm constraints
-//            std::vector<bool> roomsExclusiveAssignments;
-//            std::vector<std::vector<unsigned short>> subjectsRooms, teachersSubjects;
-//            std::vector<std::vector<std::vector<unsigned short>>> classesSubjectsIdsWithClassesSubjectsHours;
 
             /*
              * Generated data
@@ -88,13 +80,6 @@ namespace lessonplans {
             std::vector<unsigned short> getRandomTakingSequence(unsigned short sequenceSize);
             std::vector<std::vector<unsigned short>> getBestIndividual();
             std::vector<unsigned short> initLessons(unsigned short classIndex, unsigned int lessonIndex, std::vector<unsigned short> alreadySelectedRooms);
-            std::vector<std::vector<unsigned short>> iterateThroughTypedDataList(std::vector<std::vector<std::vector<std::vector<unsigned short>>>> dataTypedList, unsigned short dataType, unsigned short populationIndividual);
-            std::vector<unsigned short> iterateThroughRelatedTypedDataList(
-                    std::vector<std::vector<std::vector<unsigned short>>> dataTypedRestrictionForIndividuals,
-                    unsigned short dataType,
-                    unsigned short relatedDataTypeIndex,
-                    unsigned short populationIndividual
-            );
     };
 }
 

@@ -114,7 +114,7 @@ namespace lessonplans {
                 // Iterate through list of teachers
                 for (unsigned short teacherIdx = 0; teacherIdx < this->teachersCount; teacherIdx++) {
                     unsigned short teacherId = teacherIdx + 1;
-                    std::vector<unsigned short> teacherSubjects = this->teachersSubjects[classIdx];
+                    std::vector<unsigned short> teacherSubjects = this->teachersSubjects[teacherIdx];
 
                     // Iterate through list of teachers subjects
                     for (unsigned short subjectIdx2 = 0; subjectIdx2 < this->subjectsCount; subjectIdx2++) {
@@ -220,14 +220,14 @@ namespace lessonplans {
             unsigned short weekDayId = weekDayIdx + 1;
 
             // Iterate through list of lessons
-            for (unsigned short lessonIdx = 0; lessonIdx < this->weekDaysCount; lessonIdx++) {
+            for (unsigned short lessonIdx = 0; lessonIdx < this->lessonsCount; lessonIdx++) {
                 unsigned short lessonId = lessonIdx + 1;
 
                 if (
-                        !this->populationAssignedLessonAndDaysToClasses[individualIndex][weekDayIdx][lessonIdx][classIdx]
-                        && !this->populationAssignedLessonAndDaysToTeachers[individualIndex][weekDayIdx][lessonIdx][teacherIdx]
-                        && !this->populationAssignedLessonAndDaysToRooms[individualIndex][weekDayIdx][lessonIdx][roomIdx]
-                        ) {
+                    !this->populationAssignedLessonAndDaysToClasses[individualIndex][weekDayIdx][lessonIdx][classIdx]
+                    && !this->populationAssignedLessonAndDaysToTeachers[individualIndex][weekDayIdx][lessonIdx][teacherIdx]
+                    && !this->populationAssignedLessonAndDaysToRooms[individualIndex][weekDayIdx][lessonIdx][roomIdx]
+                ) {
                     this->populationAssignedLessonAndDaysToClasses[individualIndex][weekDayIdx][lessonIdx][classIdx] = 1;
                     this->populationAssignedLessonAndDaysToTeachers[individualIndex][weekDayIdx][lessonIdx][teacherIdx] = 1;
                     this->populationAssignedLessonAndDaysToRooms[individualIndex][weekDayIdx][lessonIdx][roomIdx] = 1;
@@ -244,70 +244,6 @@ namespace lessonplans {
         weekDayIdAndLessonId[1] = 0;
 
         return weekDayIdAndLessonId;
-    }
-
-
-
-    std::vector<std::vector<unsigned short>> LessonplanGenAlgorithm::iterateThroughTypedDataList(
-            std::vector<std::vector<std::vector<std::vector<unsigned short>>>> dataTypedList,
-            unsigned short dataType,
-            unsigned short populationIndividual
-    ) {
-
-        std::vector<std::vector<unsigned short>> individual = this->population[populationIndividual];
-        unsigned short dataTypedListSize = this->dataCounts[dataType];
-
-        // Iterate through the whole list of currently selected data type
-        for (unsigned short i = 0; i < dataTypedListSize; i++) {
-            std::vector<std::vector<std::vector<unsigned short>>> dataTypedRestrictionForIndividuals = dataTypedList[i];
-
-            individual[i] = this->iterateThroughRelatedTypedDataList(dataTypedRestrictionForIndividuals, dataType, 0, populationIndividual);
-        }
-
-        return individual;
-    }
-
-    std::vector<unsigned short> LessonplanGenAlgorithm::iterateThroughRelatedTypedDataList(
-            std::vector<std::vector<std::vector<unsigned short>>> dataTypedRestrictionForIndividuals,
-            unsigned short dataType,
-            unsigned short relatedDataTypeIndex,
-            unsigned short populationIndividual
-    ) {
-        unsigned short differentDataTypes = dataTypedRestrictionForIndividuals.size();
-        std::vector<std::vector<unsigned short>> typedRestrictionList = dataTypedRestrictionForIndividuals[relatedDataTypeIndex];
-        unsigned short currentRelatedDataType = relatedDataTypeIndex >= dataType ? relatedDataTypeIndex + 1 : relatedDataTypeIndex; // Skip most outer loop data type
-        unsigned short currentRelatedDataCount = this->dataCounts[currentRelatedDataType];
-
-        // Iterate through the whole list of currently selected related data type
-        for (unsigned short k = 0; k < currentRelatedDataCount; k++) {
-            std::vector<unsigned short> typedRestriction = typedRestrictionList[k];
-            unsigned short maxPartners = typedRestriction[0];
-            unsigned short minPartners = typedRestriction[1];
-            unsigned short willingToRelate = typedRestriction[2];
-
-            if (!willingToRelate) {
-                continue;
-            }
-
-            if (this->populationPartnersCount[populationIndividual][currentRelatedDataType][k] >= maxPartners) {
-                continue;
-            }
-
-            // TODO: backward tracking ??? !!!
-            this->populationPartnersCount[populationIndividual][currentRelatedDataType][k]++;
-
-            if (currentRelatedDataType >= differentDataTypes) {
-                std::vector<unsigned short> preparedCell = std::vector<unsigned short>(
-                        this->dataCounts.size()
-                );
-                preparedCell[currentRelatedDataType] = k;
-                return preparedCell;
-            }
-
-            std::vector<unsigned short> preparedCell = this->iterateThroughRelatedTypedDataList(dataTypedRestrictionForIndividuals, dataType, relatedDataTypeIndex + 1, populationIndividual);
-            preparedCell[currentRelatedDataCount] = k;
-            return preparedCell;
-        }
     }
 
     void LessonplanGenAlgorithm::crossover() {
