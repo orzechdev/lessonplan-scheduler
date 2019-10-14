@@ -89,12 +89,10 @@ namespace lessonplans {
     std::vector<std::vector<unsigned short>> LessonplanGenAlgorithm::initIndividual(unsigned short individualIndex) {
         std::vector<std::vector<unsigned short>> individual = this->population[individualIndex];
         unsigned short individualDataIdx = 0;
-        bool nextIterationRequired;
+        bool nextClassSubjectRequired;
 
         // Iterate through list of classes
         for (unsigned short classIdx = 0; classIdx < this->classesCount; classIdx++) {
-            nextIterationRequired = false;
-
             unsigned short classId = classIdx + 1;
             std::vector<unsigned short> classSubjects = this->classesSubjects[classIdx];
 
@@ -102,6 +100,8 @@ namespace lessonplans {
 
             // Iterate through list of classes subjects
             for (unsigned short subjectIdx = 0; subjectIdx < this->subjectsCount; subjectIdx++) {
+                nextClassSubjectRequired = false;
+
                 unsigned short subjectId = classSubjects[subjectIdx];
 
                 // No subjects left for class
@@ -162,11 +162,11 @@ namespace lessonplans {
                                                 individual[individualDataIdx][5] = roomId;
 
                                                 individualDataIdx++;
-                                                nextIterationRequired = true;
+                                                nextClassSubjectRequired = true;
                                             }
                                         }
 
-                                        if (nextIterationRequired) {
+                                        if (nextClassSubjectRequired) {
                                             break;
                                         }
                                     }
@@ -187,28 +187,24 @@ namespace lessonplans {
                                         individual[individualDataIdx][5] = roomId;
 
                                         individualDataIdx++;
-                                        nextIterationRequired = true;
+                                        nextClassSubjectRequired = true;
                                     }
                                 }
 
-                                if (nextIterationRequired) {
+                                if (nextClassSubjectRequired) {
                                     break;
                                 }
                             }
                         }
 
-                        if (nextIterationRequired) {
+                        if (nextClassSubjectRequired) {
                             break;
                         }
                     }
 
-                    if (nextIterationRequired) {
+                    if (nextClassSubjectRequired) {
                         break;
                     }
-                }
-
-                if (nextIterationRequired) {
-                    break;
                 }
             }
         }

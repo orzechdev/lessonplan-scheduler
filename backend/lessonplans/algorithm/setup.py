@@ -114,7 +114,14 @@ setup(
                   name="algorithm",
                   include_dirs=["./include/algorithm"],
                   library_dirs=["./src"],
-                  sources=["algorithm.pyx", "./src/LessonplanScheduler.cpp", "./src/GenAlgorithm.cpp", "./src/LessonplanGenAlgorithm.cpp"],  # "algorithm.pyx" and also all ".cpp" files must be listed here !!!!
+                  sources=[
+                      "algorithm.pyx",
+                      "./src/LessonplanScheduler.cpp",
+                      "./src/GenAlgorithm.cpp",
+                      "./src/LessonplanGenAlgorithm.cpp",
+                      "./src/Individual.cpp",
+                      "./src/LessonplanIndividual.cpp"
+                  ],  # "algorithm.pyx" and also all ".cpp" files must be listed here !!!!
               )
           ],
           language_level=3

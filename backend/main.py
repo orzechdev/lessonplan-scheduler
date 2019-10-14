@@ -3,34 +3,6 @@ from lessonplans.algorithm.algorithm import run_algorithm
 
 print("DOES IT PRINT ITSELF? - if yes, it works!")
 
-# class_count = 3
-# day_count = 5
-# lesson_count = 6
-# rooms = np.zeros(11, dtype=np.ushort)
-# teachers = np.zeros(11, dtype=np.ushort)
-# classes_subjects_with_classes_subjects_hours = np.zeros((11, 11, 2), dtype=np.ushort)
-# rooms_exclusive_assignments = np.zeros(11, dtype=np.bool)
-# subjects_rooms = np.zeros((11, 11), dtype=np.ushort)
-# teachers_subjects = np.zeros((11, 11), dtype=np.ushort)
-#
-# for i in range(11):
-#     for j in range(11):
-#         classes_subjects_with_classes_subjects_hours[i][j][0] = 76
-#         classes_subjects_with_classes_subjects_hours[i][j][1] = 2
-#
-# lessonplans = run_algorithm(
-#     class_count,
-#     day_count,
-#     lesson_count,
-#     rooms,
-#     teachers,
-#     classes_subjects_with_classes_subjects_hours,
-#     rooms_exclusive_assignments,
-#     subjects_rooms,
-#     teachers_subjects
-# )
-
-
 week_days_count = 2
 lessons_count = 3
 classes_count = 2
@@ -57,18 +29,21 @@ teachers_subjects[1][0] = 2
 teachers_subjects[2][0] = 2
 teachers_subjects[2][1] = 3
 
+rooms_subjects_restriction_status[0] = 1
 rooms_subjects[0][0] = 2
 rooms_subjects[0][1] = 3
+rooms_subjects_restriction_status[1] = 1
 rooms_subjects[1][0] = 2
 rooms_subjects[1][1] = 3
-rooms_subjects[2][0] = 2
-rooms_subjects[2][1] = 3
-rooms_subjects[3][0] = 2
-rooms_subjects[3][1] = 3
-rooms_subjects[4][0] = 1
-
 rooms_subjects_restriction_status[2] = 1
 rooms_subjects[2][0] = 2
+rooms_subjects[2][1] = 3
+rooms_subjects_restriction_status[3] = 1
+rooms_subjects[3][0] = 2
+rooms_subjects[3][1] = 3
+rooms_subjects_restriction_status[4] = 1
+rooms_subjects[4][0] = 1
+
 
 lessonplans = run_algorithm(
     week_days_count,
