@@ -1,3 +1,0 @@
-D:/LessonplanScheduler/backend/lessonplans/algorithm/cmake-build-debug/CMakeFiles/algorithm.dir
-D:/LessonplanScheduler/backend/lessonplans/algorithm/cmake-build-debug/CMakeFiles/edit_cache.dir
-D:/LessonplanScheduler/backend/lessonplans/algorithm/cmake-build-debug/CMakeFiles/rebuild_cache.dir
