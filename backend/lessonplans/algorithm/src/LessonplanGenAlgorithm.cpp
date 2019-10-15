@@ -10,12 +10,6 @@ namespace lessonplans {
         this->lessonplanData = lessonplanData;
     }
 
-    vector<unsigned short> LessonplanGenAlgorithm::getRandomTakingSequence(unsigned short sequenceSize) {
-        // TODO: ... https://stackoverflow.com/questions/20734774/random-array-generation-with-no-duplicates
-
-        return vector<unsigned short>();
-    }
-
     void LessonplanGenAlgorithm::initPopulation() {
 
         this->population = *new vector<LessonplanIndividual*>(

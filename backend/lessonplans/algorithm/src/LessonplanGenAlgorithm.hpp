@@ -47,7 +47,6 @@ namespace lessonplans {
             void select() override;
             static unsigned long long encodeIndividualLesson(unsigned short room, unsigned short subject, unsigned short teacher, unsigned short classItem);
             static vector<unsigned short> decodeIndividualLesson(unsigned long long individualLesson);
-            vector<unsigned short> getRandomTakingSequence(unsigned short sequenceSize);
     };
 }
 
