@@ -22,24 +22,23 @@ namespace lessonplans {
         vector<vector<vector<unsigned short>>> assignedLessonAndDaysToClasses;
         vector<vector<vector<unsigned short>>> assignedLessonAndDaysToTeachers;
         vector<vector<vector<unsigned short>>> assignedLessonAndDaysToRooms;
-        bool findPossibleTeacher(
+        bool tryAssignTeacher(
                 LessonplanData* lessonplanData,
                 unsigned short individualDataIdx,
                 unsigned short classIdx,
                 unsigned short classId, unsigned short subjectId
         );
-        bool findPossibleRoom(
+        bool tryAssignRoom(
                 LessonplanData* lessonplanData,
                 unsigned short individualDataIdx,
                 unsigned short classIdx, unsigned short teacherIdx,
                 unsigned short classId, unsigned short subjectId, unsigned short teacherId
         );
-        vector<unsigned short> determinePossibleWeekDayAndLesson(
-                unsigned short weekDaysCount,
-                unsigned short lessonsCount,
-                unsigned short classIdx,
-                unsigned short teacherIdx,
-                unsigned short roomIdx
+        bool tryAssignWeekDayAndLesson(
+                LessonplanData* lessonplanData,
+                unsigned short individualDataIdx,
+                unsigned short classIdx, unsigned short teacherIdx, unsigned short roomIdx,
+                unsigned short classId, unsigned short subjectId, unsigned short teacherId, unsigned short roomId
         );
     };
 }
