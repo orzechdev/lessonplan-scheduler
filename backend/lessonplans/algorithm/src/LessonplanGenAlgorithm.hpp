@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "GenAlgorithm.hpp"
+#include "LessonplanIndividual.hpp"
 
 namespace lessonplans {
     class LessonplanGenAlgorithm : public GenAlgorithm {
@@ -34,23 +35,8 @@ namespace lessonplans {
 
         private:
             /*
-             * Pre initialized data
+             * Input data
              */
-            // Algorithm data
-            std::vector<int> dataCounts;
-
-            /*
-             * Generated data
-             */
-            // Population
-            // 255.255.255.255 -> 11111111.11111111.11111111.11111111 -> room.subject.teacher.class
-            // 65535.65535.65535.65535 -> 1111111111111111.1111111111111111.1111111111111111.1111111111111111 -> room.subject.teacher.class
-//            std::vector<std::vector<std::vector<std::vector<unsigned long long>>>> population;
-            std::vector<std::vector<std::vector<unsigned short>>> population;
-            std::vector<std::vector<std::vector<std::vector<unsigned short>>>> populationAssignedLessonAndDaysToClasses;
-            std::vector<std::vector<std::vector<std::vector<unsigned short>>>> populationAssignedLessonAndDaysToTeachers;
-            std::vector<std::vector<std::vector<std::vector<unsigned short>>>> populationAssignedLessonAndDaysToRooms;
-            std::vector<std::vector<std::vector<unsigned short>>> populationPartnersCount;
             unsigned short weekDaysCount;
             unsigned short lessonsCount;
             unsigned short classesCount;
@@ -66,20 +52,22 @@ namespace lessonplans {
             std::vector<std::vector<unsigned short>> roomsSubjects;
 
             /*
-             * Other
+             * Output data
+             */
+            std::vector<LessonplanIndividual> population;
+
+            /*
+             * Methods
              */
             void initPopulation() override;
             void crossover() override;
             void mutate() override;
             void evaluate() override;
             void select() override;
-            std::vector<std::vector<unsigned short>> initIndividual(unsigned short individualIndex);
-            std::vector<unsigned short> initIndividualSetWeekDayAndLesson(unsigned short individualIndex, unsigned short classIdx, unsigned short teacherIdx, unsigned short roomIdx);
             static unsigned long long encodeIndividualLesson(unsigned short room, unsigned short subject, unsigned short teacher, unsigned short classItem);
             static std::vector<unsigned short> decodeIndividualLesson(unsigned long long individualLesson);
             std::vector<unsigned short> getRandomTakingSequence(unsigned short sequenceSize);
             std::vector<std::vector<unsigned short>> getBestIndividual();
-            std::vector<unsigned short> initLessons(unsigned short classIndex, unsigned int lessonIndex, std::vector<unsigned short> alreadySelectedRooms);
     };
 }
 

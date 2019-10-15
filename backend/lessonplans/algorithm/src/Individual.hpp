@@ -6,7 +6,6 @@ namespace lessonplans {
     public:
         Individual();
         virtual ~Individual();
-        virtual bool init() = 0;
     };
 }
 
