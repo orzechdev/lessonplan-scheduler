@@ -26,6 +26,8 @@ namespace lessonplans {
                 vector<unsigned short> roomsSubjectsRestrictionStatus,
                 vector<vector<unsigned short>> roomsSubjects
             );
+            inline vector<vector<unsigned short>> getBestLessonplan();
+            inline vector<vector<vector<unsigned short>>> getAllLessonplans();
 
         private:
              LessonplanGenAlgorithm* lessonplanGenAlgorithm;

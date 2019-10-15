@@ -24,6 +24,7 @@ namespace lessonplans {
                     LessonplanData* lessonplanData
             );
             vector<vector<unsigned short>> getLessonplanFromBestIndividual();
+            vector<vector<vector<unsigned short>>> getLessonplansFromAllIndividuals();
 
         private:
             /*
@@ -34,7 +35,7 @@ namespace lessonplans {
             /*
              * Output data
              */
-            vector<LessonplanIndividual> population;
+            vector<LessonplanIndividual*> population;
 
             /*
              * Methods
@@ -47,7 +48,6 @@ namespace lessonplans {
             static unsigned long long encodeIndividualLesson(unsigned short room, unsigned short subject, unsigned short teacher, unsigned short classItem);
             static vector<unsigned short> decodeIndividualLesson(unsigned long long individualLesson);
             vector<unsigned short> getRandomTakingSequence(unsigned short sequenceSize);
-            vector<vector<unsigned short>> getBestIndividual();
     };
 }
 

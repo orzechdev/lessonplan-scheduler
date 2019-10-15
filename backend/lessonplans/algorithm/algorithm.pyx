@@ -18,8 +18,8 @@ def run_algorithm(
 ):
     scheduler_ptr = new LessonplanScheduler()  # Instantiate a LessonplanScheduler object on the heap
     try:
-        print('aa 1')
-        scheduler_area = scheduler_ptr.scheduleLessonplan(
+        print('try start')
+        scheduled_lessonplan = scheduler_ptr.scheduleLessonplan(
             week_days_count,
             lessons_count,
             classes_count,
@@ -33,14 +33,20 @@ def run_algorithm(
             rooms_subjects_restriction_status,
             rooms_subjects
         )
-        print('aa 2')
+        best_lessonplan = scheduler_ptr.getBestLessonplan()
+        all_lessonplans = scheduler_ptr.getAllLessonplans()
+        print('try pass')
     finally:
-        print('bb 1')
+        print('finally')
         del scheduler_ptr  # delete heap allocated object
 
     cdef LessonplanScheduler scheduler_stack  # Instantiate a LessonplanScheduler object on the stack
 
-    print('ee')
-    print(scheduler_area)
+    print('scheduled lessonplan')
+    print(scheduled_lessonplan)
+    print('best lessonplan')
+    print(best_lessonplan)
+    print('all lessonplans')
+    print(all_lessonplans)
 
-    return scheduler_area
+    return scheduled_lessonplan

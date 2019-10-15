@@ -55,4 +55,12 @@ namespace lessonplans {
 
     }
 
+    vector<vector<unsigned short>> LessonplanScheduler::getBestLessonplan() {
+        return this->lessonplanGenAlgorithm->getLessonplanFromBestIndividual();
+    }
+
+    vector<vector<vector<unsigned short>>> LessonplanScheduler::getAllLessonplans() {
+        return this->lessonplanGenAlgorithm->getLessonplansFromAllIndividuals();
+    }
+
 }

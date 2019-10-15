@@ -2,6 +2,7 @@
 
 #include <utility>
 #include <climits>
+#include <algorithm>
 
 namespace lessonplans {
 
@@ -17,14 +18,14 @@ namespace lessonplans {
 
     void LessonplanGenAlgorithm::initPopulation() {
 
-        this->population = *new vector<LessonplanIndividual>(
+        this->population = *new vector<LessonplanIndividual*>(
                 this->populationCount
         );
 
         for (int i = 0; i < this->populationCount; i++) {
-            LessonplanIndividual lessonplanIndividual = *new LessonplanIndividual();
+            auto* lessonplanIndividual = new LessonplanIndividual();
 
-            lessonplanIndividual.initLessonplan(this->lessonplanData);
+            lessonplanIndividual->initLessonplan(this->lessonplanData);
 
             this->population[i] = lessonplanIndividual;
         }
@@ -71,12 +72,25 @@ namespace lessonplans {
 //        return individualLessonData;
 //    }
 
-    vector<vector<unsigned short>> LessonplanGenAlgorithm::getBestIndividual() {
-        return this->population[0].getIndividual();
+    vector<vector<unsigned short>> LessonplanGenAlgorithm::getLessonplanFromBestIndividual() {
+        return this->population[0]->getIndividual();
     }
 
-    vector<vector<unsigned short>> LessonplanGenAlgorithm::getLessonplanFromBestIndividual() {
-        return this->getBestIndividual();
+    vector<vector<vector<unsigned short>>> LessonplanGenAlgorithm::getLessonplansFromAllIndividuals() {
+        vector<vector<vector<unsigned short>>> lessonplans = *new vector<vector<vector<unsigned short>>>(
+                this->populationCount
+        );
+
+        std::transform(
+                this->population.begin(),
+                this->population.end(),
+                lessonplans.begin(),
+                [](LessonplanIndividual* lessonplanIndividual) {
+                    return lessonplanIndividual->getIndividual();
+                }
+        );
+
+        return lessonplans;
     }
 
 }

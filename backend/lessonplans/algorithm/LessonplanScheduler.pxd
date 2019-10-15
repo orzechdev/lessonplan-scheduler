@@ -22,3 +22,6 @@ cdef extern from "./include/algorithm/LessonplanScheduler.hpp" namespace "lesson
                     vector[ushort] rooms_subjects_restriction_status,
                     vector[vector[ushort]] rooms_subjects
             )
+            vector[vector[ushort]] getBestLessonplan()
+            vector[vector[vector[ushort]]] getAllLessonplans()
+
