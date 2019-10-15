@@ -21,51 +21,33 @@ namespace lessonplans {
 
         unsigned short getWeekDaysCount() const;
 
-        void setWeekDaysCount(unsigned short weekDaysCount);
-
         unsigned short getLessonsCount() const;
-
-        void setLessonsCount(unsigned short lessonsCount);
 
         unsigned short getClassesCount() const;
 
-        void setClassesCount(unsigned short classesCount);
-
         unsigned short getSubjectsCount() const;
-
-        void setSubjectsCount(unsigned short subjectsCount);
 
         unsigned short getTeachersCount() const;
 
-        void setTeachersCount(unsigned short teachersCount);
-
         unsigned short getRoomsCount() const;
 
-        void setRoomsCount(unsigned short roomsCount);
-
         const vector<unsigned short> &getClassesSubjectsRestrictionStatus() const;
-
-        void setClassesSubjectsRestrictionStatus(const vector<unsigned short> &classesSubjectsRestrictionStatus);
+        const unsigned short &getClassSubjectsRestrictionStatus(unsigned short classIdx) const;
 
         const vector<vector<unsigned short>> &getClassesSubjects() const;
-
-        void setClassesSubjects(const vector<vector<unsigned short>> &classesSubjects);
+        const vector<unsigned short> &getClassSubjects(unsigned short classIdx) const;
 
         const vector<unsigned short> &getTeachersSubjectsRestrictionStatus() const;
-
-        void setTeachersSubjectsRestrictionStatus(const vector<unsigned short> &teachersSubjectsRestrictionStatus);
+        const unsigned short &getTeacherSubjectsRestrictionStatus(unsigned short teacherIdx) const;
 
         const vector<vector<unsigned short>> &getTeachersSubjects() const;
-
-        void setTeachersSubjects(const vector<vector<unsigned short>> &teachersSubjects);
+        const vector<unsigned short> &getTeacherSubjects(unsigned short teacherIdx) const;
 
         const vector<unsigned short> &getRoomsSubjectsRestrictionStatus() const;
-
-        void setRoomsSubjectsRestrictionStatus(const vector<unsigned short> &roomsSubjectsRestrictionStatus);
+        const unsigned short &getRoomSubjectsRestrictionStatus(unsigned short roomIdx) const;
 
         const vector<vector<unsigned short>> &getRoomsSubjects() const;
-
-        void setRoomsSubjects(const vector<vector<unsigned short>> &roomsSubjects);
+        const vector<unsigned short> &getRoomSubjects(unsigned short roomIdx) const;
 
     private:
         unsigned short weekDaysCount;

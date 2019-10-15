@@ -7,86 +7,53 @@
 namespace lessonplans {
 
     vector<vector<unsigned short>> LessonplanIndividual::initLessonplan(LessonplanData* lessonplanData) {
-        return this->initLessonplan(
-                lessonplanData->getWeekDaysCount(),
-                lessonplanData->getLessonsCount(),
-                lessonplanData->getClassesCount(),
-                lessonplanData->getSubjectsCount(),
-                lessonplanData->getTeachersCount(),
-                lessonplanData->getRoomsCount(),
-                lessonplanData->getClassesSubjects(),
-                lessonplanData->getTeachersSubjects(),
-                lessonplanData->getRoomsSubjectsRestrictionStatus(),
-                lessonplanData->getRoomsSubjects()
-        );
-    }
+        unsigned short weekDaysCount = lessonplanData->getWeekDaysCount();
+        unsigned short lessonsCount = lessonplanData->getLessonsCount();
+        unsigned short classesCount = lessonplanData->getClassesCount();
+        unsigned short subjectsCount = lessonplanData->getSubjectsCount();
+        unsigned short teachersCount = lessonplanData->getTeachersCount();
+        unsigned short roomsCount = lessonplanData->getRoomsCount();
 
-    vector<vector<unsigned short>> LessonplanIndividual::initLessonplan(
-            unsigned short weekDaysCount, unsigned short lessonsCount,
-            unsigned short classesCount, unsigned short subjectsCount,
-            unsigned short teachersCount, unsigned short roomsCount,
-            vector<vector<unsigned short>> classesSubjects,
-            vector<vector<unsigned short>> teachersSubjects,
-            vector<unsigned short> roomsSubjectsRestrictionStatus,
-            vector<vector<unsigned short>> roomsSubjects
-    ) {
         this->maxDataCount = classesCount * subjectsCount;
 
         this->individual = *new vector<vector<unsigned short>>(
-            this->maxDataCount, vector<unsigned short>(
-                    LessonplanIndividual::dataTypes
-            )
+                this->maxDataCount, vector<unsigned short>(
+                        LessonplanIndividual::dataTypes
+                )
         );
         this->assignedLessonAndDaysToClasses = *new vector<vector<vector<unsigned short>>>(
-                        weekDaysCount, vector<vector<unsigned short>>(
-                                lessonsCount, vector<unsigned short>(
-                                        classesCount
-                                )
+                weekDaysCount, vector<vector<unsigned short>>(
+                        lessonsCount, vector<unsigned short>(
+                                classesCount
                         )
+                )
         );
         this->assignedLessonAndDaysToTeachers = *new vector<vector<vector<unsigned short>>>(
-                        weekDaysCount, vector<vector<unsigned short>>(
-                                lessonsCount, vector<unsigned short>(
-                                        teachersCount
-                                )
+                weekDaysCount, vector<vector<unsigned short>>(
+                        lessonsCount, vector<unsigned short>(
+                                teachersCount
                         )
+                )
         );
         this->assignedLessonAndDaysToRooms = *new vector<vector<vector<unsigned short>>>(
-                        weekDaysCount, vector<vector<unsigned short>>(
-                                lessonsCount, vector<unsigned short>(
-                                        roomsCount
-                                )
+                weekDaysCount, vector<vector<unsigned short>>(
+                        lessonsCount, vector<unsigned short>(
+                                roomsCount
                         )
+                )
         );
 
         unsigned short individualDataIdx = 0;
-        bool nextClassSubjectRequired;
-
-//        this->findPossibleClass(
-//                classesCount,
-//                classesSubjects,
-//                [this, subjectsCount, classesSubjects](unsigned short foundClassIdx) -> unsigned short {
-//                    this->findPossibleSubject(
-//                            subjectsCount,
-//                            classesSubjects[foundClassIdx],
-//                            [this](unsigned short foundSubjectIdx) -> unsigned short {
-//                                this->findPossibleTeacher(foundSubjectIdx);
-//                            }
-//                    );
-//                }
-//        );
 
         // Iterate through list of classes
         for (unsigned short classIdx = 0; classIdx < classesCount; classIdx++) {
             unsigned short classId = classIdx + 1;
-            vector<unsigned short> classSubjects = classesSubjects[classIdx];
+            vector<unsigned short> classSubjects = lessonplanData->getClassSubjects(classIdx);
 
             // CLASS OK
 
             // Iterate through list of classes subjects
             for (unsigned short subjectIdx = 0; subjectIdx < subjectsCount; subjectIdx++) {
-                nextClassSubjectRequired = false;
-
                 unsigned short subjectId = classSubjects[subjectIdx];
 
                 // No subjects left for class
@@ -96,39 +63,10 @@ namespace lessonplans {
 
                 // SUBJECT OK
 
-                // Iterate through list of teachers
-                for (unsigned short teacherIdx = 0; teacherIdx < teachersCount; teacherIdx++) {
-                    unsigned short teacherId = teacherIdx + 1;
-                    vector<unsigned short> teacherSubjects = teachersSubjects[teacherIdx];
+                bool teacherFound = this->findPossibleTeacher(lessonplanData, individualDataIdx, classIdx, classId, subjectId);
 
-                    // Iterate through list of teachers subjects
-                    for (unsigned short subjectIdx2 = 0; subjectIdx2 < subjectsCount; subjectIdx2++) {
-                        unsigned short subjectId2 = teacherSubjects[subjectIdx2];
-
-                        // No subjects left for teacher
-                        if (!subjectId2) {
-                            break;
-                        }
-
-                        if (subjectId == subjectId2) {
-                            // TEACHER OK
-
-                            bool roomFound = this->findPossibleRoom(individualDataIdx, classIdx, teacherIdx, classId, subjectId, teacherId, weekDaysCount, lessonsCount, classesCount, subjectsCount, teachersCount, roomsCount, classesSubjects, teachersSubjects, roomsSubjectsRestrictionStatus, roomsSubjects);
-
-                            if (roomFound) {
-                                individualDataIdx++;
-                                nextClassSubjectRequired = true;
-                            }
-                        }
-
-                        if (nextClassSubjectRequired) {
-                            break;
-                        }
-                    }
-
-                    if (nextClassSubjectRequired) {
-                        break;
-                    }
+                if (teacherFound) {
+                    individualDataIdx++;
                 }
             }
         }
@@ -136,29 +74,69 @@ namespace lessonplans {
         return this->individual;
     }
 
-//    unsigned short LessonplanIndividual::onNextFound(unsigned short foundIdx, unsigned short (*onNext)(unsigned short)) {
-//        unsigned short todotodotodo = onNext(foundIdx);
-//    }
+
+    bool LessonplanIndividual::findPossibleTeacher(
+            LessonplanData *lessonplanData,
+            unsigned short individualDataIdx,
+            unsigned short classIdx,
+            unsigned short classId, unsigned short subjectId
+    ) {
+        unsigned short weekDaysCount = lessonplanData->getWeekDaysCount();
+        unsigned short lessonsCount = lessonplanData->getLessonsCount();
+        unsigned short classesCount = lessonplanData->getClassesCount();
+        unsigned short subjectsCount = lessonplanData->getSubjectsCount();
+        unsigned short teachersCount = lessonplanData->getTeachersCount();
+        unsigned short roomsCount = lessonplanData->getRoomsCount();
+
+        // Iterate through list of teachers
+        for (unsigned short teacherIdx = 0; teacherIdx < teachersCount; teacherIdx++) {
+            unsigned short teacherId = teacherIdx + 1;
+            vector<unsigned short> teacherSubjects = lessonplanData->getTeacherSubjects(teacherIdx);
+
+            // Iterate through list of teachers subjects
+            for (unsigned short subjectIdx2 = 0; subjectIdx2 < subjectsCount; subjectIdx2++) {
+                unsigned short subjectId2 = teacherSubjects[subjectIdx2];
+
+                // No subjects left for teacher
+                if (!subjectId2) {
+                    break;
+                }
+
+                if (subjectId == subjectId2) {
+                    // TEACHER OK
+
+                    bool roomFound = this->findPossibleRoom(lessonplanData, individualDataIdx, classIdx, teacherIdx, classId, subjectId, teacherId);
+
+                    if (roomFound) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
 
     bool LessonplanIndividual::findPossibleRoom(
+            LessonplanData *lessonplanData,
             unsigned short individualDataIdx,
             unsigned short classIdx, unsigned short teacherIdx,
-            unsigned short classId, unsigned short subjectId, unsigned short teacherId,
-            unsigned short weekDaysCount, unsigned short lessonsCount,
-            unsigned short classesCount, unsigned short subjectsCount,
-            unsigned short teachersCount, unsigned short roomsCount,
-            vector<vector<unsigned short>> classesSubjects,
-            vector<vector<unsigned short>> teachersSubjects,
-            vector<unsigned short> roomsSubjectsRestrictionStatus,
-            vector<vector<unsigned short>> roomsSubjects
+            unsigned short classId, unsigned short subjectId, unsigned short teacherId
     ) {
+        unsigned short weekDaysCount = lessonplanData->getWeekDaysCount();
+        unsigned short lessonsCount = lessonplanData->getLessonsCount();
+        unsigned short classesCount = lessonplanData->getClassesCount();
+        unsigned short subjectsCount = lessonplanData->getSubjectsCount();
+        unsigned short teachersCount = lessonplanData->getTeachersCount();
+        unsigned short roomsCount = lessonplanData->getRoomsCount();
+
         // Iterate through list of rooms
         for (unsigned short roomIdx = 0; roomIdx < roomsCount; roomIdx++) {
             unsigned short roomId = roomIdx + 1;
-            unsigned short roomSubjectsRestrictionStatus = roomsSubjectsRestrictionStatus[roomIdx];
+            unsigned short roomSubjectsRestrictionStatus = lessonplanData->getRoomSubjectsRestrictionStatus(roomIdx);
 
             if (roomSubjectsRestrictionStatus) {
-                vector<unsigned short> roomSubjects = roomsSubjects[roomIdx];
+                vector<unsigned short> roomSubjects = lessonplanData->getRoomSubjects(roomIdx);
 
                 // Iterate through list of rooms subjects
                 for (unsigned short subjectIdx3 = 0; subjectIdx3 < subjectsCount; subjectIdx3++) {
@@ -211,38 +189,6 @@ namespace lessonplans {
         }
 
         return false;
-    }
-
-
-
-//    unsigned short LessonplanIndividual::findPossibleClass(unsigned short classesCount, vector<vector<unsigned short>> classesSubjects, unsigned short (*onNextFound)(unsigned short)) {
-//        // Iterate through list of classes
-//        for (unsigned short classIdx = 0; classIdx < classesCount; classIdx++) {
-//            unsigned short classId = classIdx + 1;
-//            vector<unsigned short> classSubjects = classesSubjects[classIdx];
-//
-//            unsigned short todotodotodo = onNextFound(classIdx);
-//        }
-//    }
-//
-//    unsigned short LessonplanIndividual::findPossibleSubject(unsigned short subjectsCount, vector<unsigned short> classSubjects, unsigned short (*onNextFound)(unsigned short)) {
-//        // Iterate through list of classes subjects
-//        for (unsigned short subjectIdx = 0; subjectIdx < subjectsCount; subjectIdx++) {
-//            nextClassSubjectRequired = false;
-//
-//            unsigned short subjectId = classSubjects[subjectIdx];
-//
-//            // No subjects left for class
-//            if (!subjectId) {
-//                break;
-//            }
-//
-//            unsigned short todotodotodo = onNextFound(subjectIdx);
-//        }
-//    }
-
-    unsigned short LessonplanIndividual::findPossibleTeacher(unsigned short teacherIdx) {
-        return 0;
     }
 
     vector<unsigned short> lessonplans::LessonplanIndividual::determinePossibleWeekDayAndLesson(
