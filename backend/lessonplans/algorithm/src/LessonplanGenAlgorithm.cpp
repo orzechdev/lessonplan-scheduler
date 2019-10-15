@@ -5,61 +5,26 @@
 
 namespace lessonplans {
 
-    void LessonplanGenAlgorithm::setAlgorithmData(
-        unsigned short weekDaysCount,
-        unsigned short lessonsCount,
-        unsigned short classesCount,
-        unsigned short subjectsCount,
-        unsigned short teachersCount,
-        unsigned short roomsCount,
-        std::vector<unsigned short> classesSubjectsRestrictionStatus,
-        std::vector<std::vector<unsigned short>> classesSubjects,
-        std::vector<unsigned short> teachersSubjectsRestrictionStatus,
-        std::vector<std::vector<unsigned short>> teachersSubjects,
-        std::vector<unsigned short> roomsSubjectsRestrictionStatus,
-        std::vector<std::vector<unsigned short>> roomsSubjects
-    ) {
-        this->weekDaysCount = weekDaysCount;
-        this->lessonsCount = lessonsCount;
-        this->classesCount = classesCount;
-        this->subjectsCount = subjectsCount;
-        this->teachersCount = teachersCount;
-        this->roomsCount = roomsCount;
-        this->classesSubjectsRestrictionStatus = std::move(classesSubjectsRestrictionStatus);
-        this->classesSubjects = std::move(classesSubjects);
-        this->teachersSubjectsRestrictionStatus = std::move(teachersSubjectsRestrictionStatus);
-        this->teachersSubjects = std::move(teachersSubjects);
-        this->roomsSubjectsRestrictionStatus = std::move(roomsSubjectsRestrictionStatus);
-        this->roomsSubjects = std::move(roomsSubjects);
+    void LessonplanGenAlgorithm::setAlgorithmData(LessonplanData* lessonplanData) {
+        this->lessonplanData = lessonplanData;
     }
 
-    std::vector<unsigned short> LessonplanGenAlgorithm::getRandomTakingSequence(unsigned short sequenceSize) {
+    vector<unsigned short> LessonplanGenAlgorithm::getRandomTakingSequence(unsigned short sequenceSize) {
         // TODO: ... https://stackoverflow.com/questions/20734774/random-array-generation-with-no-duplicates
 
-        return std::vector<unsigned short>();
+        return vector<unsigned short>();
     }
 
     void LessonplanGenAlgorithm::initPopulation() {
 
-        this->population = *new std::vector<LessonplanIndividual>(
+        this->population = *new vector<LessonplanIndividual>(
                 this->populationCount
         );
 
         for (int i = 0; i < this->populationCount; i++) {
             LessonplanIndividual lessonplanIndividual = *new LessonplanIndividual();
 
-            lessonplanIndividual.initLessonplan(
-                    this->weekDaysCount,
-                    this->lessonsCount,
-                    this->classesCount,
-                    this->subjectsCount,
-                    this->teachersCount,
-                    this->roomsCount,
-                    this->classesSubjects,
-                    this->teachersSubjects,
-                    this->roomsSubjectsRestrictionStatus,
-                    this->roomsSubjects
-            );
+            lessonplanIndividual.initLessonplan(this->lessonplanData);
 
             this->population[i] = lessonplanIndividual;
         }
@@ -93,8 +58,8 @@ namespace lessonplans {
 //        return individualLesson;
 //    }
 //
-//    std::vector<unsigned short> LessonplanGenAlgorithm::decodeIndividualLesson(unsigned long long individual) {
-//        std::vector<unsigned short> individualLessonData = *new std::vector<unsigned short>(
+//    vector<unsigned short> LessonplanGenAlgorithm::decodeIndividualLesson(unsigned long long individual) {
+//        vector<unsigned short> individualLessonData = *new vector<unsigned short>(
 //                4 // Four different data encoded -> room, subject, teacher, class
 //        );
 //
@@ -106,11 +71,11 @@ namespace lessonplans {
 //        return individualLessonData;
 //    }
 
-    std::vector<std::vector<unsigned short>> LessonplanGenAlgorithm::getBestIndividual() {
+    vector<vector<unsigned short>> LessonplanGenAlgorithm::getBestIndividual() {
         return this->population[0].getIndividual();
     }
 
-    std::vector<std::vector<unsigned short>> LessonplanGenAlgorithm::getLessonplanFromBestIndividual() {
+    vector<vector<unsigned short>> LessonplanGenAlgorithm::getLessonplanFromBestIndividual() {
         return this->getBestIndividual();
     }
 

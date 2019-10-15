@@ -1,23 +1,25 @@
 #include "../include/algorithm/LessonplanScheduler.hpp"
 
+#include <utility>
+
 #include "LessonplanGenAlgorithm.hpp"
+#include "LessonplanData.hpp"
 
 namespace lessonplans {
 
-    std::vector<std::vector<unsigned short>>
-    LessonplanScheduler::scheduleLessonplan(
+    vector<vector<unsigned short>> LessonplanScheduler::scheduleLessonplan(
             unsigned short weekDaysCount,
             unsigned short lessonsCount,
             unsigned short classesCount,
             unsigned short subjectsCount,
             unsigned short teachersCount,
             unsigned short roomsCount,
-            std::vector<unsigned short> classesSubjectsRestrictionStatus,
-            std::vector<std::vector<unsigned short>> classesSubjects,
-            std::vector<unsigned short> teachersSubjectsRestrictionStatus,
-            std::vector<std::vector<unsigned short>> teachersSubjects,
-            std::vector<unsigned short> roomsSubjectsRestrictionStatus,
-            std::vector<std::vector<unsigned short>> roomsSubjects
+            vector<unsigned short> classesSubjectsRestrictionStatus,
+            vector<vector<unsigned short>> classesSubjects,
+            vector<unsigned short> teachersSubjectsRestrictionStatus,
+            vector<vector<unsigned short>> teachersSubjects,
+            vector<unsigned short> roomsSubjectsRestrictionStatus,
+            vector<vector<unsigned short>> roomsSubjects
     ) {
         int populationCount = 10;
         int generationNumber = 10;
@@ -28,20 +30,22 @@ namespace lessonplans {
 
         this->lessonplanGenAlgorithm = new LessonplanGenAlgorithm(populationCount, generationNumber, crossoverProb, mutationProb);
 
-        this->lessonplanGenAlgorithm->setAlgorithmData(
+        auto* lessonplanData = new LessonplanData(
                 weekDaysCount,
                 lessonsCount,
                 classesCount,
                 subjectsCount,
                 teachersCount,
                 roomsCount,
-                classesSubjectsRestrictionStatus,
-                classesSubjects,
-                teachersSubjectsRestrictionStatus,
-                teachersSubjects,
-                roomsSubjectsRestrictionStatus,
-                roomsSubjects
-            );
+                std::move(classesSubjectsRestrictionStatus),
+                std::move(classesSubjects),
+                std::move(teachersSubjectsRestrictionStatus),
+                std::move(teachersSubjects),
+                std::move(roomsSubjectsRestrictionStatus),
+                std::move(roomsSubjects)
+        );
+
+        this->lessonplanGenAlgorithm->setAlgorithmData(lessonplanData);
 
         bool solutionFound = this->lessonplanGenAlgorithm->run();
 

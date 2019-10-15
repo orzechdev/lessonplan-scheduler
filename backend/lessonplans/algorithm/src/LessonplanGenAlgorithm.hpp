@@ -5,6 +5,9 @@
 
 #include "GenAlgorithm.hpp"
 #include "LessonplanIndividual.hpp"
+#include "LessonplanData.hpp"
+
+using std::vector;
 
 namespace lessonplans {
     class LessonplanGenAlgorithm : public GenAlgorithm {
@@ -18,43 +21,20 @@ namespace lessonplans {
                     GenAlgorithm(populationCount, generationNumber, crossoverProb, mutationProb)
             {}
             void setAlgorithmData(
-                    unsigned short weekDaysCount,
-                    unsigned short lessonsCount,
-                    unsigned short classesCount,
-                    unsigned short subjectsCount,
-                    unsigned short teachersCount,
-                    unsigned short roomsCount,
-                    std::vector<unsigned short> classesSubjectsRestrictionStatus,
-                    std::vector<std::vector<unsigned short>> classesSubjects,
-                    std::vector<unsigned short> teachersSubjectsRestrictionStatus,
-                    std::vector<std::vector<unsigned short>> teachersSubjects,
-                    std::vector<unsigned short> roomsSubjectsRestrictionStatus,
-                    std::vector<std::vector<unsigned short>> roomsSubjects
+                    LessonplanData* lessonplanData
             );
-            std::vector<std::vector<unsigned short>> getLessonplanFromBestIndividual();
+            vector<vector<unsigned short>> getLessonplanFromBestIndividual();
 
         private:
             /*
              * Input data
              */
-            unsigned short weekDaysCount;
-            unsigned short lessonsCount;
-            unsigned short classesCount;
-            unsigned short subjectsCount;
-            unsigned short teachersCount;
-            unsigned short roomsCount;
-            // Population constraints
-            std::vector<unsigned short> classesSubjectsRestrictionStatus;
-            std::vector<std::vector<unsigned short>> classesSubjects;
-            std::vector<unsigned short> teachersSubjectsRestrictionStatus;
-            std::vector<std::vector<unsigned short>> teachersSubjects;
-            std::vector<unsigned short> roomsSubjectsRestrictionStatus;
-            std::vector<std::vector<unsigned short>> roomsSubjects;
+            LessonplanData* lessonplanData;
 
             /*
              * Output data
              */
-            std::vector<LessonplanIndividual> population;
+            vector<LessonplanIndividual> population;
 
             /*
              * Methods
@@ -65,9 +45,9 @@ namespace lessonplans {
             void evaluate() override;
             void select() override;
             static unsigned long long encodeIndividualLesson(unsigned short room, unsigned short subject, unsigned short teacher, unsigned short classItem);
-            static std::vector<unsigned short> decodeIndividualLesson(unsigned long long individualLesson);
-            std::vector<unsigned short> getRandomTakingSequence(unsigned short sequenceSize);
-            std::vector<std::vector<unsigned short>> getBestIndividual();
+            static vector<unsigned short> decodeIndividualLesson(unsigned long long individualLesson);
+            vector<unsigned short> getRandomTakingSequence(unsigned short sequenceSize);
+            vector<vector<unsigned short>> getBestIndividual();
     };
 }
 
