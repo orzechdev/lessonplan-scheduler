@@ -221,6 +221,9 @@ namespace lessonplans {
     }
 
     vector<unsigned short> LessonplanIndividual::getRandomIdsSequence(unsigned short sequenceSize) {
+        // TODO: remove below reference url if function will work
+        // Useful reference https://stackoverflow.com/questions/20734774/random-array-generation-with-no-duplicates
+        
         // Init vector with required size
         vector<unsigned short> sequence = *new vector<unsigned short>(
                 sequenceSize
