@@ -47,6 +47,7 @@ def run_algorithm(
     print('best lessonplan')
     print(best_lessonplan)
     print('all lessonplans')
-    print(all_lessonplans)
+    for some_lessonplan in all_lessonplans:
+        print(some_lessonplan)
 
     return scheduled_lessonplan

@@ -22,7 +22,7 @@ namespace lessonplans {
         vector<unsigned short> weekDaysIdsSequence;
         vector<unsigned short> lessonsIdsSequence;
         vector<unsigned short> classesIdsSequence;
-        vector<unsigned short> subjectsIdsSequence;
+        vector<vector<unsigned short>> classesSubjectsIdxsSequence;
         vector<unsigned short> teachersIdsSequence;
         vector<unsigned short> roomsIdsSequence;
         vector<vector<vector<unsigned short>>> assignedLessonAndDaysToClasses;
@@ -46,8 +46,11 @@ namespace lessonplans {
                 unsigned short classIdx, unsigned short teacherIdx, unsigned short roomIdx,
                 unsigned short classId, unsigned short subjectId, unsigned short teacherId, unsigned short roomId
         );
+        static unsigned int calculateMaxDataCount(LessonplanData* lessonplanData);
         void initRandomIdsSequencesForData(LessonplanData* lessonplanData);
+        static vector<unsigned short> getRandomIdxsSequence(unsigned short sequenceSize);
         static vector<unsigned short> getRandomIdsSequence(unsigned short sequenceSize);
+        static vector<unsigned short> getRandomNumbersSequence(unsigned short sequenceSize, unsigned short lowestNumber);
     };
 }
 

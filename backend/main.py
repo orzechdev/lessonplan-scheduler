@@ -10,39 +10,17 @@ subjects_count = 3
 teachers_count = 3
 rooms_count = 5
 classes_subjects_restriction_status = np.ones(2, dtype=np.ushort)
-classes_subjects = np.zeros((2, 3), dtype=np.ushort)
+classes_subjects = np.array([[1, 3], [1, 2, 3]], dtype=object)
 teachers_subjects_restriction_status = np.ones(3, dtype=np.ushort)
-teachers_subjects = np.zeros((3, 3), dtype=np.ushort)
+teachers_subjects = np.array([[1, 2, 3], [2], [2, 3]], dtype=object)
 rooms_subjects_restriction_status = np.zeros(5, dtype=np.ushort)
-rooms_subjects = np.zeros((5, 3), dtype=np.ushort)
-
-classes_subjects[0][0] = 1
-classes_subjects[0][1] = 3
-classes_subjects[1][0] = 1
-classes_subjects[1][1] = 2
-classes_subjects[1][2] = 3
-
-teachers_subjects[0][0] = 1
-teachers_subjects[0][1] = 2
-teachers_subjects[0][2] = 3
-teachers_subjects[1][0] = 2
-teachers_subjects[2][0] = 2
-teachers_subjects[2][1] = 3
+rooms_subjects = np.array([[2, 3], [2, 3], [2, 3], [2, 3], [1]], dtype=object)
 
 rooms_subjects_restriction_status[0] = 1
-rooms_subjects[0][0] = 2
-rooms_subjects[0][1] = 3
 rooms_subjects_restriction_status[1] = 1
-rooms_subjects[1][0] = 2
-rooms_subjects[1][1] = 3
 rooms_subjects_restriction_status[2] = 1
-rooms_subjects[2][0] = 2
-rooms_subjects[2][1] = 3
 rooms_subjects_restriction_status[3] = 1
-rooms_subjects[3][0] = 2
-rooms_subjects[3][1] = 3
 rooms_subjects_restriction_status[4] = 1
-rooms_subjects[4][0] = 1
 
 
 lessonplans = run_algorithm(
