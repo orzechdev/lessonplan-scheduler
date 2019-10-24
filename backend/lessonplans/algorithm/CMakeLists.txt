@@ -25,14 +25,14 @@ add_executable(
         src/LessonplanScheduler.cpp
         src/GenAlgorithm.hpp
         src/GenAlgorithm.cpp
-        src/LessonplanGenAlgorithm.hpp
-        src/LessonplanGenAlgorithm.cpp
         src/Individual.hpp
         src/Individual.cpp
         src/LessonplanIndividual.hpp
         src/LessonplanIndividual.cpp
         src/LessonplanData.hpp
         src/LessonplanData.cpp
+        src/LessonplanSchedulingProblem.hpp
+        src/LessonplanSchedulingProblem.cpp
 )
 #target_link_libraries(algorithm cython)
 

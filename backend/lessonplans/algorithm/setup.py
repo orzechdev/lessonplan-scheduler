@@ -19,10 +19,10 @@ setup(
                       "algorithm.pyx",
                       "./src/LessonplanScheduler.cpp",
                       "./src/GenAlgorithm.cpp",
-                      "./src/LessonplanGenAlgorithm.cpp",
                       "./src/Individual.cpp",
                       "./src/LessonplanIndividual.cpp",
-                      "./src/LessonplanData.cpp"
+                      "./src/LessonplanData.cpp",
+                      "./src/LessonplanSchedulingProblem.cpp"
                   ],  # "algorithm.pyx" and also all ".cpp" files must be listed here !!!!
               )
           ],

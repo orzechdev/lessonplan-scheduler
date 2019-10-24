@@ -3,7 +3,7 @@
 
 #include <vector>
 
-#include "../../src/LessonplanGenAlgorithm.hpp"
+#include "../../src/GenAlgorithm.hpp"
 
 using std::vector;
 
@@ -30,7 +30,7 @@ namespace lessonplans {
             inline vector<vector<vector<unsigned short>>> getAllLessonplans();
 
         private:
-             LessonplanGenAlgorithm* lessonplanGenAlgorithm;
+             GenAlgorithm* genAlgorithm;
     };
 }
 

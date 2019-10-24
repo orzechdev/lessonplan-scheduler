@@ -2,7 +2,6 @@
 
 #include <utility>
 
-#include "LessonplanGenAlgorithm.hpp"
 #include "LessonplanData.hpp"
 
 namespace lessonplans {
@@ -26,9 +25,7 @@ namespace lessonplans {
         float crossoverProb = 0.2;
         float mutationProb = 0.1;
 
-        // In order to have following commented code working, maybe refer to https://stackoverflow.com/questions/52211699/cython-cmake-and-setup-py-python-in-a-subdirectory-compiles-twice
-
-        this->lessonplanGenAlgorithm = new LessonplanGenAlgorithm(populationCount, generationNumber, crossoverProb, mutationProb);
+        this->genAlgorithm = new GenAlgorithm(populationCount, generationNumber, crossoverProb, mutationProb);
 
         auto* lessonplanData = new LessonplanData(
                 weekDaysCount,
@@ -45,22 +42,17 @@ namespace lessonplans {
                 std::move(roomsSubjects)
         );
 
-        this->lessonplanGenAlgorithm->setAlgorithmData(lessonplanData);
+        auto* lessonplanSchedulingProblem = new LessonplanSchedulingProblem(lessonplanData);
 
-        bool solutionFound = this->lessonplanGenAlgorithm->run();
-
-        if (solutionFound) {
-            return this->lessonplanGenAlgorithm->getLessonplanFromBestIndividual();
-        }
-
+        return this->genAlgorithm->findBestLessonplan(lessonplanSchedulingProblem);
     }
 
     vector<vector<unsigned short>> LessonplanScheduler::getBestLessonplan() {
-        return this->lessonplanGenAlgorithm->getLessonplanFromBestIndividual();
+        return this->genAlgorithm->getPreviouslyFoundBestLessonplan();
     }
 
     vector<vector<vector<unsigned short>>> LessonplanScheduler::getAllLessonplans() {
-        return this->lessonplanGenAlgorithm->getLessonplansFromAllIndividuals();
+        return this->genAlgorithm->getPreviouslyFoundAllLessonplans();
     }
 
 }
