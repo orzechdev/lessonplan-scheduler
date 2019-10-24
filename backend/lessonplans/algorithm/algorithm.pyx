@@ -3,32 +3,51 @@
 from LessonplanScheduler cimport LessonplanScheduler
 
 def run_algorithm(
-        class_count,
-        day_count,
-        lesson_count,
-        rooms,
-        teachers,
-        classes_subjects_with_classes_subjects_hours,
-        rooms_exclusive_assignments,
-        subjects_rooms,
-        teachers_subjects
+        week_days_count,
+        lessons_count,
+        classes_count,
+        subjects_count,
+        teachers_count,
+        rooms_count,
+        classes_subjects_restriction_status,
+        classes_subjects,
+        teachers_subjects_restriction_status,
+        teachers_subjects,
+        rooms_subjects_restriction_status,
+        rooms_subjects
 ):
     scheduler_ptr = new LessonplanScheduler()  # Instantiate a LessonplanScheduler object on the heap
     try:
-        scheduler_area = scheduler_ptr.scheduleLessonplan(
-            class_count,
-            day_count,
-            lesson_count,
-            rooms,
-            teachers,
-            classes_subjects_with_classes_subjects_hours,
-            rooms_exclusive_assignments,
-            subjects_rooms,
-            teachers_subjects
+        print('try start')
+        scheduled_lessonplan = scheduler_ptr.scheduleLessonplan(
+            week_days_count,
+            lessons_count,
+            classes_count,
+            subjects_count,
+            teachers_count,
+            rooms_count,
+            classes_subjects_restriction_status,
+            classes_subjects,
+            teachers_subjects_restriction_status,
+            teachers_subjects,
+            rooms_subjects_restriction_status,
+            rooms_subjects
         )
+        best_lessonplan = scheduler_ptr.getBestLessonplan()
+        all_lessonplans = scheduler_ptr.getAllLessonplans()
+        print('try pass')
     finally:
+        print('finally')
         del scheduler_ptr  # delete heap allocated object
 
     cdef LessonplanScheduler scheduler_stack  # Instantiate a LessonplanScheduler object on the stack
 
-    return scheduler_area
+    print('scheduled lessonplan')
+    print(scheduled_lessonplan)
+    print('best lessonplan')
+    print(best_lessonplan)
+    print('all lessonplans')
+    for some_lessonplan in all_lessonplans:
+        print(some_lessonplan)
+
+    return scheduled_lessonplan

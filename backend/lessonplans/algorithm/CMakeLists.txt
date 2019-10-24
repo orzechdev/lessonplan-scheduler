@@ -19,7 +19,21 @@ set(CMAKE_CXX_STANDARD 11)
 
 
 #add_executable(algorithm main.cpp include/algorithm/LessonplanScheduler.hpp src/LessonplanScheduler.cpp src/GenAlgorithm.hpp src/GenAlgorithm.cpp src/LessonplanGenAlgorithm.hpp src/LessonplanGenAlgorithm.cpp)
-add_executable(algorithm include/algorithm/LessonplanScheduler.hpp src/LessonplanScheduler.cpp src/GenAlgorithm.hpp src/GenAlgorithm.cpp src/LessonplanGenAlgorithm.hpp src/LessonplanGenAlgorithm.cpp)
+add_executable(
+        algorithm
+        include/algorithm/LessonplanScheduler.hpp
+        src/LessonplanScheduler.cpp
+        src/GenAlgorithm.hpp
+        src/GenAlgorithm.cpp
+        src/Individual.hpp
+        src/Individual.cpp
+        src/LessonplanIndividual.hpp
+        src/LessonplanIndividual.cpp
+        src/LessonplanData.hpp
+        src/LessonplanData.cpp
+        src/LessonplanSchedulingProblem.hpp
+        src/LessonplanSchedulingProblem.cpp
+)
 #target_link_libraries(algorithm cython)
 
 

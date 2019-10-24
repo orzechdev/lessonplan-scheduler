@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "GenAlgorithm.hpp"
 
 namespace lessonplans {
@@ -6,15 +7,9 @@ namespace lessonplans {
         //TODO: free memory
     }
 
-    void GenAlgorithm::setAlgorithmParams(int populationCount, int generationNumber, float crossoverProb,
-                                                    float mutationProb) {
-        this->populationCount = populationCount;
-        this->generationNumber = generationNumber;
-        this->crossoverProb = crossoverProb;
-        this->mutationProb = mutationProb;
-    }
+    vector<vector<unsigned short>> GenAlgorithm::findBestLessonplan(LessonplanSchedulingProblem* lessonplanSchedulingProblem) {
+        this->lessonplanSchedulingProblem = lessonplanSchedulingProblem;
 
-    bool GenAlgorithm::run() {
         this->initPopulation(); // TODO: ...
         this->evaluate(); // TODO: ...
         this->select(); // TODO: ...
@@ -24,7 +19,55 @@ namespace lessonplans {
             this->evaluate(); // TODO: ...
             this->select(); // TODO: ...
         }
-        return true;
+
+        return this->population[0]->getIndividual();
+    }
+
+    void GenAlgorithm::initPopulation() {
+        this->population = *new vector<LessonplanIndividual*>(
+                this->populationCount
+        );
+
+        for (int i = 0; i < this->populationCount; i++) {
+            this->population[i] = this->lessonplanSchedulingProblem->getSampleLessonplan();
+        }
+    }
+
+    void GenAlgorithm::crossover() {
+
+    }
+
+    void GenAlgorithm::mutate() {
+
+    }
+
+    void GenAlgorithm::evaluate() {
+
+    }
+
+    void GenAlgorithm::select() {
+
+    }
+
+    vector<vector<unsigned short>> GenAlgorithm::getPreviouslyFoundBestLessonplan() {
+        return this->population[0]->getIndividual();
+    }
+
+    vector<vector<vector<unsigned short>>> GenAlgorithm::getPreviouslyFoundAllLessonplans() {
+        vector<vector<vector<unsigned short>>> lessonplans = *new vector<vector<vector<unsigned short>>>(
+                this->populationCount
+        );
+
+        std::transform(
+                this->population.begin(),
+                this->population.end(),
+                lessonplans.begin(),
+                [](LessonplanIndividual* lessonplanIndividual) {
+                    return lessonplanIndividual->getIndividual();
+                }
+        );
+
+        return lessonplans;
     }
 
 }

@@ -6,3 +6,4 @@ __pycache__
 algorithm.cpp
 algorithm.cp37-win_amd64.pyd
 algorithm.cpython-37m-x86_64-linux-gnu.so
+/lessonplans/algorithm/cmake-build-debug

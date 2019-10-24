@@ -1,6 +1,10 @@
 #ifndef ALGORITHM_GENALGORITHM_HPP
 #define ALGORITHM_GENALGORITHM_HPP
 
+#include "LessonplanSchedulingProblem.hpp"
+#include "LessonplanData.hpp"
+#include "LessonplanIndividual.hpp"
+
 namespace lessonplans {
     class GenAlgorithm {
         public:
@@ -15,23 +19,25 @@ namespace lessonplans {
                     crossoverProb(crossoverProb),
                     mutationProb(mutationProb)
             {}
-            virtual ~GenAlgorithm();
-            virtual void setAlgorithmParams(
-                    int populationCount,
-                    int generationNumber,
-                    float crossoverProb,
-                    float mutationProb
-            );
-            virtual bool run();
+            ~GenAlgorithm();
+            vector<vector<unsigned short>> findBestLessonplan(LessonplanSchedulingProblem* lessonplanSchedulingProblem);
+            vector<vector<unsigned short>> getPreviouslyFoundBestLessonplan();
+            vector<vector<vector<unsigned short>>> getPreviouslyFoundAllLessonplans();
 
-        protected:
+        private:
             int populationCount, generationNumber;
             float crossoverProb, mutationProb;
-            virtual void initPopulation() = 0;
-            virtual void crossover() = 0;
-            virtual void mutate() = 0;
-            virtual void evaluate() = 0;
-            virtual void select() = 0;
+            LessonplanSchedulingProblem* lessonplanSchedulingProblem;
+
+            /*
+             * Output data
+             */
+            vector<LessonplanIndividual*> population;
+            void initPopulation();
+            void crossover();
+            void mutate();
+            void evaluate();
+            void select();
         };
 }
 

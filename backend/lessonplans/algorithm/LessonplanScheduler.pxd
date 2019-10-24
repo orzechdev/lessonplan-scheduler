@@ -8,14 +8,20 @@ cdef extern from "./src/LessonplanScheduler.cpp":
 cdef extern from "./include/algorithm/LessonplanScheduler.hpp" namespace "lessonplans":
     cdef cppclass LessonplanScheduler:
             LessonplanScheduler() except +
-            vector[vector[vector[vector[ushort]]]] scheduleLessonplan(
-                    unsigned short int class_count,
-                    unsigned short int day_count,
-                    unsigned short int lesson_count,
-                    vector[unsigned short int] rooms,
-                    vector[unsigned short int] teachers,
-                    vector[vector[vector[ushort]]] classes_subjects_with_classes_subjects_hours,
-                    vector[bool] rooms_exclusive_assignments,
-                    vector[vector[ushort]] subjects_rooms,
-                    vector[vector[ushort]] teachers_subjects
+            vector[vector[ushort]] scheduleLessonplan(
+                    unsigned short week_days_count,
+                    unsigned short lessons_count,
+                    unsigned short classes_count,
+                    unsigned short subjects_count,
+                    unsigned short teachers_count,
+                    unsigned short rooms_count,
+                    vector[ushort] classes_subjects_restriction_status,
+                    vector[vector[ushort]] classes_subjects,
+                    vector[ushort] teachers_subjects_restriction_status,
+                    vector[vector[ushort]] teachers_subjects,
+                    vector[ushort] rooms_subjects_restriction_status,
+                    vector[vector[ushort]] rooms_subjects
             )
+            vector[vector[ushort]] getBestLessonplan()
+            vector[vector[vector[ushort]]] getAllLessonplans()
+

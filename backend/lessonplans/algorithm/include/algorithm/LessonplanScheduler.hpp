@@ -3,27 +3,34 @@
 
 #include <vector>
 
-#include "../../src/LessonplanGenAlgorithm.hpp"
+#include "../../src/GenAlgorithm.hpp"
+
+using std::vector;
 
 namespace lessonplans {
     class LessonplanScheduler {
         public:
             LessonplanScheduler() {};
             ~LessonplanScheduler() {};
-            inline std::vector<std::vector<std::vector<std::vector<unsigned short>>>> scheduleLessonplan(
-                    unsigned short classCount,
-                    unsigned short dayCount,
-                    unsigned short lessonCount,
-                    std::vector<unsigned short> rooms,
-                    std::vector<unsigned short> teachers,
-                    std::vector<std::vector<std::vector<unsigned short>>> classesSubjectsIdsWithClassesSubjectsHours,
-                    std::vector<bool> roomsExclusiveAssignments,
-                    std::vector<std::vector<unsigned short>> subjectsRooms,
-                    std::vector<std::vector<unsigned short>> teachersSubjects
+            inline vector<vector<unsigned short>> scheduleLessonplan(
+                unsigned short weekDaysCount,
+                unsigned short lessonsCount,
+                unsigned short classesCount,
+                unsigned short subjectsCount,
+                unsigned short teachersCount,
+                unsigned short roomsCount,
+                vector<unsigned short> classesSubjectsRestrictionStatus,
+                vector<vector<unsigned short>> classesSubjects,
+                vector<unsigned short> teachersSubjectsRestrictionStatus,
+                vector<vector<unsigned short>> teachersSubjects,
+                vector<unsigned short> roomsSubjectsRestrictionStatus,
+                vector<vector<unsigned short>> roomsSubjects
             );
+            inline vector<vector<unsigned short>> getBestLessonplan();
+            inline vector<vector<vector<unsigned short>>> getAllLessonplans();
 
         private:
-             LessonplanGenAlgorithm* lessonplanGenAlgorithm;
+             GenAlgorithm* genAlgorithm;
     };
 }
 

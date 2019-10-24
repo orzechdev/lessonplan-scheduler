@@ -3,31 +3,39 @@ from lessonplans.algorithm.algorithm import run_algorithm
 
 print("DOES IT PRINT ITSELF? - if yes, it works!")
 
-class_count = 3
-day_count = 5
-lesson_count = 6
-rooms = np.zeros(11, dtype=np.ushort)
-teachers = np.zeros(11, dtype=np.ushort)
-classes_subjects_with_classes_subjects_hours = np.zeros((11, 11, 2), dtype=np.ushort)
-rooms_exclusive_assignments = np.zeros(11, dtype=np.bool)
-subjects_rooms = np.zeros((11, 11), dtype=np.ushort)
-teachers_subjects = np.zeros((11, 11), dtype=np.ushort)
+week_days_count = 2
+lessons_count = 3
+classes_count = 2
+subjects_count = 3
+teachers_count = 3
+rooms_count = 5
+classes_subjects_restriction_status = np.ones(2, dtype=np.ushort)
+classes_subjects = np.array([[1, 3], [1, 2, 3]], dtype=object)
+teachers_subjects_restriction_status = np.ones(3, dtype=np.ushort)
+teachers_subjects = np.array([[1, 2, 3], [2], [2, 3]], dtype=object)
+rooms_subjects_restriction_status = np.zeros(5, dtype=np.ushort)
+rooms_subjects = np.array([[2, 3], [2, 3], [2, 3], [2, 3], [1]], dtype=object)
 
-for i in range(11):
-    for j in range(11):
-        classes_subjects_with_classes_subjects_hours[i][j][0] = 76
-        classes_subjects_with_classes_subjects_hours[i][j][1] = 2
+rooms_subjects_restriction_status[0] = 1
+rooms_subjects_restriction_status[1] = 1
+rooms_subjects_restriction_status[2] = 1
+rooms_subjects_restriction_status[3] = 1
+rooms_subjects_restriction_status[4] = 1
+
 
 lessonplans = run_algorithm(
-    class_count,
-    day_count,
-    lesson_count,
-    rooms,
-    teachers,
-    classes_subjects_with_classes_subjects_hours,
-    rooms_exclusive_assignments,
-    subjects_rooms,
-    teachers_subjects
+    week_days_count,
+    lessons_count,
+    classes_count,
+    subjects_count,
+    teachers_count,
+    rooms_count,
+    classes_subjects_restriction_status,
+    classes_subjects,
+    teachers_subjects_restriction_status,
+    teachers_subjects,
+    rooms_subjects_restriction_status,
+    rooms_subjects
 )
 
 print(lessonplans)
