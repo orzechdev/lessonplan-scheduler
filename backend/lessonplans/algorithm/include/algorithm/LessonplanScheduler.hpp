@@ -28,6 +28,7 @@ namespace lessonplans {
             );
             inline vector<vector<unsigned short>> getBestLessonplan();
             inline vector<vector<vector<unsigned short>>> getAllLessonplans();
+            inline vector<int> getAllLessonplansGrades();
 
         private:
              GenAlgorithm* genAlgorithm;

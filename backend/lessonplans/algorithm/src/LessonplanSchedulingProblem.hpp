@@ -12,9 +12,10 @@ namespace lessonplans {
                 lessonplanData(lessonplanData)
         {}
         LessonplanIndividual* getSampleLessonplan();
-        char evaluateLessonplan();
+        int evaluateLessonplan(LessonplanIndividual* lessonplanIndividual);
     private:
         LessonplanData* lessonplanData;
+        unsigned short checkStartLessonsDifferenceBetweenDays(LessonplanIndividual* lessonplanIndividual, unsigned short maxValidStartLessonsDifferenceBetweenDays);
     };
 }
 

@@ -260,4 +260,8 @@ namespace lessonplans {
         return this->individual;
     }
 
+    unsigned int LessonplanIndividual::getMaxDataCount() const {
+        return maxDataCount;
+    }
+
 }

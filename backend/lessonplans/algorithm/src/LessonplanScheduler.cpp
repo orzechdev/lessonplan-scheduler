@@ -55,4 +55,8 @@ namespace lessonplans {
         return this->genAlgorithm->getPreviouslyFoundAllLessonplans();
     }
 
+    vector<int> LessonplanScheduler::getAllLessonplansGrades() {
+        return this->genAlgorithm->getPreviouslyFoundAllLessonplansGrades();
+    }
+
 }

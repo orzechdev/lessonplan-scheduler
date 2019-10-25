@@ -27,6 +27,9 @@ namespace lessonplans {
         this->population = *new vector<LessonplanIndividual*>(
                 this->populationCount
         );
+        this->populationGrades = *new vector<int>(
+                this->populationCount
+        );
 
         for (int i = 0; i < this->populationCount; i++) {
             this->population[i] = this->lessonplanSchedulingProblem->getSampleLessonplan();
@@ -42,7 +45,9 @@ namespace lessonplans {
     }
 
     void GenAlgorithm::evaluate() {
-
+        for (int i = 0; i < this->populationCount; i++) {
+            this->populationGrades[i] = this->lessonplanSchedulingProblem->evaluateLessonplan(this->population[i]);
+        }
     }
 
     void GenAlgorithm::select() {
@@ -68,6 +73,10 @@ namespace lessonplans {
         );
 
         return lessonplans;
+    }
+
+    vector<int> GenAlgorithm::getPreviouslyFoundAllLessonplansGrades() {
+        return this->populationGrades;
     }
 
 }

@@ -14,6 +14,7 @@ namespace lessonplans {
         LessonplanIndividual() : Individual() {}
         vector<vector<unsigned short>> initLessonplan(LessonplanData* lessonplanData);
         vector<vector<unsigned short>> getIndividual();
+        unsigned int getMaxDataCount() const;
 
     private:
         static const short dataTypes = 6;

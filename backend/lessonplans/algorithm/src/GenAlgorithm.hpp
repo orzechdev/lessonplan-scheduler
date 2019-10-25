@@ -23,16 +23,14 @@ namespace lessonplans {
             vector<vector<unsigned short>> findBestLessonplan(LessonplanSchedulingProblem* lessonplanSchedulingProblem);
             vector<vector<unsigned short>> getPreviouslyFoundBestLessonplan();
             vector<vector<vector<unsigned short>>> getPreviouslyFoundAllLessonplans();
+            vector<int> getPreviouslyFoundAllLessonplansGrades();
 
         private:
             int populationCount, generationNumber;
             float crossoverProb, mutationProb;
             LessonplanSchedulingProblem* lessonplanSchedulingProblem;
-
-            /*
-             * Output data
-             */
             vector<LessonplanIndividual*> population;
+            vector<int> populationGrades;
             void initPopulation();
             void crossover();
             void mutate();

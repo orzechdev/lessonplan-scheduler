@@ -35,6 +35,7 @@ def run_algorithm(
         )
         best_lessonplan = scheduler_ptr.getBestLessonplan()
         all_lessonplans = scheduler_ptr.getAllLessonplans()
+        all_lessonplans_grades = scheduler_ptr.getAllLessonplansGrades()
         print('try pass')
     finally:
         print('finally')
@@ -49,5 +50,8 @@ def run_algorithm(
     print('all lessonplans')
     for some_lessonplan in all_lessonplans:
         print(some_lessonplan)
+    print('all lessonplans grades')
+    for some_lessonplan_grade in all_lessonplans_grades:
+        print(some_lessonplan_grade)
 
     return scheduled_lessonplan
