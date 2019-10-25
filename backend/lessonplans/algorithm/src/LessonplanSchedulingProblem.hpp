@@ -16,6 +16,7 @@ namespace lessonplans {
     private:
         LessonplanData* lessonplanData;
         unsigned short checkStartLessonsDifferenceBetweenDays(LessonplanIndividual* lessonplanIndividual, unsigned short maxValidStartLessonsDifferenceBetweenDays);
+        unsigned short checkLessonsCountDifferenceBetweenDays(LessonplanIndividual* lessonplanIndividual, unsigned short maxValidLessonsCountDifferenceBetweenDays);
     };
 }
 

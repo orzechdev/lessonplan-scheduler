@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 import mongoengine
+import neomodel
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -27,9 +28,8 @@ SECRET_KEY = '+ang_2m%_f09e#_!)dwt7s-=b0yetvt(p=@!@^ws=yiboq0m&a'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'database', 'database-norel', 'localhost', '127.0.0.1', '[::1]'
+    'database', 'database-norel', 'db-neo4j', 'localhost', '127.0.0.1', '0.0.0.0', '[::1]'
 ]
-
 
 # Application definition
 
@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_neomodel',
 ]
 
 MIDDLEWARE = [
@@ -87,6 +88,14 @@ DATABASES = {
     'mongodb': {
         'ENGINE': 'django.db.backends.dummy',
     }
+    # ,
+    # 'neo4j': {
+    #     'HOST': 'localhost',
+    #     'PORT': 7474,
+    #     'USER': 'neo4j',
+    #     'PASSWORD': 'tempPassword',
+    #     'ENDPOINT': '/db/data'
+    # }
 }
 
 AUTHENTICATION_BACKENDS = (
@@ -94,6 +103,14 @@ AUTHENTICATION_BACKENDS = (
 )
 mongoengine.connect("database-norel", host="database-norel",  port=27017)
 
+NEOMODEL_NEO4J_BOLT_URL = os.environ.get('NEO4J_BOLT_URL')
+
+# os.environ["NEO4J_BOLT_URL"] = "bolt://neo4j:tempPassword@0.0.0.0:7687"
+# os.environ["NEO4J_USERNAME"] = "neo4j"
+# os.environ["NEO4J_PASSWORD"] = "tempPassword"
+
+####### neomodel.config.DATABASE_URL = "bolt://neo4j:tempPassword@localhost:7687"  # os.environ["NEO4J_BOLT_URL"]
+# neomodel.db.set_connection(neomodel.config.DATABASE_URL)
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators

@@ -15,12 +15,12 @@ namespace lessonplans {
         unsigned short classesWithInvalidDifferenceBetweenStartLessons = this->checkStartLessonsDifferenceBetweenDays(lessonplanIndividual, 1);
 
         //-1pt - for each number of hours between the days of the week which differ by more than 1 hour
-
+        unsigned short classesWithInvalidDifferenceBetweenLessonsCount = this->checkLessonsCountDifferenceBetweenDays(lessonplanIndividual, 1);
 
         //-1pt - for each free hour between lesson
 
 
-        return 0 - classesWithInvalidDifferenceBetweenStartLessons;
+        return 0 - classesWithInvalidDifferenceBetweenStartLessons - classesWithInvalidDifferenceBetweenLessonsCount;
     }
 
     unsigned short LessonplanSchedulingProblem::checkStartLessonsDifferenceBetweenDays(
@@ -86,6 +86,12 @@ namespace lessonplans {
         }
 
         return classesWithFailedCheck;
+    }
+
+    unsigned short LessonplanSchedulingProblem::checkLessonsCountDifferenceBetweenDays(
+            LessonplanIndividual* lessonplanIndividual, unsigned short maxValidLessonsCountDifferenceBetweenDays
+    ) {
+        return 0;
     }
 
 

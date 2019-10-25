@@ -1,68 +1,129 @@
 from django.http import HttpResponse, JsonResponse
 
 import numpy as np
+import json
+import os
+from datetime import datetime
 from lessonplans.algorithm.algorithm import run_algorithm
+from lessonplans.models import *
+
+module_dir = os.path.dirname(__file__)  # get current directory
+weekdays_file_path = os.path.join(module_dir, 'predefined_data/weekdays.json')
+lessons_file_path = os.path.join(module_dir, 'predefined_data/lessons.json')
+subjects_file_path = os.path.join(module_dir, 'predefined_data/subjects.json')
+teachers_file_path = os.path.join(module_dir, 'predefined_data/teachers.json')
 
 
 def index(request):
     return HttpResponse("Hello, world. You're at the lessonplans index.")
 
 
-def generate(request):
-    class_count = 3
-    day_count = 5
-    lesson_count = 6
-    rooms = np.zeros(11, dtype=np.ushort)
-    teachers = np.zeros(11, dtype=np.ushort)
-    classes_subjects_with_classes_subjects_hours = np.zeros((11, 11, 2), dtype=np.ushort)
-    rooms_exclusive_assignments = np.zeros(11, dtype=np.bool)
-    subjects_rooms = np.zeros((11, 11), dtype=np.ushort)
-    teachers_subjects = np.zeros((11, 11), dtype=np.ushort)
-
-    related_data_types = 5
-    max_data_count = 3
-    relation_rules = 3
-
-    lessons_restrictions_for_individuals = np.zeros((3, related_data_types, max_data_count, relation_rules), dtype=np.ushort)
-    weekdays_restrictions_for_individuals = np.zeros((2, related_data_types, max_data_count, relation_rules), dtype=np.ushort)
-    rooms_restrictions_for_individuals = np.zeros((3, related_data_types, max_data_count, relation_rules), dtype=np.ushort)
-    teachers_restrictions_for_individuals = np.zeros((2, related_data_types, max_data_count, relation_rules), dtype=np.ushort)
-    classes_restrictions_for_individuals = np.zeros((2, related_data_types, max_data_count, relation_rules), dtype=np.ushort)
-    subjects_restrictions_for_individuals = np.zeros((3, related_data_types, max_data_count, relation_rules), dtype=np.ushort)
-
-    for i in range(3):
-        for j in range(related_data_types):
-            for k in range(max_data_count):
-                lessons_restrictions_for_individuals[i][j][k][0] = 1000
-                lessons_restrictions_for_individuals[i][j][k][1] = 0
-                lessons_restrictions_for_individuals[i][j][k][2] = 1
-
-    for i in range(2):
-        for j in range(related_data_types):
-            for k in range(max_data_count):
-                weekdays_restrictions_for_individuals[i][j][k][0] = 1000
-                weekdays_restrictions_for_individuals[i][j][k][1] = 0
-                weekdays_restrictions_for_individuals[i][j][k][2] = 1
-
-    # for i in range(3):
-    #     for j in range(related_data_types):
-    #         for k in range(max_data_count):
-    #             rooms_restrictions_for_individuals[i][j][k][0] = 1000
-    #             rooms_restrictions_for_individuals[i][j][k][1] = 0
-    #             rooms_restrictions_for_individuals[i][j][k][2] = 1
+def save_data(request):
     #
-    # for i in range(11):
-    #     for j in range(11):
-    #         classes_subjects_with_classes_subjects_hours[i][j][0] = 76
-    #         classes_subjects_with_classes_subjects_hours[i][j][1] = 2
+    # Weekdays
+    #
+    with open(weekdays_file_path, "r") as read_file:
+        weekdays = json.load(read_file)
+
+    weekdays_saved = []
+
+    for weekday in weekdays:
+        weekday_saved = WeekDay(name=weekday['name'])
+        weekday_saved.save()
+
+        weekdays_saved.append(weekday_saved)
+
+    #
+    # Lessons
+    #
+    with open(lessons_file_path, "r") as read_file:
+        lessons = json.load(read_file)
+
+    lessons_saved = []
+
+    for lesson in lessons:
+        start_datetime = datetime.strptime(lesson['startTime'], '%H:%M')
+        end_datetime = datetime.strptime(lesson['endTime'], '%H:%M')
+        lesson_saved = Lesson(name=lesson['name'], startTime=start_datetime, endTime=end_datetime)
+        lesson_saved.save()
+
+        lessons_saved.append(lesson_saved)
+
+    #
+    # Subjects
+    #
+    with open(subjects_file_path, "r") as read_file:
+        subjects = json.load(read_file)
+
+    subjects_saved = []
+
+    for subject in subjects:
+        subject_saved = Subject(name=subject['name'])
+        subject_saved.save()
+
+        subjects_saved.append(subject_saved)
+
+    #
+    # Teachers
+    #
+    with open(teachers_file_path, "r") as read_file:
+        teachers = json.load(read_file)
+
+    teachers_saved = []
+
+    for teacher in teachers:
+        teacher_saved = Teacher(name=teacher['name'])
+        teacher_saved.save()
+
+        for teacher_subject_id in teacher['subjects']:
+            for subject_idx, subject in enumerate(subjects):
+                if teacher_subject_id == subject['id']:
+                    teacher_saved.subjects.connect(subjects_saved[subject_idx])
+                    break
+
+        teachers_saved.append(teacher_saved)
+
+    # teacher_1.subjects.connect(subject_1)
+    # teacher_1.subjects.connect(subject_2)
+    #
+    # teacher_2.subjects.connect(subject_4)
+
+    return HttpResponse("save_data endpoint")
+
+
+def generate(request):
+    week_days_count = 2
+    lessons_count = 3
+    classes_count = 2
+    subjects_count = 3
+    teachers_count = 3
+    rooms_count = 5
+    classes_subjects_restriction_status = np.ones(2, dtype=np.ushort)
+    classes_subjects = np.array([[1, 3], [1, 2, 3]], dtype=object)
+    teachers_subjects_restriction_status = np.ones(3, dtype=np.ushort)
+    teachers_subjects = np.array([[1, 2, 3], [2], [2, 3]], dtype=object)
+    rooms_subjects_restriction_status = np.zeros(5, dtype=np.ushort)
+    rooms_subjects = np.array([[2, 3], [2, 3], [2, 3], [2, 3], [1]], dtype=object)
+
+    rooms_subjects_restriction_status[0] = 1
+    rooms_subjects_restriction_status[1] = 1
+    rooms_subjects_restriction_status[2] = 1
+    rooms_subjects_restriction_status[3] = 1
+    rooms_subjects_restriction_status[4] = 1
 
     lessonplans = run_algorithm(
-        lessons_restrictions_for_individuals,
-        weekdays_restrictions_for_individuals,
-        rooms_restrictions_for_individuals,
-        teachers_restrictions_for_individuals,
-        classes_restrictions_for_individuals,
-        subjects_restrictions_for_individuals
+        week_days_count,
+        lessons_count,
+        classes_count,
+        subjects_count,
+        teachers_count,
+        rooms_count,
+        classes_subjects_restriction_status,
+        classes_subjects,
+        teachers_subjects_restriction_status,
+        teachers_subjects,
+        rooms_subjects_restriction_status,
+        rooms_subjects
     )
 
     return JsonResponse({'lessonplans': lessonplans})

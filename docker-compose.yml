@@ -7,11 +7,23 @@ services:
         image: mongo
         ports:
             - "27017:27017"
+    db-neo4j:
+        image: neo4j:latest
+        #network_mode: "bridge"
+        ports:
+          - "7474:7474"
+          - "7687:7687"
+        environment:
+          - NEO4J_AUTH=neo4j/tempPassword        
+        volumes:
+          - ./plugins:/neo4j/plugins
+          - ./data:/neo4j/data
+          - ./import:/neo4j/import
     backend:
         image: backend
         build: ./backend
-        command: bash -c "cd ./backend/lessonplans/algorithm && python ./setup.py build_ext --inplace && cd ../../ && python ./main.py"
-        #command: bash -c "cd ./backend/lessonplans/algorithm && python ./setup.py build_ext --inplace && cd ../../ && python ./manage.py migrate && python ./manage.py runserver 0.0.0.0:8000"
+        #command: bash -c "cd ./backend/lessonplans/algorithm && python ./setup.py build_ext --inplace && cd ../../ && python ./main.py"
+        command: bash -c "./wait-for-it.sh -t 10 db-neo4j:7687 -- bash -c 'cd ./backend && python ./manage.py install_labels && cd ./lessonplans/algorithm && python ./setup.py build_ext --inplace && cd ../../ && python ./manage.py migrate && python ./manage.py runserver 0.0.0.0:8000'"
         
         #command: ["./wait-for-it.sh", "database:5432"]
         #command: ["./wait-for-it.sh", "database-norel:27017"]
@@ -27,4 +39,7 @@ services:
         depends_on:
           - database
           - database-norel
+          - db-neo4j
         #command: bash -c "cd ./backend && python ./main.py"
+        environment:
+          - NEO4J_BOLT_URL=bolt://neo4j:tempPassword@db-neo4j:7687

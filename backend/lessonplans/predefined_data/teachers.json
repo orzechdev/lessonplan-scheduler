@@ -1,0 +1,52 @@
+[
+    {
+        "id": 1,
+        "name": "John Kowalski",
+        "subjects": [12, 13]
+    },
+    {
+        "id": 2,
+        "name": "Steve Nowak",
+        "subjects": [6, 7]
+    },
+    {
+        "id": 3,
+        "name": "Adam Potocki",
+        "subjects": [4, 5]
+    },
+    {
+        "id": 4,
+        "name": "Sylwia Wybicka",
+        "subjects": [1]
+    },
+    {
+        "id": 5,
+        "name": "Zygmunt Wiśniewski",
+        "subjects": [3]
+    },
+    {
+        "id": 6,
+        "name": "Tadeusz Mazur",
+        "subjects": [2]
+    },
+    {
+        "id": 7,
+        "name": "Wiktor Korzeniowski",
+        "subjects": [8, 9]
+    },
+    {
+        "id": 8,
+        "name": "Adam Wójcik",
+        "subjects": [8, 10, 11]
+    },
+    {
+        "id": 9,
+        "name": "Krzysztof Kowalczyk",
+        "subjects": [14, 15]
+    },
+    {
+        "id": 10,
+        "name": "Aleksandra Kamińska",
+        "subjects": [16]
+    }
+]
