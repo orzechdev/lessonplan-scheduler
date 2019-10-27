@@ -92,8 +92,15 @@ def save_data(request):
 
 
 def generate(request):
-    week_days_count = 2
-    lessons_count = 3
+    week_days = WeekDay.nodes.all()
+    lessons = Lesson.nodes.all()
+    classes = []
+    subjects = []
+    teachers = []
+    rooms = []
+
+    week_days_count = len(week_days)
+    lessons_count = len(lessons)
     classes_count = 2
     subjects_count = 3
     teachers_count = 3

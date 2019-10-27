@@ -1,97 +1,102 @@
 [
-    {
-        "id": 1,
-        "name": "Język polski",
-        "restricted_rooms": []
-    },
-    {
-        "id": 2,
-        "name": "Język angielski",
-        "restricted_rooms": []
-    },
-    {
-        "id": 3,
-        "name": "Język chiński",
-        "restricted_rooms": []
-    },
-    {
-        "id": 4,
-        "name": "Muzyka",
-        "restricted_rooms": []
-    },
-    {
-        "id": 5,
-        "name": "Plastyka",
-        "restricted_rooms": []
-    },
-    {
-        "id": 6,
-        "name": "Historia",
-        "restricted_rooms": []
-    },
-    {
-        "id": 7,
-        "name": "Wiedza o społeczeństwie",
-        "restricted_rooms": []
-    },
-    {
-        "id": 8,
-        "name": "Przyroda",
-        "restricted_rooms": []
-    },
-    {
-        "id": 9,
-        "name": "Geografia",
-        "restricted_rooms": []
-    },
-    {
-        "id": 10,
-        "name": "Biologia",
-        "restricted_rooms": []
-    },
-    {
-        "id": 11,
-        "name": "Chemia",
-        "restricted_rooms": []
-    },
-    {
-        "id": 12,
-        "name": "Fizyka",
-        "restricted_rooms": []
-    },
-    {
-        "id": 13,
-        "name": "Matematyka",
-        "restricted_rooms": []
-    },
-    {
-        "id": 14,
-        "name": "Informatyka",
-        "restricted_rooms": []
-    },
-    {
-        "id": 15,
-        "name": "Technika",
-        "restricted_rooms": []
-    },
-    {
-        "id": 16,
-        "name": "Wychowanie fizyczne",
-        "restricted_rooms": []
-    },
-    {
-        "id": 17,
-        "name": "Edukacja dla bezpieczeństwa",
-        "restricted_rooms": []
-    },
-    {
-        "id": 18,
-        "name": "Zajęcia z wychowawcą",
-        "restricted_rooms": []
-    },
-    {
-        "id": 19,
-        "name": "Religia",
-        "restricted_rooms": []
-    }
+  {
+    "id": 1,
+    "name": "Język polski",
+    "restricted_rooms": []
+  },
+  {
+    "id": 2,
+    "name": "Język obcy 1",
+    "restricted_rooms": []
+  },
+  {
+    "id": 3,
+    "name": "Język obcy 2",
+    "restricted_rooms": []
+  },
+  {
+    "id": 4,
+    "name": "Muzyka",
+    "restricted_rooms": []
+  },
+  {
+    "id": 5,
+    "name": "Plastyka",
+    "restricted_rooms": []
+  },
+  {
+    "id": 6,
+    "name": "Historia",
+    "restricted_rooms": []
+  },
+  {
+    "id": 7,
+    "name": "Wiedza o społeczeństwie",
+    "restricted_rooms": []
+  },
+  {
+    "id": 8,
+    "name": "Przyroda",
+    "restricted_rooms": []
+  },
+  {
+    "id": 9,
+    "name": "Geografia",
+    "restricted_rooms": []
+  },
+  {
+    "id": 10,
+    "name": "Biologia",
+    "restricted_rooms": []
+  },
+  {
+    "id": 11,
+    "name": "Chemia",
+    "restricted_rooms": []
+  },
+  {
+    "id": 12,
+    "name": "Fizyka",
+    "restricted_rooms": []
+  },
+  {
+    "id": 13,
+    "name": "Matematyka",
+    "restricted_rooms": []
+  },
+  {
+    "id": 14,
+    "name": "Informatyka",
+    "restricted_rooms": []
+  },
+  {
+    "id": 15,
+    "name": "Technika",
+    "restricted_rooms": []
+  },
+  {
+    "id": 16,
+    "name": "Wychowanie fizyczne",
+    "restricted_rooms": []
+  },
+  {
+    "id": 17,
+    "name": "Edukacja dla bezpieczeństwa",
+    "restricted_rooms": []
+  },
+  {
+    "id": 18,
+    "name": "Zajęcia z wychowawcą",
+    "restricted_rooms": []
+  },
+  {
+    "id": 19,
+    "name": "Edukacja wczesnoszkolna",
+    "restricted_rooms": []
+  },
+  {
+    "id": 20,
+    "name": "Religia",
+    "restricted_rooms": []
+  }
 ]
