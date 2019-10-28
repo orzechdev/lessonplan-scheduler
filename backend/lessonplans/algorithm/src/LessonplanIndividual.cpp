@@ -122,12 +122,10 @@ namespace lessonplans {
         // Iterate through list of rooms
         for (unsigned short roomIdx = 0; roomIdx < roomsCount; roomIdx++) {
             unsigned short roomId = this->roomsIdsSequence[roomIdx];
-            unsigned short roomSubjectsRestrictionStatus = lessonplanData->getRoomSubjectsRestrictionStatus(roomId - 1);
+            vector<unsigned short> roomSubjects = lessonplanData->getRoomSubjects(roomId - 1);
+            auto roomSubjectsCount = static_cast<unsigned short>(roomSubjects.size());
 
-            if (roomSubjectsRestrictionStatus) {
-                vector<unsigned short> roomSubjects = lessonplanData->getRoomSubjects(roomId - 1);
-                auto roomSubjectsCount = static_cast<unsigned short>(roomSubjects.size());
-
+            if (roomSubjectsCount > 0) {
                 // Iterate through list of rooms subjects
                 for (unsigned short subjectIdx3 = 0; subjectIdx3 < roomSubjectsCount; subjectIdx3++) {
                     unsigned short subjectId3 = roomSubjects[subjectIdx3];

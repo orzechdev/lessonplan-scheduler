@@ -77,7 +77,10 @@
   {
     "id": 16,
     "name": "Wychowanie fizyczne",
-    "restricted_rooms": []
+    "restricted_rooms": [
+      28,
+      29
+    ]
   },
   {
     "id": 17,

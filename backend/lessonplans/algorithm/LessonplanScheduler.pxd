@@ -15,11 +15,8 @@ cdef extern from "./include/algorithm/LessonplanScheduler.hpp" namespace "lesson
                     unsigned short subjects_count,
                     unsigned short teachers_count,
                     unsigned short rooms_count,
-                    vector[ushort] classes_subjects_restriction_status,
                     vector[vector[ushort]] classes_subjects,
-                    vector[ushort] teachers_subjects_restriction_status,
                     vector[vector[ushort]] teachers_subjects,
-                    vector[ushort] rooms_subjects_restriction_status,
                     vector[vector[ushort]] rooms_subjects
             )
             vector[vector[ushort]] getBestLessonplan()

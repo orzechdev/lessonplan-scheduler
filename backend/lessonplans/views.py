@@ -5,6 +5,7 @@ import json
 import os
 from datetime import datetime
 from lessonplans.algorithm.algorithm import run_algorithm
+from lessonplans.data_validity.data_validity import is_data_valid
 from lessonplans.models import *
 
 module_dir = os.path.dirname(__file__)  # get current directory
@@ -12,6 +13,8 @@ weekdays_file_path = os.path.join(module_dir, 'predefined_data/weekdays.json')
 lessons_file_path = os.path.join(module_dir, 'predefined_data/lessons.json')
 subjects_file_path = os.path.join(module_dir, 'predefined_data/subjects.json')
 teachers_file_path = os.path.join(module_dir, 'predefined_data/teachers.json')
+classes_file_path = os.path.join(module_dir, 'predefined_data/classes.json')
+rooms_file_path = os.path.join(module_dir, 'predefined_data/rooms.json')
 
 
 def index(request):
@@ -83,10 +86,47 @@ def save_data(request):
 
         teachers_saved.append(teacher_saved)
 
-    # teacher_1.subjects.connect(subject_1)
-    # teacher_1.subjects.connect(subject_2)
     #
-    # teacher_2.subjects.connect(subject_4)
+    # Classes
+    #
+    with open(classes_file_path, "r") as read_file:
+        classes = json.load(read_file)
+
+    classes_saved = []
+
+    for class_m in classes:
+        class_m_saved = Class(name=class_m['name'])
+        class_m_saved.save()
+
+        for class_m_subject in class_m['subjects']:
+            for subject_idx, subject in enumerate(subjects):
+                if class_m_subject['id'] == subject['id']:
+                    class_subjects_rel = class_m_saved.subjects.connect(subjects_saved[subject_idx])
+                    class_subjects_rel.count = class_m_subject['lessonsCount']
+                    class_subjects_rel.save()
+                    break
+
+        classes_saved.append(class_m_saved)
+
+    #
+    # Rooms
+    #
+    with open(rooms_file_path, "r") as read_file:
+        rooms = json.load(read_file)
+
+    rooms_saved = []
+
+    for room in rooms:
+        room_saved = Room(name=room['name'])
+        room_saved.save()
+
+        for room_subject_id in room['restricted_subjects']:
+            for subject_idx, subject in enumerate(subjects):
+                if room_subject_id == subject['id']:
+                    room_saved.restricted_subjects.connect(subjects_saved[subject_idx])
+                    break
+
+        rooms_saved.append(room_saved)
 
     return HttpResponse("save_data endpoint")
 
@@ -94,46 +134,77 @@ def save_data(request):
 def generate(request):
     week_days = WeekDay.nodes.all()
     lessons = Lesson.nodes.all()
-    classes = []
-    subjects = []
-    teachers = []
-    rooms = []
+    classes = Class.nodes.all()
+    subjects = Subject.nodes.all()
+    teachers = Teacher.nodes.all()
+    rooms = Room.nodes.all()
 
     week_days_count = len(week_days)
+    print(week_days_count)
     lessons_count = len(lessons)
-    classes_count = 2
-    subjects_count = 3
-    teachers_count = 3
-    rooms_count = 5
-    classes_subjects_restriction_status = np.ones(2, dtype=np.ushort)
-    classes_subjects = np.array([[1, 3], [1, 2, 3]], dtype=object)
-    teachers_subjects_restriction_status = np.ones(3, dtype=np.ushort)
-    teachers_subjects = np.array([[1, 2, 3], [2], [2, 3]], dtype=object)
-    rooms_subjects_restriction_status = np.zeros(5, dtype=np.ushort)
-    rooms_subjects = np.array([[2, 3], [2, 3], [2, 3], [2, 3], [1]], dtype=object)
+    print(lessons_count)
+    classes_count = len(classes)
+    print(classes_count)
+    subjects_count = len(subjects)
+    print(subjects_count)
+    teachers_count = len(teachers)
+    print(teachers_count)
+    rooms_count = len(rooms)
+    print(rooms_count)
+    classes_subjects = []
+    for class_m in classes:
+        class_subjects = []
+        for class_subject in class_m.subjects:
+            for subject_idx, subject in enumerate(subjects):
+                if class_subject.id == subject.id:
+                    class_subjects.append(subject_idx + 1)
+        classes_subjects.append(class_subjects)
+    print("START")
+    print(classes_subjects)
+    classes_subjects = np.array(classes_subjects, dtype=object)
+    # teachers_subjects = np.array([[1, 2, 3], [2], [2, 3]], dtype=object)
+    teachers_subjects = []
+    for teacher in teachers:
+        teacher_subjects = []
+        for teacher_subject in teacher.subjects:
+            for subject_idx, subject in enumerate(subjects):
+                if teacher_subject.id == subject.id:
+                    teacher_subjects.append(subject_idx + 1)
+        teachers_subjects.append(teacher_subjects)
+    # teachers_subjects = np.array(map(lambda teacher: teacher.subjects if hasattr(teacher, 'subjects') else [], teachers), dtype=object)
+    print(teachers_subjects)
+    teachers_subjects = np.array(teachers_subjects, dtype=object)
+    # rooms_subjects = np.array([[2, 3], [2, 3], [2, 3], [2, 3], [1]], dtype=object)
+    rooms_subjects = []
+    for room in rooms:
+        room_subjects = []
+        for room_subject in room.restricted_subjects:
+            for subject_idx, subject in enumerate(subjects):
+                if room_subject.id == subject.id:
+                    room_subjects.append(subject_idx + 1)
+        rooms_subjects.append(room_subjects)
+    # rooms_subjects = np.array(map(lambda room: room.restricted_subjects if hasattr(room, 'restricted_subjects') else [], rooms), dtype=object)
+    print(rooms_subjects)
+    rooms_subjects = np.array(rooms_subjects, dtype=object)
 
-    rooms_subjects_restriction_status[0] = 1
-    rooms_subjects_restriction_status[1] = 1
-    rooms_subjects_restriction_status[2] = 1
-    rooms_subjects_restriction_status[3] = 1
-    rooms_subjects_restriction_status[4] = 1
+    validity, message = is_data_valid(classes_subjects, teachers_subjects, rooms_subjects)
 
-    lessonplans = run_algorithm(
-        week_days_count,
-        lessons_count,
-        classes_count,
-        subjects_count,
-        teachers_count,
-        rooms_count,
-        classes_subjects_restriction_status,
-        classes_subjects,
-        teachers_subjects_restriction_status,
-        teachers_subjects,
-        rooms_subjects_restriction_status,
-        rooms_subjects
-    )
+    if validity:
+        lessonplans = run_algorithm(
+            week_days_count,
+            lessons_count,
+            classes_count,
+            subjects_count,
+            teachers_count,
+            rooms_count,
+            classes_subjects,
+            teachers_subjects,
+            rooms_subjects
+        )
 
-    return JsonResponse({'lessonplans': lessonplans})
+        return JsonResponse({'lessonplans': lessonplans})
+    else:
+        return HttpResponse("data is invalid: " + message)
 
 
 def view(request):

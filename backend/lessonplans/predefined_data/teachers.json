@@ -4,7 +4,8 @@
     "name": "John Kowalski",
     "subjects": [
       12,
-      13
+      13,
+      18
     ]
   },
   {
@@ -12,7 +13,8 @@
     "name": "Steve Nowak",
     "subjects": [
       6,
-      7
+      7,
+      18
     ]
   },
   {
@@ -20,14 +22,16 @@
     "name": "Adam Potocki",
     "subjects": [
       4,
-      5
+      5,
+      18
     ]
   },
   {
     "id": 4,
     "name": "Sylwia Wybicka",
     "subjects": [
-      1
+      1,
+      18
     ]
   },
   {
@@ -73,7 +77,118 @@
     "id": 10,
     "name": "Aleksandra Kamińska",
     "subjects": [
-      16
+      16,
+      18
+    ]
+  },
+  {
+    "id": 11,
+    "name": "Zygmunt Piotrowski",
+    "subjects": [
+      2
+    ]
+  },
+  {
+    "id": 12,
+    "name": "Maciej Jankowski",
+    "subjects": [
+      3
+    ]
+  },
+  {
+    "id": 13,
+    "name": "Ewa Zając",
+    "subjects": [
+      1
+    ]
+  },
+  {
+    "id": 14,
+    "name": "Mirosław Kaczmarek",
+    "subjects": [
+      4,
+      5
+    ]
+  },
+  {
+    "id": 15,
+    "name": "Adam Woźniak",
+    "subjects": [
+      6,
+      7,
+      9,
+      18
+    ]
+  },
+  {
+    "id": 16,
+    "name": "Zygmunt Piotrowski",
+    "subjects": [
+      2
+    ]
+  },
+  {
+    "id": 17,
+    "name": "Aleksandra Zielińska",
+    "subjects": [
+      8,
+      10,
+      11
+    ]
+  },
+  {
+    "id": 18,
+    "name": "Grzegorz Grabowski",
+    "subjects": [
+      12,
+      13,
+      18
+    ]
+  },
+  {
+    "id": 19,
+    "name": "Bogusław Wójcik",
+    "subjects": [
+      14,
+      15
+    ]
+  },
+  {
+    "id": 20,
+    "name": "Kamil Grzebień",
+    "subjects": [
+      2
+    ]
+  },
+  {
+    "id": 21,
+    "name": "Ireneusz Dąbrowski",
+    "subjects": [
+      16,
+      17
+    ]
+  },
+  {
+    "id": 22,
+    "name": "Grażyna Nowak",
+    "subjects": [
+      19,
+      18
+    ]
+  },
+  {
+    "id": 23,
+    "name": "Alicja Kowalska",
+    "subjects": [
+      19
+    ]
+  },
+  {
+    "id": 24,
+    "name": "Krystyna Wiśniewska",
+    "subjects": [
+      19,
+      18
     ]
   }
 ]

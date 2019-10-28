@@ -9,11 +9,8 @@ def run_algorithm(
         subjects_count,
         teachers_count,
         rooms_count,
-        classes_subjects_restriction_status,
         classes_subjects,
-        teachers_subjects_restriction_status,
         teachers_subjects,
-        rooms_subjects_restriction_status,
         rooms_subjects
 ):
     scheduler_ptr = new LessonplanScheduler()  # Instantiate a LessonplanScheduler object on the heap
@@ -26,11 +23,8 @@ def run_algorithm(
             subjects_count,
             teachers_count,
             rooms_count,
-            classes_subjects_restriction_status,
             classes_subjects,
-            teachers_subjects_restriction_status,
             teachers_subjects,
-            rooms_subjects_restriction_status,
             rooms_subjects
         )
         best_lessonplan = scheduler_ptr.getBestLessonplan()
