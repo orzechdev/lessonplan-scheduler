@@ -28,7 +28,8 @@ SECRET_KEY = '+ang_2m%_f09e#_!)dwt7s-=b0yetvt(p=@!@^ws=yiboq0m&a'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'database', 'database-norel', 'db-neo4j', 'localhost', '127.0.0.1', '0.0.0.0', '[::1]'
+    # 'database', 'database-norel', 'db-neo4j', 'localhost', '127.0.0.1', '0.0.0.0', '[::1]'
+    '*'
 ]
 
 # Application definition
@@ -40,10 +41,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     'django_neomodel',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -52,6 +55,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+CORS_ORIGIN_ALLOW_ALL = DEBUG
 
 ROOT_URLCONF = 'backend.urls'
 

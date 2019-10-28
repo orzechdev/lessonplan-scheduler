@@ -1,36 +1,32 @@
 <template>
   <v-app>
-    <v-app-bar app>
-      <v-toolbar-title class="headline text-uppercase">
-        <span>Vuetify</span>
-        <span class="font-weight-light">MATERIAL DESIGN</span>
+    <v-app-bar app dark color="primary">
+      <v-toolbar-title>
+        <span class="font-weight-medium">Example School</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn
-        text
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-      >
-        <span class="mr-2">Latest Release</span>
+      <v-btn icon>
+        <v-icon>mdi-magnify</v-icon>
       </v-btn>
     </v-app-bar>
-
     <v-content>
-      <HelloWorld/>
+      <router-view />
     </v-content>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
+import { mapState, mapActions } from "vuex";
+
+import MainApi from "@/api/MainApi";
 
 export default {
-  name: 'App',
-  components: {
-    HelloWorld,
+  name: "app",
+  methods: {
+    ...mapActions(["getClasses"])
   },
-  data: () => ({
-    //
-  }),
+  created() {
+    this.getClasses();
+  }
 };
 </script>

@@ -131,6 +131,12 @@ def save_data(request):
     return HttpResponse("save_data endpoint")
 
 
+def get_classes(request):
+    classes = Class.nodes.all()
+    classes_list = [classNode.__properties__ for classNode in classes]
+    return JsonResponse({"classes": classes_list})
+
+
 def generate(request):
     week_days = WeekDay.nodes.all()
     lessons = Lesson.nodes.all()
