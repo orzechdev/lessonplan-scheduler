@@ -8,6 +8,7 @@
       :events="events"
       color="primary"
       type="week"
+      :weekdays="[1, 2, 3, 4, 5]"
     ></v-calendar>
   </div>
 </template>

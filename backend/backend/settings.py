@@ -29,12 +29,14 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     # 'database', 'database-norel', 'db-neo4j', 'localhost', '127.0.0.1', '0.0.0.0', '[::1]'
+    # 'db-postgres', 'db-mongo', 'db-neo4j', 'localhost', '127.0.0.1', '0.0.0.0', '[::1]'
     '*'
 ]
 
 # Application definition
 
 INSTALLED_APPS = [
+    'lessonplans.apps.LessonplansConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -87,26 +89,18 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'postgres',
         'USER': 'postgres',
-        'HOST': 'database',
+        'HOST': 'db-postgres',
         'PORT': 5432,
     },
     'mongodb': {
         'ENGINE': 'django.db.backends.dummy',
     }
-    # ,
-    # 'neo4j': {
-    #     'HOST': 'localhost',
-    #     'PORT': 7474,
-    #     'USER': 'neo4j',
-    #     'PASSWORD': 'tempPassword',
-    #     'ENDPOINT': '/db/data'
-    # }
 }
 
 AUTHENTICATION_BACKENDS = (
     'mongoengine.django.auth.MongoEngineBackend',
 )
-mongoengine.connect("database-norel", host="database-norel",  port=27017)
+mongoengine.connect("db-mongo", host="db-mongo",  port=27017)
 
 NEOMODEL_NEO4J_BOLT_URL = os.environ.get('NEO4J_BOLT_URL')
 

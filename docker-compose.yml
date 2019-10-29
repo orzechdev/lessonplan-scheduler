@@ -1,14 +1,19 @@
 version: "3.7"
 
 services:
-    database:
+    db-postgres:
         image: postgres
-    database-norel:
+        container_name: db-postgres
+        ports:
+            - "5432:5432"
+    db-mongo:
         image: mongo
+        container_name: db-mongo
         ports:
             - "27017:27017"
     db-neo4j:
         image: neo4j:latest
+        container_name: db-neo4j
         #network_mode: "bridge"
         ports:
           - "7474:7474"
@@ -21,9 +26,12 @@ services:
           - ./import:/neo4j/import
     backend:
         image: backend
+        container_name: backend
         build: ./backend
         #command: bash -c "cd ./backend/lessonplans/algorithm && python ./setup.py build_ext --inplace && cd ../../ && python ./main.py"
         command: bash -c "./wait-for-it.sh -t 10 db-neo4j:7687 -- bash -c 'cd ./backend && python ./manage.py install_labels && cd ./lessonplans/algorithm && python ./setup.py build_ext --inplace && cd ../../ && python ./manage.py migrate && python ./manage.py runserver 0.0.0.0:8000'"
+        #DANGEROUS!!! bellow command makes migrations everytime
+        #command: bash -c "./wait-for-it.sh -t 10 db-neo4j:7687 -- bash -c 'cd ./backend && python ./manage.py install_labels && cd ./lessonplans/algorithm && python ./setup.py build_ext --inplace && cd ../../ && python ./manage.py makemigrations && python ./manage.py migrate && python ./manage.py runserver 0.0.0.0:8000'"
         
         #command: ["./wait-for-it.sh", "database:5432"]
         #command: ["./wait-for-it.sh", "database-norel:27017"]
@@ -37,8 +45,8 @@ services:
         ports:
           - "8000:8000"
         depends_on:
-          - database
-          - database-norel
+          - db-postgres
+          - db-mongo
           - db-neo4j
         #command: bash -c "cd ./backend && python ./main.py"
         environment:
