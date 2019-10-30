@@ -24,12 +24,11 @@ export default new Vuex.Store({
   actions: {
     async getClasses(context) {
       const { value, error } = await MainApi.getClasses()
-      const { classes } = value
 
-      if (error || !classes) {
+      if (error || !value) {
         context.commit('SET_ERROR', error)
       } else {
-        context.commit('SET_CLASSES', classes)
+        context.commit('SET_CLASSES', value)
       }
     },
     async getLessonplans(context) {

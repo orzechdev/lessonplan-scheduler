@@ -1,13 +1,16 @@
+from django.core import serializers
 from django.http import HttpResponse, JsonResponse
 
 import numpy as np
 import json
 import os
 from datetime import datetime
+from rest_framework import viewsets
 from lessonplans.algorithm.algorithm import run_algorithm
 from lessonplans.data_validity.data_validity import is_data_valid
 from lessonplans.models import Lessonplan, WeekDay, Lesson, Subject, Teacher, TeacherSubject, Class, ClassSubject, Room, \
     RoomSubjectRestricted
+from lessonplans.serializers import ClassSerializer, LessonplanSerializer
 
 from lessonplans.views_neo4j import save_data_to_neo4j, generate_with_neo4j, get_classes_with_neo4j
 
@@ -156,11 +159,21 @@ def save_data(request):
 
 
 def save_data_to_neo4j_pass(request):
-    save_data_to_neo4j(request)
+    return save_data_to_neo4j(request)
 
 
-def get_classes(request):
-    get_classes_with_neo4j(request)
+class ClassViewSet(viewsets.ModelViewSet):
+    queryset = Class.objects.all()
+    serializer_class = ClassSerializer
+
+
+def get_classes_with_neo4j_pass(request):
+    return get_classes_with_neo4j(request)
+
+
+class LessonplanViewSet(viewsets.ModelViewSet):
+    queryset = Lessonplan.objects.all()
+    serializer_class = LessonplanSerializer
 
 
 def get_lessonplans(request):
@@ -168,6 +181,89 @@ def get_lessonplans(request):
 
 
 def generate(request):
+    week_days = WeekDay.objects.all()
+    lessons = Lesson.objects.all()
+    classes = Class.objects.all()
+    subjects = Subject.objects.all()
+    teachers = Teacher.objects.all()
+    rooms = Room.objects.all()
+
+    week_days_count = len(week_days)
+    print(week_days_count)
+    lessons_count = len(lessons)
+    print(lessons_count)
+    classes_count = len(classes)
+    print(classes_count)
+    subjects_count = len(subjects)
+    print(subjects_count)
+    teachers_count = len(teachers)
+    print(teachers_count)
+    rooms_count = len(rooms)
+    print(rooms_count)
+
+    classes_subjects = []
+    for class_m in classes:
+        class_subjects = ClassSubject.objects.filter(class_model=class_m)
+        class_subjects_idxs = []
+
+        for class_subject in class_subjects:
+            for subject_idx, subject in enumerate(subjects):
+                if class_subject.subject.id == subject.id:
+                    class_subjects_idxs.append(subject_idx + 1)
+
+        classes_subjects.append(class_subjects_idxs)
+    print(classes_subjects)
+    classes_subjects = np.array(classes_subjects, dtype=object)
+
+    teachers_subjects = []
+    for teacher in teachers:
+        teacher_subjects = TeacherSubject.objects.filter(teacher=teacher)
+        teacher_subjects_idxs = []
+
+        for teacher_subject in teacher_subjects:
+            for subject_idx, subject in enumerate(subjects):
+                if teacher_subject.subject.id == subject.id:
+                    teacher_subjects_idxs.append(subject_idx + 1)
+
+        teachers_subjects.append(teacher_subjects_idxs)
+    print(teachers_subjects)
+    teachers_subjects = np.array(teachers_subjects, dtype=object)
+
+    rooms_subjects = []
+    for room in rooms:
+        room_subjects = RoomSubjectRestricted.objects.filter(room=room)
+        room_subjects_idxs = []
+
+        for room_subject in room_subjects:
+            for subject_idx, subject in enumerate(subjects):
+                if room_subject.subject.id == subject.id:
+                    room_subjects_idxs.append(subject_idx + 1)
+
+        rooms_subjects.append(room_subjects_idxs)
+    print(rooms_subjects)
+    rooms_subjects = np.array(rooms_subjects, dtype=object)
+
+    validity, message = is_data_valid(classes_subjects, teachers_subjects, rooms_subjects)
+
+    if validity:
+        lessonplans = run_algorithm(
+            week_days_count,
+            lessons_count,
+            classes_count,
+            subjects_count,
+            teachers_count,
+            rooms_count,
+            classes_subjects,
+            teachers_subjects,
+            rooms_subjects
+        )
+
+        return JsonResponse({'lessonplans': lessonplans})
+    else:
+        return HttpResponse("data is invalid: " + message)
+
+
+def generate_with_neo4j_pass(request):
     generate_with_neo4j(request)
 
 
