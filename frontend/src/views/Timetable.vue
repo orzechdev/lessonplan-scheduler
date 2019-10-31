@@ -3,8 +3,12 @@
     <v-breadcrumbs :items="items" divider=">"></v-breadcrumbs>
     <v-calendar
       ref="calendar"
-      :now="today"
-      :value="today"
+      :now="todayDateString"
+      :value="todayDateString"
+      :first-interval="6"
+      :interval-minutes="60"
+      :interval-count="16"
+      :interval-height="60"
       :events="events"
       color="primary"
       type="week"
@@ -23,10 +27,13 @@ export default {
   },
   computed: {
     ...mapState(["classes", "lessonplans"]),
+    currentClass() {
+      return this.classes.find(elem => elem.id == this.classId);
+    },
     items() {
-      const classItem = this.classes.find(elem => elem.id == this.classId)
-      const className = classItem ? classItem.name : ''
-      
+      const classItem = this.currentClass;
+      const className = classItem ? classItem.name : "";
+
       return [
         {
           text: "Lessonplans",
@@ -38,28 +45,59 @@ export default {
           text: className
         }
       ];
-    }
-  },
-  data() {
-    return {
-      today: "2019-01-08",
-      events: [
-        {
-          name: "Weekly Meeting",
-          start: "2019-01-07 09:00",
-          end: "2019-01-07 10:00"
-        },
-        {
-          name: "Thomas' Birthday",
-          start: "2019-01-10"
-        },
-        {
-          name: "Mash Potatoes",
-          start: "2019-01-09 12:30",
-          end: "2019-01-09 15:30"
+    },
+    todayDate() {
+      return new Date();
+    },
+    todayDateString() {
+      return `${this.todayDate.getFullYear()}-${this.todayDate.getMonth() +
+        1}-${this.todayDate.getDate()}`;
+    },
+    events() {
+      const classItem = this.currentClass;
+
+      if (classItem && this.lessonplans) {
+        const mondayDate = new Date();
+        const todayDay = mondayDate.getDay();
+
+        if (todayDay === 6) {
+          // Change saturday to monday next week
+          mondayDate.setDate(mondayDate.getDate() + 2);
+        } else if (todayDay === 0) {
+          // Change sunday to monday next week
+          mondayDate.setDate(mondayDate.getDate() + 1);
+        } else {
+          // Change any week day to monday current week
+          mondayDate.setDate(mondayDate.getDate() - (todayDay - 1));
         }
-      ]
-    };
+
+        const eventsList = this.lessonplans
+          .filter(({ class_model }) => class_model.id === classItem.id)
+          .map(({ weekday, lesson, subject }) => {
+            const lessonWeekDay = Number(weekday.name) - 1;
+
+            const startTimes = lesson.start_time.split(":");
+            const endTimes = lesson.end_time.split(":");
+
+            const lessonCurrentDate = new Date(mondayDate.getTime());
+            lessonCurrentDate.setDate(mondayDate.getDate() + lessonWeekDay);
+            const lessonCurrentDateString = `${lessonCurrentDate.getFullYear()}-${lessonCurrentDate.getMonth() +
+              1}-${lessonCurrentDate.getDate()}`;
+
+            return {
+              start: `${lessonCurrentDateString} ${startTimes[0]}:${
+                startTimes[1]
+              }`,
+              end: `${lessonCurrentDateString} ${endTimes[0]}:${endTimes[1]}`,
+              name: subject.name
+            };
+          });
+
+        return eventsList;
+      } else {
+        return [];
+      }
+    }
   }
 };
 </script>
