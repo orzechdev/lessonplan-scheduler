@@ -30,7 +30,6 @@ namespace lessonplans {
 
         const vector<vector<unsigned short>> &getClassesSubjects() const;
         const vector<unsigned short> &getClassSubjects(unsigned short classIdx) const;
-        unsigned short getClassSubjectsCount(unsigned short classIdx) const;
 
         const vector<vector<unsigned short>> &getTeachersSubjects() const;
         const vector<unsigned short> &getTeacherSubjects(unsigned short teacherIdx) const;

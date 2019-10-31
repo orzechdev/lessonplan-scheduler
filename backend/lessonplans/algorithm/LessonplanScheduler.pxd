@@ -21,6 +21,6 @@ cdef extern from "./include/algorithm/LessonplanScheduler.hpp" namespace "lesson
             )
             vector[vector[ushort]] getBestLessonplan()
             vector[vector[vector[ushort]]] getAllLessonplans()
-            vector[vector[int]] getAllLessonplansGrades()
-            vector[int] getAllLessonplansGradesSums()
+            vector[vector[int]] getAllLessonplansScores()
+            vector[int] getAllLessonplansSummaryScores()
 

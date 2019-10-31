@@ -29,8 +29,8 @@ def run_algorithm(
         )
         best_lessonplan = scheduler_ptr.getBestLessonplan()
         all_lessonplans = scheduler_ptr.getAllLessonplans()
-        all_lessonplans_grades = scheduler_ptr.getAllLessonplansGrades()
-        all_lessonplans_grades_sums = scheduler_ptr.getAllLessonplansGradesSums()
+        all_lessonplans_scores = scheduler_ptr.getAllLessonplansScores()
+        all_lessonplans_summary_scores = scheduler_ptr.getAllLessonplansSummaryScores()
         print('try pass')
     finally:
         print('finally')
@@ -45,11 +45,11 @@ def run_algorithm(
     print('all lessonplans')
     for some_lessonplan in all_lessonplans:
         print(some_lessonplan)
-    print('all lessonplans grades')
-    for some_lessonplan_grades in all_lessonplans_grades:
-        print(some_lessonplan_grades)
-    print('all lessonplans grades sums')
-    for some_lessonplan_grades_sum in all_lessonplans_grades_sums:
-        print(some_lessonplan_grades_sum)
+    print('all lessonplans scores')
+    for all_lessonplan_scores in all_lessonplans_scores:
+        print(all_lessonplan_scores)
+    print('all lessonplans summary scores')
+    for all_lessonplan_summary_scores in all_lessonplans_summary_scores:
+        print(all_lessonplan_summary_scores)
 
     return scheduled_lessonplan

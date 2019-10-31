@@ -8,7 +8,7 @@
 
 namespace lessonplans {
 
-    vector<vector<unsigned short>> LessonplanIndividual::initLessonplan(LessonplanData* lessonplanData) {
+    LessonplanIndividual::LessonplanIndividual(LessonplanData* lessonplanData) {
         unsigned short weekDaysCount = lessonplanData->getWeekDaysCount();
         unsigned short lessonsCount = lessonplanData->getLessonsCount();
         unsigned short classesCount = lessonplanData->getClassesCount();
@@ -18,7 +18,7 @@ namespace lessonplans {
 
         this->maxDataCount = LessonplanIndividual::calculateMaxDataCount(lessonplanData);
 
-        this->individual = *new vector<vector<unsigned short>>(
+        this->lessonplan = *new vector<vector<unsigned short>>(
                 this->maxDataCount, vector<unsigned short>(
                         LessonplanIndividual::dataTypes
                 )
@@ -74,8 +74,6 @@ namespace lessonplans {
                 }
             }
         }
-
-        return this->individual;
     }
 
     bool LessonplanIndividual::tryAssignTeacher(
@@ -194,12 +192,12 @@ namespace lessonplans {
                     this->assignedLessonAndDaysToTeachers[currentWeekDayIdx][currentLessonIdx][teacherId - 1] = 1;
                     this->assignedLessonAndDaysToRooms[currentWeekDayIdx][currentLessonIdx][roomId - 1] = 1;
 
-                    this->individual[individualDataIdx][0] = weekDayId;
-                    this->individual[individualDataIdx][1] = lessonId;
-                    this->individual[individualDataIdx][2] = classId;
-                    this->individual[individualDataIdx][3] = subjectId;
-                    this->individual[individualDataIdx][4] = teacherId;
-                    this->individual[individualDataIdx][5] = roomId;
+                    this->lessonplan[individualDataIdx][0] = weekDayId;
+                    this->lessonplan[individualDataIdx][1] = lessonId;
+                    this->lessonplan[individualDataIdx][2] = classId;
+                    this->lessonplan[individualDataIdx][3] = subjectId;
+                    this->lessonplan[individualDataIdx][4] = teacherId;
+                    this->lessonplan[individualDataIdx][5] = roomId;
 
                     return true;
                 }
@@ -248,8 +246,8 @@ namespace lessonplans {
         return sequence;
     }
 
-    vector<vector<unsigned short>> LessonplanIndividual::getIndividual() {
-        return this->individual;
+    vector<vector<unsigned short>> LessonplanIndividual::getLessonplan() {
+        return this->lessonplan;
     }
 
     unsigned int LessonplanIndividual::getMaxDataCount() const {

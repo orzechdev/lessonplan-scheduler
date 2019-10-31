@@ -14,26 +14,25 @@ namespace lessonplans {
                     float crossoverProb,
                     float mutationProb
             ) :
-                    populationCount(populationCount),
+                    individualsCount(populationCount),
                     generationNumber(generationNumber),
                     crossoverProb(crossoverProb),
                     mutationProb(mutationProb)
             {}
-            ~GenAlgorithm();
             vector<vector<unsigned short>> findBestLessonplan(LessonplanSchedulingProblem* lessonplanSchedulingProblem);
             vector<vector<unsigned short>> getPreviouslyFoundBestLessonplan();
             vector<vector<vector<unsigned short>>> getPreviouslyFoundAllLessonplans();
-            vector<vector<int>> getPreviouslyFoundAllLessonplansGrades();
-            vector<int> getPreviouslyFoundAllLessonplansGradesSums();
+            vector<vector<int>> getPreviouslyFoundAllLessonplansScores();
+            vector<int> getPreviouslyFoundAllLessonplansSummaryScores();
 
         private:
-            int populationCount, generationNumber;
+            int individualsCount, generationNumber;
             float crossoverProb, mutationProb;
             LessonplanSchedulingProblem* lessonplanSchedulingProblem;
-            vector<LessonplanIndividual*> population;
-            vector<int> populationGradesSums;
-            vector<vector<int>> populationGrades;
-            void initPopulation();
+            vector<LessonplanIndividual*> individuals;
+            vector<vector<int>> individualsScores;
+            vector<int> individualsSummaryScores;
+            void initializePopulation();
             void crossover();
             void mutate();
             void evaluate();

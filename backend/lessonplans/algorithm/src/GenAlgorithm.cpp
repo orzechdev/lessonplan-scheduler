@@ -3,14 +3,10 @@
 
 namespace lessonplans {
 
-    GenAlgorithm::~GenAlgorithm(){
-        //TODO: free memory
-    }
-
     vector<vector<unsigned short>> GenAlgorithm::findBestLessonplan(LessonplanSchedulingProblem* lessonplanSchedulingProblem) {
         this->lessonplanSchedulingProblem = lessonplanSchedulingProblem;
 
-        this->initPopulation(); // TODO: ...
+        this->initializePopulation();
         this->evaluate(); // TODO: ...
         this->select(); // TODO: ...
         for (int i = 0; i < this->generationNumber; i++) {
@@ -23,21 +19,21 @@ namespace lessonplans {
         return this->getPreviouslyFoundBestLessonplan();
     }
 
-    void GenAlgorithm::initPopulation() {
-        this->population = *new vector<LessonplanIndividual*>(
-                this->populationCount
+    void GenAlgorithm::initializePopulation() {
+        this->individuals = *new vector<LessonplanIndividual*>(
+                this->individualsCount
         );
-        this->populationGrades = *new vector<vector<int>>(
-                this->populationCount, vector<int>(
-                        LessonplanSchedulingProblem::gradesTypes
+        this->individualsScores = *new vector<vector<int>>(
+                this->individualsCount, vector<int>(
+                        LessonplanSchedulingProblem::scoresTypes
                     )
         );
-        this->populationGradesSums = *new vector<int>(
-                this->populationCount
+        this->individualsSummaryScores = *new vector<int>(
+                this->individualsCount
         );
 
-        for (int i = 0; i < this->populationCount; i++) {
-            this->population[i] = this->lessonplanSchedulingProblem->getSampleLessonplan();
+        for (int i = 0; i < this->individualsCount; i++) {
+            this->individuals[i] = this->lessonplanSchedulingProblem->getSampleLessonplan();
         }
     }
 
@@ -50,13 +46,13 @@ namespace lessonplans {
     }
 
     void GenAlgorithm::evaluate() {
-        for (int i = 0; i < this->populationCount; i++) {
-            this->populationGrades[i] = this->lessonplanSchedulingProblem->evaluateLessonplan(this->population[i]);
+        for (int i = 0; i < this->individualsCount; i++) {
+            this->individualsScores[i] = this->lessonplanSchedulingProblem->evaluateLessonplan(this->individuals[i]);
 
-            auto populationGradesCount = static_cast<unsigned short>(this->populationGrades[i].size());
-            this->populationGradesSums[i] = 0;
+            auto populationGradesCount = static_cast<unsigned short>(this->individualsScores[i].size());
+            this->individualsSummaryScores[i] = 0;
             for (unsigned short populationGradeIdx = 0; populationGradeIdx < populationGradesCount; populationGradeIdx++) {
-                this->populationGradesSums[i] += this->populationGrades[i][populationGradeIdx];
+                this->individualsSummaryScores[i] += this->individualsScores[i][populationGradeIdx];
             }
         }
     }
@@ -66,33 +62,33 @@ namespace lessonplans {
     }
 
     vector<vector<unsigned short>> GenAlgorithm::getPreviouslyFoundBestLessonplan() {
-        int bestIndividualIndex = std::distance(this->populationGradesSums.begin(), std::max_element(this->populationGradesSums.begin(), this->populationGradesSums.end()));
-        return this->population[bestIndividualIndex]->getIndividual();
+        int bestIndividualIndex = std::distance(this->individualsSummaryScores.begin(), std::max_element(this->individualsSummaryScores.begin(), this->individualsSummaryScores.end()));
+        return this->individuals[bestIndividualIndex]->getLessonplan();
     }
 
     vector<vector<vector<unsigned short>>> GenAlgorithm::getPreviouslyFoundAllLessonplans() {
         vector<vector<vector<unsigned short>>> lessonplans = *new vector<vector<vector<unsigned short>>>(
-                this->populationCount
+                this->individualsCount
         );
 
         std::transform(
-                this->population.begin(),
-                this->population.end(),
+                this->individuals.begin(),
+                this->individuals.end(),
                 lessonplans.begin(),
                 [](LessonplanIndividual* lessonplanIndividual) {
-                    return lessonplanIndividual->getIndividual();
+                    return lessonplanIndividual->getLessonplan();
                 }
         );
 
         return lessonplans;
     }
 
-    vector<vector<int>> GenAlgorithm::getPreviouslyFoundAllLessonplansGrades() {
-        return this->populationGrades;
+    vector<vector<int>> GenAlgorithm::getPreviouslyFoundAllLessonplansScores() {
+        return this->individualsScores;
     }
 
-    vector<int> GenAlgorithm::getPreviouslyFoundAllLessonplansGradesSums() {
-        return this->populationGradesSums;
+    vector<int> GenAlgorithm::getPreviouslyFoundAllLessonplansSummaryScores() {
+        return this->individualsSummaryScores;
     }
 
 }

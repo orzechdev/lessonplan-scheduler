@@ -4,9 +4,7 @@
 namespace lessonplans {
 
     LessonplanIndividual* LessonplanSchedulingProblem::getSampleLessonplan(){
-        auto* lessonplanIndividual = new LessonplanIndividual();
-
-        lessonplanIndividual->initLessonplan(this->lessonplanData);
+        auto* lessonplanIndividual = new LessonplanIndividual(this->lessonplanData);
 
         return lessonplanIndividual;
     }
@@ -21,7 +19,7 @@ namespace lessonplans {
         //-1pt - for each free period between lessons
         unsigned short invalidFreePeriodsCountBetweenLessons = this->checkFreePeriodsExistenceBetweenLessons(lessonplanIndividual);
 
-        vector<int> grades = *new vector<int>(LessonplanSchedulingProblem::gradesTypes);
+        vector<int> grades = *new vector<int>(LessonplanSchedulingProblem::scoresTypes);
 
         grades[0] = 0 - invalidDifferenceBetweenStartLessons;
         grades[1] = 0 - invalidDifferenceBetweenLessonsCount;
@@ -37,7 +35,7 @@ namespace lessonplans {
         unsigned short classesCount = this->lessonplanData->getClassesCount();
         unsigned short weekDaysCount = this->lessonplanData->getWeekDaysCount();
 
-        vector<vector<unsigned short>> lessonplan = lessonplanIndividual->getIndividual();
+        vector<vector<unsigned short>> lessonplan = lessonplanIndividual->getLessonplan();
 
         vector<vector<unsigned short>> classesWeekDayStartLessonId = *new vector<vector<unsigned short>>(
                 classesCount, vector<unsigned short>(
@@ -101,7 +99,7 @@ namespace lessonplans {
         unsigned short classesCount = this->lessonplanData->getClassesCount();
         unsigned short weekDaysCount = this->lessonplanData->getWeekDaysCount();
 
-        vector<vector<unsigned short>> lessonplan = lessonplanIndividual->getIndividual();
+        vector<vector<unsigned short>> lessonplan = lessonplanIndividual->getLessonplan();
 
         vector<vector<unsigned short>> classesWeekDayLessonsCount = *new vector<vector<unsigned short>>(
                 classesCount, vector<unsigned short>(
@@ -145,7 +143,7 @@ namespace lessonplans {
         unsigned short classesCount = this->lessonplanData->getClassesCount();
         unsigned short weekDaysCount = this->lessonplanData->getWeekDaysCount();
 
-        vector<vector<unsigned short>> lessonplan = lessonplanIndividual->getIndividual();
+        vector<vector<unsigned short>> lessonplan = lessonplanIndividual->getLessonplan();
 
         vector<vector<unsigned short>> classesWeekDayStartLessonId = *new vector<vector<unsigned short>>(
                 classesCount, vector<unsigned short>(

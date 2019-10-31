@@ -3,23 +3,21 @@
 
 #include <vector>
 
-#include "Individual.hpp"
 #include "LessonplanData.hpp"
 
 using std::vector;
 
 namespace lessonplans {
-    class LessonplanIndividual : public Individual {
+    class LessonplanIndividual {
     public:
-        LessonplanIndividual() : Individual() {}
-        vector<vector<unsigned short>> initLessonplan(LessonplanData* lessonplanData);
-        vector<vector<unsigned short>> getIndividual();
+        LessonplanIndividual(LessonplanData* lessonplanData);
+        vector<vector<unsigned short>> getLessonplan();
         unsigned int getMaxDataCount() const;
         static const short dataTypes = 6;
 
     private:
         unsigned int maxDataCount;
-        vector<vector<unsigned short>> individual;
+        vector<vector<unsigned short>> lessonplan;
         vector<vector<vector<unsigned short>>> assignedLessonAndDaysToClasses;
         vector<vector<vector<unsigned short>>> assignedLessonAndDaysToTeachers;
         vector<vector<vector<unsigned short>>> assignedLessonAndDaysToRooms;

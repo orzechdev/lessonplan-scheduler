@@ -19,7 +19,6 @@ setup(
                       "algorithm.pyx",
                       "./src/LessonplanScheduler.cpp",
                       "./src/GenAlgorithm.cpp",
-                      "./src/Individual.cpp",
                       "./src/LessonplanIndividual.cpp",
                       "./src/LessonplanData.cpp",
                       "./src/LessonplanSchedulingProblem.cpp"

@@ -49,12 +49,12 @@ namespace lessonplans {
         return this->genAlgorithm->getPreviouslyFoundAllLessonplans();
     }
 
-    vector<vector<int>> LessonplanScheduler::getAllLessonplansGrades() {
-        return this->genAlgorithm->getPreviouslyFoundAllLessonplansGrades();
+    vector<vector<int>> LessonplanScheduler::getAllLessonplansScores() {
+        return this->genAlgorithm->getPreviouslyFoundAllLessonplansScores();
     }
 
-    vector<int> LessonplanScheduler::getAllLessonplansGradesSums() {
-        return this->genAlgorithm->getPreviouslyFoundAllLessonplansGradesSums();
+    vector<int> LessonplanScheduler::getAllLessonplansSummaryScores() {
+        return this->genAlgorithm->getPreviouslyFoundAllLessonplansSummaryScores();
     }
 
 }

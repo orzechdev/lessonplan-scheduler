@@ -6,14 +6,10 @@
 namespace lessonplans {
     class LessonplanSchedulingProblem {
     public:
-        LessonplanSchedulingProblem(
-                LessonplanData* lessonplanData
-        ) :
-                lessonplanData(lessonplanData)
-        {}
+        LessonplanSchedulingProblem(LessonplanData* lessonplanData) : lessonplanData(lessonplanData) {}
         LessonplanIndividual* getSampleLessonplan();
         vector<int> evaluateLessonplan(LessonplanIndividual* lessonplanIndividual);
-        static const short gradesTypes = 3;
+        static const short scoresTypes = 3;
     private:
         LessonplanData* lessonplanData;
         unsigned short checkStartLessonsDifferenceBetweenDays(LessonplanIndividual* lessonplanIndividual);

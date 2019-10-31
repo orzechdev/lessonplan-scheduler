@@ -25,8 +25,6 @@ add_executable(
         src/LessonplanScheduler.cpp
         src/GenAlgorithm.hpp
         src/GenAlgorithm.cpp
-        src/Individual.hpp
-        src/Individual.cpp
         src/LessonplanIndividual.hpp
         src/LessonplanIndividual.cpp
         src/LessonplanData.hpp
