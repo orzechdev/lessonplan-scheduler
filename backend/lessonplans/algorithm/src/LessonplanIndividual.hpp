@@ -15,9 +15,9 @@ namespace lessonplans {
         vector<vector<unsigned short>> initLessonplan(LessonplanData* lessonplanData);
         vector<vector<unsigned short>> getIndividual();
         unsigned int getMaxDataCount() const;
+        static const short dataTypes = 6;
 
     private:
-        static const short dataTypes = 6;
         unsigned int maxDataCount;
         vector<vector<unsigned short>> individual;
         vector<vector<vector<unsigned short>>> assignedLessonAndDaysToClasses;

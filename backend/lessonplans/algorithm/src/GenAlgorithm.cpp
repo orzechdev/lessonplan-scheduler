@@ -27,7 +27,12 @@ namespace lessonplans {
         this->population = *new vector<LessonplanIndividual*>(
                 this->populationCount
         );
-        this->populationGrades = *new vector<int>(
+        this->populationGrades = *new vector<vector<int>>(
+                this->populationCount, vector<int>(
+                        LessonplanSchedulingProblem::gradesTypes
+                    )
+        );
+        this->populationGradesSums = *new vector<int>(
                 this->populationCount
         );
 
@@ -47,6 +52,12 @@ namespace lessonplans {
     void GenAlgorithm::evaluate() {
         for (int i = 0; i < this->populationCount; i++) {
             this->populationGrades[i] = this->lessonplanSchedulingProblem->evaluateLessonplan(this->population[i]);
+
+            auto populationGradesCount = static_cast<unsigned short>(this->populationGrades[i].size());
+            this->populationGradesSums[i] = 0;
+            for (unsigned short populationGradeIdx = 0; populationGradeIdx < populationGradesCount; populationGradeIdx++) {
+                this->populationGradesSums[i] += this->populationGrades[i][populationGradeIdx];
+            }
         }
     }
 
@@ -55,7 +66,7 @@ namespace lessonplans {
     }
 
     vector<vector<unsigned short>> GenAlgorithm::getPreviouslyFoundBestLessonplan() {
-        int bestIndividualIndex = std::distance(this->populationGrades.begin(), std::max_element(this->populationGrades.begin(), this->populationGrades.end()));
+        int bestIndividualIndex = std::distance(this->populationGradesSums.begin(), std::max_element(this->populationGradesSums.begin(), this->populationGradesSums.end()));
         return this->population[bestIndividualIndex]->getIndividual();
     }
 
@@ -76,8 +87,12 @@ namespace lessonplans {
         return lessonplans;
     }
 
-    vector<int> GenAlgorithm::getPreviouslyFoundAllLessonplansGrades() {
+    vector<vector<int>> GenAlgorithm::getPreviouslyFoundAllLessonplansGrades() {
         return this->populationGrades;
+    }
+
+    vector<int> GenAlgorithm::getPreviouslyFoundAllLessonplansGradesSums() {
+        return this->populationGradesSums;
     }
 
 }

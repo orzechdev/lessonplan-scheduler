@@ -10,17 +10,23 @@ namespace lessonplans {
         return lessonplanIndividual;
     }
 
-    int LessonplanSchedulingProblem::evaluateLessonplan(LessonplanIndividual* lessonplanIndividual) {
-        //-1pt - for each class, which have too much deviated start lesson from lessons in other days
-        unsigned short classesWithInvalidDifferenceBetweenStartLessons = this->checkStartLessonsDifferenceBetweenDays(lessonplanIndividual, 1);
+    vector<int> LessonplanSchedulingProblem::evaluateLessonplan(LessonplanIndividual* lessonplanIndividual) {
+        //-10pt - for each class, which have too much deviated start lesson from lessons in other days
+        unsigned short classesWithInvalidDifferenceBetweenStartLessons = 10 * this->checkStartLessonsDifferenceBetweenDays(lessonplanIndividual, 1);
 
-        //-1pt - for each class, which have too much deviated number of hours between the days of the week
-        unsigned short classesWithInvalidDifferenceBetweenLessonsCount = this->checkLessonsCountDifferenceBetweenDays(lessonplanIndividual, 1);
+        //-10pt - for each class, which have too much deviated number of hours between the days of the week
+        unsigned short classesWithInvalidDifferenceBetweenLessonsCount = 10 * this->checkLessonsCountDifferenceBetweenDays(lessonplanIndividual, 1);
 
-        //-1pt - for each free hour between lesson
+        //-1pt - for each free period between lessons
+        unsigned short invalidFreePeriodsCountBetweenLessons = this->checkFreePeriodsExistenceBetweenLessons(lessonplanIndividual);
 
+        vector<int> grades = *new vector<int>(LessonplanSchedulingProblem::gradesTypes);
 
-        return 0 - classesWithInvalidDifferenceBetweenStartLessons - classesWithInvalidDifferenceBetweenLessonsCount;
+        grades[0] = 0 - classesWithInvalidDifferenceBetweenStartLessons;
+        grades[1] = 0 - classesWithInvalidDifferenceBetweenLessonsCount;
+        grades[2] = 0 - invalidFreePeriodsCountBetweenLessons;
+
+        return grades;
     }
 
     unsigned short LessonplanSchedulingProblem::checkStartLessonsDifferenceBetweenDays(
@@ -136,5 +142,130 @@ namespace lessonplans {
         return classesWithFailedCheck;
     }
 
+    unsigned short LessonplanSchedulingProblem::checkFreePeriodsExistenceBetweenLessons(
+            LessonplanIndividual *lessonplanIndividual
+    ) {
+        unsigned int maxDataCount = lessonplanIndividual->getMaxDataCount();
+        unsigned short classesCount = this->lessonplanData->getClassesCount();
+        unsigned short weekDaysCount = this->lessonplanData->getWeekDaysCount();
+
+        vector<vector<unsigned short>> lessonplan = lessonplanIndividual->getIndividual();
+
+        vector<vector<unsigned short>> classesWeekDayStartLessonId = *new vector<vector<unsigned short>>(
+                classesCount, vector<unsigned short>(
+                        weekDaysCount, 0
+                )
+        );
+        vector<vector<unsigned short>> classesWeekDayEndLessonId = *new vector<vector<unsigned short>>(
+                classesCount, vector<unsigned short>(
+                        weekDaysCount, 0
+                )
+        );
+
+        vector<vector<unsigned short>> classesWeekDayFreePeriods = *new vector<vector<unsigned short>>(
+                classesCount, vector<unsigned short>(
+                        weekDaysCount, 0
+                )
+        );
+
+        for(unsigned int dataIdx = 0; dataIdx < maxDataCount; dataIdx++) {
+            unsigned short weekDayId = lessonplan[dataIdx][0];
+            unsigned short lessonId = lessonplan[dataIdx][1];
+            unsigned short classId = lessonplan[dataIdx][2];
+
+            unsigned short classWeekDayStartLessonId = classesWeekDayStartLessonId[classId - 1][weekDayId - 1];
+            unsigned short classWeekDayEndLessonId = classesWeekDayEndLessonId[classId - 1][weekDayId - 1];
+
+            if (classWeekDayStartLessonId == 0) {
+                classesWeekDayStartLessonId[classId - 1][weekDayId - 1] = lessonId;
+                classesWeekDayEndLessonId[classId - 1][weekDayId - 1] = lessonId;
+                continue;
+            }
+
+            if (lessonId < classWeekDayStartLessonId) {
+                classesWeekDayStartLessonId[classId - 1][weekDayId - 1] = lessonId;
+                unsigned short lessonsDifference = classWeekDayStartLessonId - lessonId;
+
+                if (lessonsDifference > 1) {
+                    classesWeekDayFreePeriods[classId - 1][weekDayId - 1] += lessonsDifference - 1;
+                }
+            } else if (lessonId > classWeekDayEndLessonId) {
+                classesWeekDayEndLessonId[classId - 1][weekDayId - 1] = lessonId;
+                unsigned short lessonsDifference = lessonId - classWeekDayEndLessonId;
+
+                if (lessonsDifference > 1) {
+                    classesWeekDayFreePeriods[classId - 1][weekDayId - 1] += lessonsDifference - 1;
+                }
+            } else {
+                classesWeekDayFreePeriods[classId - 1][weekDayId - 1]--;
+            }
+
+        }
+
+        unsigned short classesFreePeriodsCount = 0;
+
+        for(unsigned short classIdx = 0; classIdx < classesCount; classIdx++) {
+            for(unsigned short weekDayIdx = 0; weekDayIdx < weekDaysCount; weekDayIdx++) {
+                unsigned short freePeriodsCountInAnotherDay = classesWeekDayFreePeriods[classIdx][weekDayIdx];
+
+                classesFreePeriodsCount += freePeriodsCountInAnotherDay;
+            }
+        }
+
+        return classesFreePeriodsCount;
+
+
+
+//        unsigned int maxDataCount = lessonplanIndividual->getMaxDataCount();
+//        unsigned short classesCount = this->lessonplanData->getClassesCount();
+//        unsigned short weekDaysCount = this->lessonplanData->getWeekDaysCount();
+//
+//        vector<vector<unsigned short>> lessonplan = lessonplanIndividual->getIndividual();
+//
+//        vector<vector<vector<unsigned short>>> classesLessonplan = *new vector<vector<vector<unsigned short>>>(
+//                classesCount
+//        );
+//
+//        unsigned short classDataTypes = LessonplanIndividual::dataTypes - 1;
+//
+//        for(unsigned short classIdx = 0; classIdx < classesCount; classIdx++) {
+//            unsigned short currentClassId = classIdx + 1;
+//            unsigned short classSubjectsCount = this->lessonplanData->getClassSubjectsCount(classIdx);
+//
+//            vector<vector<unsigned short>> classLessonplan = *new vector<vector<unsigned short>>(
+//                    classSubjectsCount, vector<unsigned short>(
+//                            classDataTypes
+//                    )
+//            );
+//
+//            unsigned short classSubjectNextIdxToAssign = 0;
+//
+//            for(unsigned int dataIdx = 0; dataIdx < maxDataCount; dataIdx++) {
+//                unsigned short classId = lessonplan[dataIdx][2];
+//
+//                if (classId == currentClassId) {
+//                    classLessonplan[classSubjectNextIdxToAssign][0] = lessonplan[dataIdx][0];
+//                    classLessonplan[classSubjectNextIdxToAssign][1] = lessonplan[dataIdx][1];
+//                    classLessonplan[classSubjectNextIdxToAssign][2] = lessonplan[dataIdx][3];
+//                    classLessonplan[classSubjectNextIdxToAssign][3] = lessonplan[dataIdx][4];
+//                    classLessonplan[classSubjectNextIdxToAssign][4] = lessonplan[dataIdx][5];
+//                }
+//            }
+//
+//            classesLessonplan[classIdx] = classLessonplan;
+//        }
+//
+//        unsigned short classesWithFailedCheck = 0;
+//
+//        for(unsigned short classIdx = 0; classIdx < classesCount; classIdx++) {
+//
+//        }
+
+
+
+
+
+//        return 0;
+    }
 
 }

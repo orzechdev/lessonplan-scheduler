@@ -35,6 +35,10 @@ namespace lessonplans {
         return this->getClassesSubjects()[classIdx];
     }
 
+    unsigned short LessonplanData::getClassSubjectsCount(unsigned short classIdx) const {
+        return static_cast<unsigned short>(this->getClassSubjects(classIdx).size());
+    }
+
     const vector <vector<unsigned short>> &LessonplanData::getTeachersSubjects() const {
         return teachersSubjects;
     }
