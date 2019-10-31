@@ -16,8 +16,8 @@ namespace lessonplans {
         static const short gradesTypes = 3;
     private:
         LessonplanData* lessonplanData;
-        unsigned short checkStartLessonsDifferenceBetweenDays(LessonplanIndividual* lessonplanIndividual, unsigned short maxValidStartLessonsDifferenceBetweenDays);
-        unsigned short checkLessonsCountDifferenceBetweenDays(LessonplanIndividual* lessonplanIndividual, unsigned short maxValidLessonsCountDifferenceBetweenDays);
+        unsigned short checkStartLessonsDifferenceBetweenDays(LessonplanIndividual* lessonplanIndividual);
+        unsigned short checkLessonsCountDifferenceBetweenDays(LessonplanIndividual* lessonplanIndividual);
         unsigned short checkFreePeriodsExistenceBetweenLessons(LessonplanIndividual* lessonplanIndividual);
     };
 }
