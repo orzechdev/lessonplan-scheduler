@@ -20,7 +20,7 @@ namespace lessonplans {
             this->select(); // TODO: ...
         }
 
-        return this->population[0]->getIndividual();
+        return this->getPreviouslyFoundBestLessonplan();
     }
 
     void GenAlgorithm::initPopulation() {
@@ -55,7 +55,8 @@ namespace lessonplans {
     }
 
     vector<vector<unsigned short>> GenAlgorithm::getPreviouslyFoundBestLessonplan() {
-        return this->population[0]->getIndividual();
+        int bestIndividualIndex = std::distance(this->populationGrades.begin(), std::max_element(this->populationGrades.begin(), this->populationGrades.end()));
+        return this->population[bestIndividualIndex]->getIndividual();
     }
 
     vector<vector<vector<unsigned short>>> GenAlgorithm::getPreviouslyFoundAllLessonplans() {
