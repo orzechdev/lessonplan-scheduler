@@ -209,59 +209,6 @@ namespace lessonplans {
         }
 
         return classesFreePeriodsCount;
-
-
-
-//        unsigned int maxDataCount = lessonplanIndividual->getMaxDataCount();
-//        unsigned short classesCount = this->lessonplanData->getClassesCount();
-//        unsigned short weekDaysCount = this->lessonplanData->getWeekDaysCount();
-//
-//        vector<vector<unsigned short>> lessonplan = lessonplanIndividual->getIndividual();
-//
-//        vector<vector<vector<unsigned short>>> classesLessonplan = *new vector<vector<vector<unsigned short>>>(
-//                classesCount
-//        );
-//
-//        unsigned short classDataTypes = LessonplanIndividual::dataTypes - 1;
-//
-//        for(unsigned short classIdx = 0; classIdx < classesCount; classIdx++) {
-//            unsigned short currentClassId = classIdx + 1;
-//            unsigned short classSubjectsCount = this->lessonplanData->getClassSubjectsCount(classIdx);
-//
-//            vector<vector<unsigned short>> classLessonplan = *new vector<vector<unsigned short>>(
-//                    classSubjectsCount, vector<unsigned short>(
-//                            classDataTypes
-//                    )
-//            );
-//
-//            unsigned short classSubjectNextIdxToAssign = 0;
-//
-//            for(unsigned int dataIdx = 0; dataIdx < maxDataCount; dataIdx++) {
-//                unsigned short classId = lessonplan[dataIdx][2];
-//
-//                if (classId == currentClassId) {
-//                    classLessonplan[classSubjectNextIdxToAssign][0] = lessonplan[dataIdx][0];
-//                    classLessonplan[classSubjectNextIdxToAssign][1] = lessonplan[dataIdx][1];
-//                    classLessonplan[classSubjectNextIdxToAssign][2] = lessonplan[dataIdx][3];
-//                    classLessonplan[classSubjectNextIdxToAssign][3] = lessonplan[dataIdx][4];
-//                    classLessonplan[classSubjectNextIdxToAssign][4] = lessonplan[dataIdx][5];
-//                }
-//            }
-//
-//            classesLessonplan[classIdx] = classLessonplan;
-//        }
-//
-//        unsigned short classesWithFailedCheck = 0;
-//
-//        for(unsigned short classIdx = 0; classIdx < classesCount; classIdx++) {
-//
-//        }
-
-
-
-
-
-//        return 0;
     }
 
 }
