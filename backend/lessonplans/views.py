@@ -6,11 +6,13 @@ import json
 import os
 from datetime import datetime
 from rest_framework import viewsets
+
 from lessonplans.algorithm.algorithm import run_algorithm
 from lessonplans.data_validity.data_validity import is_data_valid
 from lessonplans.models import Lessonplan, WeekDay, Lesson, Subject, Teacher, TeacherSubject, Class, ClassSubject, Room, \
-    RoomSubjectRestricted
-from lessonplans.serializers import ClassSerializer, LessonplanSerializer
+    RoomSubjectRestricted, LessonplanItem
+from lessonplans.serializers import ClassSerializer, LessonplanSerializer, SubjectSerializer, TeacherSerializer, \
+    RoomSerializer, LessonplanItemSerializer
 
 from lessonplans.views_neo4j import save_data_to_neo4j, generate_with_neo4j, get_classes_with_neo4j
 
@@ -172,8 +174,8 @@ def get_classes_with_neo4j_pass(request):
 
 
 class LessonplanViewSet(viewsets.ModelViewSet):
-    queryset = Lessonplan.objects.all()
-    serializer_class = LessonplanSerializer
+    queryset = LessonplanItem.objects.all()
+    serializer_class = LessonplanItemSerializer
 
 
 def get_lessonplans(request):
@@ -181,6 +183,9 @@ def get_lessonplans(request):
 
 
 def generate(request):
+    Lessonplan.objects.all().delete()
+    LessonplanItem.objects.all().delete()
+
     week_days = WeekDay.objects.all()
     lessons = Lesson.objects.all()
     classes = Class.objects.all()
@@ -246,7 +251,7 @@ def generate(request):
     validity, message = is_data_valid(classes_subjects, teachers_subjects, rooms_subjects)
 
     if validity:
-        lessonplans = run_algorithm(
+        lessonplans_generated = run_algorithm(
             week_days_count,
             lessons_count,
             classes_count,
@@ -258,7 +263,29 @@ def generate(request):
             rooms_subjects
         )
 
-        return JsonResponse({'lessonplans': lessonplans})
+        lessonplan = Lessonplan(name='Noname')
+        lessonplan.save()
+
+        for lessonplan_generated in lessonplans_generated:
+            week_day = week_days[lessonplan_generated[0] - 1]
+            lesson = lessons[lessonplan_generated[1] - 1]
+            class_m = classes[lessonplan_generated[2] - 1]
+            subject = subjects[lessonplan_generated[3] - 1]
+            teacher = teachers[lessonplan_generated[4] - 1]
+            room = rooms[lessonplan_generated[5 - 1]]
+
+            lessonplan_item = LessonplanItem(
+                lessonplan=lessonplan,
+                weekday=week_day,
+                lesson=lesson,
+                class_model=class_m,
+                subject=subject,
+                teacher=teacher,
+                room=room
+            )
+            lessonplan_item.save()
+
+        return HttpResponse("ok")
     else:
         return HttpResponse("data is invalid: " + message)
 

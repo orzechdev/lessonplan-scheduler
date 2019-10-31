@@ -22,7 +22,7 @@ export default {
     classId: String
   },
   computed: {
-    ...mapState(["classes"]),
+    ...mapState(["classes", "lessonplans"]),
     items() {
       const classItem = this.classes.find(elem => elem.id == this.classId)
       const className = classItem ? classItem.name : ''

@@ -23,10 +23,11 @@ import MainApi from "@/api/MainApi";
 export default {
   name: "app",
   methods: {
-    ...mapActions(["getClasses"])
+    ...mapActions(["getClasses", "getLessonplans"])
   },
   created() {
     this.getClasses();
+    this.getLessonplans();
   }
 };
 </script>

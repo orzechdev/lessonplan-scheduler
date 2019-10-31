@@ -53,11 +53,11 @@ class Lessonplan(models.Model):
 
 
 class LessonplanItem(models.Model):
-    lessonplan_id = models.ForeignKey(Lessonplan, on_delete=models.CASCADE)
-    weekday_id = models.ForeignKey(WeekDay, on_delete=models.CASCADE)
-    lesson_id = models.ForeignKey(Lesson, on_delete=models.CASCADE)
-    class_id = models.ForeignKey(Class, on_delete=models.CASCADE)
-    subject_id = models.ForeignKey(Subject, on_delete=models.CASCADE)
-    teacher_id = models.ForeignKey(Teacher, on_delete=models.CASCADE)
-    room_id = models.ForeignKey(Room, on_delete=models.CASCADE)
+    lessonplan = models.ForeignKey(Lessonplan, on_delete=models.CASCADE)
+    weekday = models.ForeignKey(WeekDay, on_delete=models.CASCADE)
+    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
+    class_model = models.ForeignKey(Class, on_delete=models.CASCADE)
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+    room = models.ForeignKey(Room, on_delete=models.CASCADE)
 
