@@ -30,6 +30,9 @@ def index(request):
 
 
 def save_data(request):
+    LessonplanItem.objects.all().delete()
+    Lessonplan.objects.all().delete()
+
     RoomSubjectRestricted.objects.all().delete()
     ClassSubject.objects.all().delete()
     TeacherSubject.objects.all().delete()
@@ -183,8 +186,8 @@ def get_lessonplans(request):
 
 
 def generate(request):
-    Lessonplan.objects.all().delete()
     LessonplanItem.objects.all().delete()
+    Lessonplan.objects.all().delete()
 
     week_days = WeekDay.objects.all()
     lessons = Lesson.objects.all()

@@ -20,12 +20,6 @@ namespace lessonplans {
         static const short dataTypes = 6;
         unsigned int maxDataCount;
         vector<vector<unsigned short>> individual;
-        vector<unsigned short> weekDaysIdsSequence;
-        vector<unsigned short> lessonsIdsSequence;
-        vector<unsigned short> classesIdsSequence;
-        vector<vector<unsigned short>> classesSubjectsIdxsSequence;
-        vector<unsigned short> teachersIdsSequence;
-        vector<unsigned short> roomsIdsSequence;
         vector<vector<vector<unsigned short>>> assignedLessonAndDaysToClasses;
         vector<vector<vector<unsigned short>>> assignedLessonAndDaysToTeachers;
         vector<vector<vector<unsigned short>>> assignedLessonAndDaysToRooms;
@@ -48,7 +42,6 @@ namespace lessonplans {
                 unsigned short classId, unsigned short subjectId, unsigned short teacherId, unsigned short roomId
         );
         static unsigned int calculateMaxDataCount(LessonplanData* lessonplanData);
-        void initRandomIdsSequencesForData(LessonplanData* lessonplanData);
         static vector<unsigned short> getRandomIdxsSequence(unsigned short sequenceSize);
         static vector<unsigned short> getRandomIdsSequence(unsigned short sequenceSize);
         static vector<unsigned short> getRandomNumbersSequence(unsigned short sequenceSize, unsigned short lowestNumber);

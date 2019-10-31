@@ -9,6 +9,7 @@
       :interval-minutes="60"
       :interval-count="16"
       :interval-height="60"
+      :event-overlap-threshold="50"
       :events="events"
       color="primary"
       type="week"

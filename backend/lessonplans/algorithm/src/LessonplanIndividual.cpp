@@ -24,8 +24,6 @@ namespace lessonplans {
                 )
         );
 
-        this->initRandomIdsSequencesForData(lessonplanData);
-
         this->assignedLessonAndDaysToClasses = *new vector<vector<vector<unsigned short>>>(
                 weekDaysCount, vector<vector<unsigned short>>(
                         lessonsCount, vector<unsigned short>(
@@ -50,17 +48,21 @@ namespace lessonplans {
 
         unsigned short individualDataIdx = 0;
 
+        vector<unsigned short> classesIdsSequence = LessonplanIndividual::getRandomIdsSequence(classesCount);
+
         // Iterate through list of classes
         for (unsigned short classIdx = 0; classIdx < classesCount; classIdx++) {
-            unsigned short classId = this->classesIdsSequence[classIdx];
+            unsigned short classId = classesIdsSequence[classIdx];
             vector<unsigned short> classSubjects = lessonplanData->getClassSubjects(classId - 1);
             auto classSubjectsCount = static_cast<unsigned short>(classSubjects.size());
 
             // CLASS OK
 
+            vector<unsigned short> classesSubjectsIdxsSequence = LessonplanIndividual::getRandomIdxsSequence(classSubjectsCount);
+
             // Iterate through list of classes subjects
             for (unsigned short subjectIdx = 0; subjectIdx < classSubjectsCount; subjectIdx++) {
-                unsigned short classSubjectIdx = this->classesSubjectsIdxsSequence[classId - 1][subjectIdx];
+                unsigned short classSubjectIdx = classesSubjectsIdxsSequence[subjectIdx];
                 unsigned short subjectId = classSubjects[classSubjectIdx];
 
                 // SUBJECT OK
@@ -85,9 +87,11 @@ namespace lessonplans {
         unsigned short subjectsCount = lessonplanData->getSubjectsCount();
         unsigned short teachersCount = lessonplanData->getTeachersCount();
 
+        vector<unsigned short> teachersIdsSequence = LessonplanIndividual::getRandomIdsSequence(lessonplanData->getTeachersCount());
+
         // Iterate through list of teachers
         for (unsigned short teacherIdx = 0; teacherIdx < teachersCount; teacherIdx++) {
-            unsigned short teacherId = this->teachersIdsSequence[teacherIdx];
+            unsigned short teacherId = teachersIdsSequence[teacherIdx];
             vector<unsigned short> teacherSubjects = lessonplanData->getTeacherSubjects(teacherId - 1);
             auto teacherSubjectsCount = static_cast<unsigned short>(teacherSubjects.size());
 
@@ -119,9 +123,11 @@ namespace lessonplans {
         unsigned short subjectsCount = lessonplanData->getSubjectsCount();
         unsigned short roomsCount = lessonplanData->getRoomsCount();
 
+        vector<unsigned short> roomsIdsSequence = LessonplanIndividual::getRandomIdsSequence(lessonplanData->getRoomsCount());
+
         // Iterate through list of rooms
         for (unsigned short roomIdx = 0; roomIdx < roomsCount; roomIdx++) {
-            unsigned short roomId = this->roomsIdsSequence[roomIdx];
+            unsigned short roomId = roomsIdsSequence[roomIdx];
             vector<unsigned short> roomSubjects = lessonplanData->getRoomSubjects(roomId - 1);
             auto roomSubjectsCount = static_cast<unsigned short>(roomSubjects.size());
 
@@ -163,13 +169,17 @@ namespace lessonplans {
         unsigned short weekDaysCount = lessonplanData->getWeekDaysCount();
         unsigned short lessonsCount = lessonplanData->getLessonsCount();
 
-        // Iterate through list of week days
-        for (unsigned short weekDayIdx = 0; weekDayIdx < weekDaysCount; weekDayIdx++) {
-            unsigned short weekDayId = this->weekDaysIdsSequence[weekDayIdx];
+        vector<unsigned short> lessonsIdsSequence = LessonplanIndividual::getRandomIdsSequence(lessonplanData->getLessonsCount());
 
-            // Iterate through list of lessons
-            for (unsigned short lessonIdx = 0; lessonIdx < lessonsCount; lessonIdx++) {
-                unsigned short lessonId = this->lessonsIdsSequence[lessonIdx];
+        // Iterate through list of lessons
+        for (unsigned short lessonIdx = 0; lessonIdx < lessonsCount; lessonIdx++) {
+            unsigned short lessonId = lessonsIdsSequence[lessonIdx];
+
+            vector<unsigned short> weekDaysIdsSequence = LessonplanIndividual::getRandomIdsSequence(lessonplanData->getWeekDaysCount());
+
+            // Iterate through list of week days
+            for (unsigned short weekDayIdx = 0; weekDayIdx < weekDaysCount; weekDayIdx++) {
+                unsigned short weekDayId = weekDaysIdsSequence[weekDayIdx];
                 unsigned short currentWeekDayIdx = weekDayId - 1;
                 unsigned short currentLessonIdx = lessonId - 1;
 
@@ -209,22 +219,6 @@ namespace lessonplans {
         }
 
         return maxDataCount;
-    }
-
-    void LessonplanIndividual::initRandomIdsSequencesForData(LessonplanData* lessonplanData) {
-        this->weekDaysIdsSequence = LessonplanIndividual::getRandomIdsSequence(lessonplanData->getWeekDaysCount());
-        this->lessonsIdsSequence = LessonplanIndividual::getRandomIdsSequence(lessonplanData->getLessonsCount());
-        unsigned short classesCount = lessonplanData->getClassesCount();
-        this->classesIdsSequence = LessonplanIndividual::getRandomIdsSequence(classesCount);
-        this->classesSubjectsIdxsSequence = *new vector<vector<unsigned short>>(
-                classesCount
-        );
-        for(unsigned short classIdx = 0; classIdx < classesCount; classIdx++) {
-            auto classSubjectsCount = static_cast<unsigned short>(lessonplanData->getClassSubjects(classIdx).size());
-            this->classesSubjectsIdxsSequence[classIdx] = LessonplanIndividual::getRandomIdxsSequence(classSubjectsCount);
-        }
-        this->teachersIdsSequence = LessonplanIndividual::getRandomIdsSequence(lessonplanData->getTeachersCount());
-        this->roomsIdsSequence = LessonplanIndividual::getRandomIdsSequence(lessonplanData->getRoomsCount());
     }
 
     vector<unsigned short> LessonplanIndividual::getRandomIdxsSequence(unsigned short sequenceSize) {

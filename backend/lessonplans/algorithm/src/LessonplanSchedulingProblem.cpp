@@ -14,7 +14,7 @@ namespace lessonplans {
         //-1pt - for each class, which have too much deviated start lesson from lessons in other days
         unsigned short classesWithInvalidDifferenceBetweenStartLessons = this->checkStartLessonsDifferenceBetweenDays(lessonplanIndividual, 1);
 
-        //-1pt - for each number of hours between the days of the week which differ by more than 1 hour
+        //-1pt - for each class, which have too much deviated number of hours between the days of the week
         unsigned short classesWithInvalidDifferenceBetweenLessonsCount = this->checkLessonsCountDifferenceBetweenDays(lessonplanIndividual, 1);
 
         //-1pt - for each free hour between lesson
@@ -91,7 +91,49 @@ namespace lessonplans {
     unsigned short LessonplanSchedulingProblem::checkLessonsCountDifferenceBetweenDays(
             LessonplanIndividual* lessonplanIndividual, unsigned short maxValidLessonsCountDifferenceBetweenDays
     ) {
-        return 0;
+        unsigned int maxDataCount = lessonplanIndividual->getMaxDataCount();
+        unsigned short classesCount = this->lessonplanData->getClassesCount();
+        unsigned short weekDaysCount = this->lessonplanData->getWeekDaysCount();
+
+        vector<vector<unsigned short>> lessonplan = lessonplanIndividual->getIndividual();
+
+        vector<vector<unsigned short>> classesWeekDayLessonsCount = *new vector<vector<unsigned short>>(
+                classesCount, vector<unsigned short>(
+                        weekDaysCount, 0
+                )
+        );
+
+        for(unsigned int dataIdx = 0; dataIdx < maxDataCount; dataIdx++) {
+            unsigned short weekDayId = lessonplan[dataIdx][0];
+            unsigned short classId = lessonplan[dataIdx][2];
+
+            classesWeekDayLessonsCount[classId - 1][weekDayId - 1]++;
+        }
+
+        unsigned short classesWithFailedCheck = 0;
+
+        for(unsigned short classIdx = 0; classIdx < classesCount; classIdx++) {
+            unsigned short minLessonsCountInEveryWeekDay, maxLessonsCountInEveryWeekDay;
+            minLessonsCountInEveryWeekDay = maxLessonsCountInEveryWeekDay = classesWeekDayLessonsCount[classIdx][0];
+
+            for(unsigned short weekDayIdx = 1; weekDayIdx < weekDaysCount; weekDayIdx++) {
+                unsigned short lessonsCountInAnotherDay = classesWeekDayLessonsCount[classIdx][weekDayIdx];
+
+                if (lessonsCountInAnotherDay < minLessonsCountInEveryWeekDay) {
+                    minLessonsCountInEveryWeekDay = lessonsCountInAnotherDay;
+                } else if (lessonsCountInAnotherDay > maxLessonsCountInEveryWeekDay) {
+                    maxLessonsCountInEveryWeekDay = lessonsCountInAnotherDay;
+                }
+
+                // Check if lessons count between days differs more then maxValidStartLessonsDifferenceBetweenDays lesson
+                if (maxLessonsCountInEveryWeekDay - minLessonsCountInEveryWeekDay > maxValidLessonsCountDifferenceBetweenDays) {
+                    classesWithFailedCheck++;
+                    break;
+                }
+            }
+        }
+
+        return classesWithFailedCheck;
     }
 
 

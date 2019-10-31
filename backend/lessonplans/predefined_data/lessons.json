@@ -26,25 +26,25 @@
   {
     "id": 5,
     "name": 5,
-    "startTime": "12:10",
-    "endTime": "12:55"
+    "startTime": "11:30",
+    "endTime": "12:15"
   },
   {
     "id": 6,
     "name": 6,
-    "startTime": "13:40",
-    "endTime": "14:25"
+    "startTime": "12:20",
+    "endTime": "13:00"
   },
   {
     "id": 7,
     "name": 7,
-    "startTime": "15:10",
-    "endTime": "15:55"
+    "startTime": "13:10",
+    "endTime": "13:55"
   },
   {
     "id": 8,
     "name": 8,
-    "startTime": "16:40",
-    "endTime": "17:25"
+    "startTime": "14:05",
+    "endTime": "14:50"
   }
 ]
