@@ -10,5 +10,3 @@ six>=1.10.0
 djangorestframework
 django-cors-headers
 mongoengine
-neomodel
-django_neomodel

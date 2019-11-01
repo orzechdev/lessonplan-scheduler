@@ -1,6 +1,8 @@
 from django.core import serializers
 from django.http import HttpResponse, JsonResponse
 
+from setuptools import sandbox
+
 import numpy as np
 import json
 import os
@@ -14,8 +16,6 @@ from lessonplans.models import Lessonplan, WeekDay, Lesson, Subject, Teacher, Te
 from lessonplans.serializers import ClassSerializer, LessonplanSerializer, SubjectSerializer, TeacherSerializer, \
     RoomSerializer, LessonplanItemSerializer
 
-from lessonplans.views_neo4j import save_data_to_neo4j, generate_with_neo4j, get_classes_with_neo4j
-
 module_dir = os.path.dirname(__file__)  # get current directory
 weekdays_file_path = os.path.join(module_dir, 'predefined_data/weekdays.json')
 lessons_file_path = os.path.join(module_dir, 'predefined_data/lessons.json')
@@ -24,6 +24,7 @@ teachers_file_path = os.path.join(module_dir, 'predefined_data/teachers.json')
 classes_file_path = os.path.join(module_dir, 'predefined_data/classes.json')
 rooms_file_path = os.path.join(module_dir, 'predefined_data/rooms.json')
 
+algorithm_setup_file_path = os.path.join(module_dir, 'algorithm/setup.py')
 
 def index(request):
     return HttpResponse("Hello, world. You're at the lessonplans index.")
@@ -163,17 +164,9 @@ def save_data(request):
     return HttpResponse("save_data endpoint")
 
 
-def save_data_to_neo4j_pass(request):
-    return save_data_to_neo4j(request)
-
-
 class ClassViewSet(viewsets.ModelViewSet):
     queryset = Class.objects.all()
     serializer_class = ClassSerializer
-
-
-def get_classes_with_neo4j_pass(request):
-    return get_classes_with_neo4j(request)
 
 
 class LessonplanViewSet(viewsets.ModelViewSet):
@@ -293,9 +286,12 @@ def generate(request):
         return HttpResponse("data is invalid: " + message)
 
 
-def generate_with_neo4j_pass(request):
-    generate_with_neo4j(request)
-
-
 def view(request):
     return HttpResponse("view endpoint")
+
+
+def build_algorithm(request):
+    sandbox.run_setup(algorithm_setup_file_path, ['build_ext', '--inplace'])
+
+    return HttpResponse("algorithm built")
+

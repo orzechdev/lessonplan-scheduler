@@ -17,7 +17,7 @@ namespace lessonplans {
             vector<vector<unsigned short>> teachersSubjects,
             vector<vector<unsigned short>> roomsSubjects
     ) {
-        int populationCount = 100;
+        int populationCount = 10;
         int generationNumber = 10;
         float crossoverProb = 0.2;
         float mutationProb = 0.1;
