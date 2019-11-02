@@ -1,10 +1,11 @@
 #include <cstdlib>
 #include "../include/algorithm/LessonplanSchedulingProblem.hpp"
+#include "LessonplanIndividualAbstractFactory.hpp"
 
 namespace lessonplans {
 
     LessonplanIndividual* LessonplanSchedulingProblem::getSampleLessonplan(){
-        auto* lessonplanIndividual = new LessonplanIndividual(this->lessonplanSchedulingProblemProperties);
+        LessonplanIndividual* lessonplanIndividual = LessonplanIndividualAbstractFactory::createLessonplanIndividual(this->lessonplanSchedulingProblemProperties);
 
         return lessonplanIndividual;
     }

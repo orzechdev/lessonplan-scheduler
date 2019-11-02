@@ -25,6 +25,8 @@ add_executable(
         src/LessonplanSchedulingAlgorithm.cpp
         src/LessonplanIndividual.hpp
         src/LessonplanIndividual.cpp
+        src/LessonplanIndividualAbstractFactory.hpp
+        src/LessonplanIndividualAbstractFactory.cpp
         include/algorithm/LessonplanSchedulingProblemProperties.hpp
         src/LessonplanSchedulingProblemProperties.cpp
         include/algorithm/LessonplanSchedulingProblem.hpp

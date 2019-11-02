@@ -22,6 +22,7 @@ setup(
                       # "./src/LessonplanSchedulingProblemProperties.cpp",
                       # "./src/LessonplanSchedulingSolution.cpp",
                       "./src/LessonplanIndividual.cpp",
+                      "./src/LessonplanIndividualAbstractFactory.cpp",
                   ],  # "algorithm.pyx" and also all ".cpp" files must be listed here !!!!
               )
           ],

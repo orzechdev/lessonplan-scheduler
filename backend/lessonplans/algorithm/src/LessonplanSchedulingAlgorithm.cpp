@@ -7,13 +7,13 @@ namespace lessonplans {
         this->lessonplanSchedulingProblem = lessonplanSchedulingProblem;
 
         this->initializePopulation();
-        this->evaluate(); // TODO: ...
-        this->select(); // TODO: ...
+        this->evaluate();
+        this->select();
         for (int i = 0; i < this->generationsCount; i++) {
-            this->crossover(); // TODO: ...
-            this->mutate(); // TODO: ...
-            this->evaluate(); // TODO: ...
-            this->select(); // TODO: ...
+            this->crossover();
+            this->mutate();
+            this->evaluate();
+            this->select();
         }
 
         auto* lessonplanSchedulingSoultion = new LessonplanSchedulingSolution(
@@ -54,8 +54,10 @@ namespace lessonplans {
 
     void LessonplanSchedulingAlgorithm::evaluate() {
         for (int i = 0; i < this->individualsCount; i++) {
+            // Get scores for different aspects of problem
             this->individualsScores[i] = this->lessonplanSchedulingProblem->evaluateLessonplan(this->individuals[i]);
 
+            // Sum all obtained scores together
             auto populationGradesCount = static_cast<unsigned short>(this->individualsScores[i].size());
             this->individualsSummaryScores[i] = 0;
             for (unsigned short populationGradeIdx = 0; populationGradeIdx < populationGradesCount; populationGradeIdx++) {
