@@ -4,7 +4,7 @@
     <v-calendar
       ref="calendar"
       :now="todayDateString"
-      :value="todayDateString"
+      :value="showedDateString"
       :first-interval="6"
       :interval-minutes="60"
       :interval-count="16"
@@ -53,6 +53,24 @@ export default {
     todayDateString() {
       return `${this.todayDate.getFullYear()}-${this.todayDate.getMonth() +
         1}-${this.todayDate.getDate()}`;
+    },
+    showedDate() {
+      const showedDate = new Date();
+      const startDay = showedDate.getDay();
+
+      if (startDay === 6) {
+        // Change saturday to monday next week
+        showedDate.setDate(showedDate.getDate() + 2);
+      } else if (startDay === 0) {
+        // Change sunday to monday next week
+        showedDate.setDate(showedDate.getDate() + 1);
+      }
+
+      return showedDate;
+    },
+    showedDateString() {
+      return `${this.showedDate.getFullYear()}-${this.showedDate.getMonth() +
+        1}-${this.showedDate.getDate()}`;
     },
     events() {
       const classItem = this.currentClass;
