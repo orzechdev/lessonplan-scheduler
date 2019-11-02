@@ -1,9 +1,7 @@
 # distutils: language = c++
 
-# from LessonplanScheduler cimport LessonplanScheduler
 from LessonplanSchedulingProblemProperties cimport LessonplanSchedulingProblemProperties
 from LessonplanSchedulingProblem cimport LessonplanSchedulingProblem
-# from LessonplanSchedulingSolution cimport LessonplanSchedulingSolution
 from LessonplanSchedulingAlgorithm cimport LessonplanSchedulingAlgorithm
 
 def run_algorithm(
@@ -17,6 +15,9 @@ def run_algorithm(
         teachers_subjects,
         rooms_subjects
 ):
+    """
+    Instantiate objects on the heap
+    """
     lessonplan_scheduling_problem_properties = new LessonplanSchedulingProblemProperties(
         week_days_count,
         lessons_count,
@@ -54,33 +55,6 @@ def run_algorithm(
     all_lessonplans_scores = lessonplan_scheduling_solution.getAllLessonplansScores()
     all_lessonplans_summary_scores = lessonplan_scheduling_solution.getAllLessonplansSummaryScores()
 
-    # # scheduler_ptr = new LessonplanScheduler()  # Instantiate a LessonplanScheduler object on the heap
-    # try:
-    #     print('try start')
-    #     scheduled_lessonplan = scheduler_ptr.scheduleLessonplan(
-    #         week_days_count,
-    #         lessons_count,
-    #         classes_count,
-    #         subjects_count,
-    #         teachers_count,
-    #         rooms_count,
-    #         classes_subjects,
-    #         teachers_subjects,
-    #         rooms_subjects
-    #     )
-    #     best_lessonplan = scheduler_ptr.getBestLessonplan()
-    #     all_lessonplans = scheduler_ptr.getAllLessonplans()
-    #     all_lessonplans_scores = scheduler_ptr.getAllLessonplansScores()
-    #     all_lessonplans_summary_scores = scheduler_ptr.getAllLessonplansSummaryScores()
-    #     print('try pass')
-    # finally:
-    #     print('finally')
-    #     del scheduler_ptr  # delete heap allocated object
-    #
-    # cdef LessonplanScheduler scheduler_stack  # Instantiate a LessonplanScheduler object on the stack
-
-    # print('scheduled lessonplan')
-    # print(scheduled_lessonplan)
     print('best lessonplan')
     print(best_lessonplan)
     print('all lessonplans')
@@ -92,5 +66,13 @@ def run_algorithm(
     print('all lessonplans summary scores')
     for all_lessonplan_summary_scores in all_lessonplans_summary_scores:
         print(all_lessonplan_summary_scores)
+
+    """
+    Delete heap allocated objects
+    """
+    del lessonplan_scheduling_algorithm
+    del lessonplan_scheduling_problem
+    del lessonplan_scheduling_problem_properties
+    del lessonplan_scheduling_solution
 
     return best_lessonplan
