@@ -8,15 +8,15 @@
 
 namespace lessonplans {
 
-    LessonplanIndividual::LessonplanIndividual(LessonplanData* lessonplanData) {
-        unsigned short weekDaysCount = lessonplanData->getWeekDaysCount();
-        unsigned short lessonsCount = lessonplanData->getLessonsCount();
-        unsigned short classesCount = lessonplanData->getClassesCount();
-        unsigned short subjectsCount = lessonplanData->getSubjectsCount();
-        unsigned short teachersCount = lessonplanData->getTeachersCount();
-        unsigned short roomsCount = lessonplanData->getRoomsCount();
+    LessonplanIndividual::LessonplanIndividual(LessonplanSchedulingProblemProperties* lessonplanSchedulingProblemProperties) {
+        unsigned short weekDaysCount = lessonplanSchedulingProblemProperties->getWeekDaysCount();
+        unsigned short lessonsCount = lessonplanSchedulingProblemProperties->getLessonsCount();
+        unsigned short classesCount = lessonplanSchedulingProblemProperties->getClassesCount();
+        unsigned short subjectsCount = lessonplanSchedulingProblemProperties->getSubjectsCount();
+        unsigned short teachersCount = lessonplanSchedulingProblemProperties->getTeachersCount();
+        unsigned short roomsCount = lessonplanSchedulingProblemProperties->getRoomsCount();
 
-        this->maxDataCount = LessonplanIndividual::calculateMaxDataCount(lessonplanData);
+        this->maxDataCount = LessonplanIndividual::calculateMaxDataCount(lessonplanSchedulingProblemProperties);
 
         this->lessonplan = *new vector<vector<unsigned short>>(
                 this->maxDataCount, vector<unsigned short>(
@@ -53,7 +53,7 @@ namespace lessonplans {
         // Iterate through list of classes
         for (unsigned short classIdx = 0; classIdx < classesCount; classIdx++) {
             unsigned short classId = classesIdsSequence[classIdx];
-            vector<unsigned short> classSubjects = lessonplanData->getClassSubjects(classId - 1);
+            vector<unsigned short> classSubjects = lessonplanSchedulingProblemProperties->getClassSubjects(classId - 1);
             auto classSubjectsCount = static_cast<unsigned short>(classSubjects.size());
 
             // CLASS OK
@@ -67,7 +67,7 @@ namespace lessonplans {
 
                 // SUBJECT OK
 
-                bool teacherFound = this->tryAssignTeacher(lessonplanData, individualDataIdx, classIdx, classId, subjectId);
+                bool teacherFound = this->tryAssignTeacher(lessonplanSchedulingProblemProperties, individualDataIdx, classIdx, classId, subjectId);
 
                 if (teacherFound) {
                     individualDataIdx++;
@@ -77,20 +77,20 @@ namespace lessonplans {
     }
 
     bool LessonplanIndividual::tryAssignTeacher(
-            LessonplanData *lessonplanData,
+            LessonplanSchedulingProblemProperties *lessonplanSchedulingProblemProperties,
             unsigned short individualDataIdx,
             unsigned short classIdx,
             unsigned short classId, unsigned short subjectId
     ) {
-        unsigned short subjectsCount = lessonplanData->getSubjectsCount();
-        unsigned short teachersCount = lessonplanData->getTeachersCount();
+        unsigned short subjectsCount = lessonplanSchedulingProblemProperties->getSubjectsCount();
+        unsigned short teachersCount = lessonplanSchedulingProblemProperties->getTeachersCount();
 
-        vector<unsigned short> teachersIdsSequence = LessonplanIndividual::getRandomIdsSequence(lessonplanData->getTeachersCount());
+        vector<unsigned short> teachersIdsSequence = LessonplanIndividual::getRandomIdsSequence(lessonplanSchedulingProblemProperties->getTeachersCount());
 
         // Iterate through list of teachers
         for (unsigned short teacherIdx = 0; teacherIdx < teachersCount; teacherIdx++) {
             unsigned short teacherId = teachersIdsSequence[teacherIdx];
-            vector<unsigned short> teacherSubjects = lessonplanData->getTeacherSubjects(teacherId - 1);
+            vector<unsigned short> teacherSubjects = lessonplanSchedulingProblemProperties->getTeacherSubjects(teacherId - 1);
             auto teacherSubjectsCount = static_cast<unsigned short>(teacherSubjects.size());
 
             // Iterate through list of teachers subjects
@@ -100,7 +100,7 @@ namespace lessonplans {
                 if (subjectId == subjectId2) {
                     // TEACHER OK
 
-                    bool roomFound = this->tryAssignRoom(lessonplanData, individualDataIdx, classIdx, teacherIdx, classId, subjectId, teacherId);
+                    bool roomFound = this->tryAssignRoom(lessonplanSchedulingProblemProperties, individualDataIdx, classIdx, teacherIdx, classId, subjectId, teacherId);
 
                     if (roomFound) {
                         return true;
@@ -113,20 +113,20 @@ namespace lessonplans {
     }
 
     bool LessonplanIndividual::tryAssignRoom(
-            LessonplanData *lessonplanData,
+            LessonplanSchedulingProblemProperties *lessonplanSchedulingProblemProperties,
             unsigned short individualDataIdx,
             unsigned short classIdx, unsigned short teacherIdx,
             unsigned short classId, unsigned short subjectId, unsigned short teacherId
     ) {
-        unsigned short subjectsCount = lessonplanData->getSubjectsCount();
-        unsigned short roomsCount = lessonplanData->getRoomsCount();
+        unsigned short subjectsCount = lessonplanSchedulingProblemProperties->getSubjectsCount();
+        unsigned short roomsCount = lessonplanSchedulingProblemProperties->getRoomsCount();
 
-        vector<unsigned short> roomsIdsSequence = LessonplanIndividual::getRandomIdsSequence(lessonplanData->getRoomsCount());
+        vector<unsigned short> roomsIdsSequence = LessonplanIndividual::getRandomIdsSequence(lessonplanSchedulingProblemProperties->getRoomsCount());
 
         // Iterate through list of rooms
         for (unsigned short roomIdx = 0; roomIdx < roomsCount; roomIdx++) {
             unsigned short roomId = roomsIdsSequence[roomIdx];
-            vector<unsigned short> roomSubjects = lessonplanData->getRoomSubjects(roomId - 1);
+            vector<unsigned short> roomSubjects = lessonplanSchedulingProblemProperties->getRoomSubjects(roomId - 1);
             auto roomSubjectsCount = static_cast<unsigned short>(roomSubjects.size());
 
             if (roomSubjectsCount > 0) {
@@ -137,7 +137,7 @@ namespace lessonplans {
                     if (subjectId == subjectId3) {
                         // ROOM OK
 
-                        bool weekDayAndLessonFound = this->tryAssignWeekDayAndLesson(lessonplanData, individualDataIdx, classIdx, teacherIdx, roomIdx, classId, subjectId, teacherId, roomId);
+                        bool weekDayAndLessonFound = this->tryAssignWeekDayAndLesson(lessonplanSchedulingProblemProperties, individualDataIdx, classIdx, teacherIdx, roomIdx, classId, subjectId, teacherId, roomId);
 
                         if (weekDayAndLessonFound) {
                             return true;
@@ -147,7 +147,7 @@ namespace lessonplans {
             } else {
                 // ROOM OK
 
-                bool weekDayAndLessonFound = this->tryAssignWeekDayAndLesson(lessonplanData, individualDataIdx, classIdx, teacherIdx, roomIdx, classId, subjectId, teacherId, roomId);
+                bool weekDayAndLessonFound = this->tryAssignWeekDayAndLesson(lessonplanSchedulingProblemProperties, individualDataIdx, classIdx, teacherIdx, roomIdx, classId, subjectId, teacherId, roomId);
 
                 if (weekDayAndLessonFound) {
                     return true;
@@ -159,21 +159,21 @@ namespace lessonplans {
     }
 
     bool LessonplanIndividual::tryAssignWeekDayAndLesson(
-            LessonplanData *lessonplanData,
+            LessonplanSchedulingProblemProperties *lessonplanSchedulingProblemProperties,
             unsigned short individualDataIdx,
             unsigned short classIdx, unsigned short teacherIdx, unsigned short roomIdx,
             unsigned short classId, unsigned short subjectId, unsigned short teacherId, unsigned short roomId
     ) {
-        unsigned short weekDaysCount = lessonplanData->getWeekDaysCount();
-        unsigned short lessonsCount = lessonplanData->getLessonsCount();
+        unsigned short weekDaysCount = lessonplanSchedulingProblemProperties->getWeekDaysCount();
+        unsigned short lessonsCount = lessonplanSchedulingProblemProperties->getLessonsCount();
 
-        vector<unsigned short> lessonsIdsSequence = LessonplanIndividual::getRandomIdsSequence(lessonplanData->getLessonsCount());
+        vector<unsigned short> lessonsIdsSequence = LessonplanIndividual::getRandomIdsSequence(lessonplanSchedulingProblemProperties->getLessonsCount());
 
         // Iterate through list of lessons
         for (unsigned short lessonIdx = 0; lessonIdx < lessonsCount; lessonIdx++) {
             unsigned short lessonId = lessonsIdsSequence[lessonIdx];
 
-            vector<unsigned short> weekDaysIdsSequence = LessonplanIndividual::getRandomIdsSequence(lessonplanData->getWeekDaysCount());
+            vector<unsigned short> weekDaysIdsSequence = LessonplanIndividual::getRandomIdsSequence(lessonplanSchedulingProblemProperties->getWeekDaysCount());
 
             // Iterate through list of week days
             for (unsigned short weekDayIdx = 0; weekDayIdx < weekDaysCount; weekDayIdx++) {
@@ -207,13 +207,13 @@ namespace lessonplans {
         return false;
     }
 
-    unsigned int LessonplanIndividual::calculateMaxDataCount(LessonplanData *lessonplanData) {
+    unsigned int LessonplanIndividual::calculateMaxDataCount(LessonplanSchedulingProblemProperties *lessonplanSchedulingProblemProperties) {
         unsigned int maxDataCount = 0;
 
-        unsigned short classesCount = lessonplanData->getClassesCount();
+        unsigned short classesCount = lessonplanSchedulingProblemProperties->getClassesCount();
 
         for(unsigned short classIdx = 0; classIdx < classesCount; classIdx++) {
-            maxDataCount += static_cast<unsigned short>(lessonplanData->getClassSubjects(classIdx).size());
+            maxDataCount += static_cast<unsigned short>(lessonplanSchedulingProblemProperties->getClassSubjects(classIdx).size());
         }
 
         return maxDataCount;

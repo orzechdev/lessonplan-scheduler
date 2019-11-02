@@ -17,11 +17,11 @@ setup(
                   library_dirs=["./src"],
                   sources=[
                       "algorithm.pyx",
-                      "./src/LessonplanScheduler.cpp",
-                      "./src/GenAlgorithm.cpp",
+                      # "./src/LessonplanSchedulingAlgorithm.cpp",
+                      # "./src/LessonplanSchedulingProblem.cpp",
+                      # "./src/LessonplanSchedulingProblemProperties.cpp",
+                      # "./src/LessonplanSchedulingSolution.cpp",
                       "./src/LessonplanIndividual.cpp",
-                      "./src/LessonplanData.cpp",
-                      "./src/LessonplanSchedulingProblem.cpp"
                   ],  # "algorithm.pyx" and also all ".cpp" files must be listed here !!!!
               )
           ],

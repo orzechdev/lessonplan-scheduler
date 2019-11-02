@@ -1,14 +1,14 @@
-#ifndef ALGORITHM_LESSONPLANDATA_HPP
-#define ALGORITHM_LESSONPLANDATA_HPP
+#ifndef ALGORITHM_LESSONPLANSCHEDULINGPROBLEMPROPERTIES_HPP
+#define ALGORITHM_LESSONPLANSCHEDULINGPROBLEMPROPERTIES_HPP
 
 #include <vector>
 
 using std::vector;
 
 namespace lessonplans {
-    class LessonplanData {
+    class LessonplanSchedulingProblemProperties {
     public:
-        LessonplanData(
+        LessonplanSchedulingProblemProperties(
             unsigned short weekDaysCount, unsigned short lessonsCount, unsigned short classesCount,
             unsigned short subjectsCount, unsigned short teachersCount, unsigned short roomsCount,
             vector<vector<unsigned short>> classesSubjects,
@@ -51,4 +51,4 @@ namespace lessonplans {
     };
 }
 
-#endif //ALGORITHM_LESSONPLANDATA_HPP
+#endif //ALGORITHM_LESSONPLANSCHEDULINGPROBLEMPROPERTIES_HPP
