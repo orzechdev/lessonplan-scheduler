@@ -190,5 +190,28 @@
       19,
       18
     ]
+  },
+  {
+    "id": 25,
+    "name": "Edyta Zdebiak",
+    "subjects": [
+      1,
+      18,
+      19
+    ]
+  },
+  {
+    "id": 26,
+    "name": "Martyna Krzysztofiak",
+    "subjects": [
+      19
+    ]
+  },
+  {
+    "id": 27,
+    "name": "Krzysztof Stefanko",
+    "subjects": [
+      19
+    ]
   }
 ]

@@ -254,7 +254,16 @@ def generate(request):
     validity, message = is_data_valid(classes_subjects, teachers_subjects, rooms_subjects)
 
     if validity:
+        population_count = 10
+        generations_count = 10
+        crossover_probability = 0.2
+        mutation_probability = 0.1
+
         lessonplans_generated = run_algorithm(
+            population_count,
+            generations_count,
+            crossover_probability,
+            mutation_probability,
             week_days_count,
             lessons_count,
             classes_count,

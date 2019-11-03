@@ -5,6 +5,10 @@ from LessonplanSchedulingProblem cimport LessonplanSchedulingProblem
 from LessonplanSchedulingAlgorithm cimport LessonplanSchedulingAlgorithm
 
 def run_algorithm(
+        population_count,
+        generations_count,
+        crossover_probability,
+        mutation_probability,
         week_days_count,
         lessons_count,
         classes_count,
@@ -35,11 +39,6 @@ def run_algorithm(
     lessonplan_scheduling_problem = new LessonplanSchedulingProblem(
         lessonplan_scheduling_problem_properties
     )
-
-    population_count = 10
-    generations_count = 10
-    crossover_probability = 0.2
-    mutation_probability = 0.1
 
     lessonplan_scheduling_algorithm = new LessonplanSchedulingAlgorithm(
         population_count,
