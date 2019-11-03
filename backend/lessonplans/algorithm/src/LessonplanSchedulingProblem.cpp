@@ -76,7 +76,7 @@ namespace lessonplans {
                     for(unsigned short weekDayIdx2 = 0; weekDayIdx2 < weekDaysCount; weekDayIdx2++) {
                         unsigned short startLessonIdInAnotherDay2 = classesWeekDayStartLessonId[classIdx][weekDayIdx2];
 
-                        if (startLessonIdInAnotherDay2 == 0) {
+                        if (startLessonIdInAnotherDay2 != 0) {
                             classDifferencesCountForAllWeekDays += abs(startLessonIdInAnotherDay - startLessonIdInAnotherDay2);
                         }
                     }

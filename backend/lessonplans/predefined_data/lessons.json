@@ -44,7 +44,19 @@
   {
     "id": 8,
     "name": 8,
-    "startTime": "14:05",
-    "endTime": "14:50"
+    "startTime": "14:00",
+    "endTime": "14:45"
+  },
+  {
+    "id": 9,
+    "name": 9,
+    "startTime": "14:50",
+    "endTime": "15:35"
+  },
+  {
+    "id": 10,
+    "name": 10,
+    "startTime": "15:40",
+    "endTime": "16:25"
   }
 ]

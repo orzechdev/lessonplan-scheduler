@@ -26,6 +26,7 @@ rooms_file_path = os.path.join(module_dir, 'predefined_data/rooms.json')
 
 algorithm_setup_file_path = os.path.join(module_dir, 'algorithm/setup.py')
 
+
 def index(request):
     return HttpResponse("Hello, world. You're at the lessonplans index.")
 
@@ -203,18 +204,24 @@ def generate(request):
     print(rooms_count)
 
     classes_subjects = []
+    classes_subjects_count = []
     for class_m in classes:
         class_subjects = ClassSubject.objects.filter(class_model=class_m)
         class_subjects_idxs = []
+        class_subjects_count = []
 
         for class_subject in class_subjects:
             for subject_idx, subject in enumerate(subjects):
                 if class_subject.subject.id == subject.id:
                     class_subjects_idxs.append(subject_idx + 1)
+                    class_subjects_count.append(class_subject.count_in_week)
 
         classes_subjects.append(class_subjects_idxs)
+        classes_subjects_count.append(class_subjects_count)
     print(classes_subjects)
     classes_subjects = np.array(classes_subjects, dtype=object)
+    print(classes_subjects_count)
+    classes_subjects_count = np.array(classes_subjects_count, dtype=object)
 
     teachers_subjects = []
     for teacher in teachers:
@@ -256,7 +263,8 @@ def generate(request):
             rooms_count,
             classes_subjects,
             teachers_subjects,
-            rooms_subjects
+            rooms_subjects,
+            classes_subjects_count
         )
 
         lessonplan = Lessonplan(name='Noname')
@@ -268,7 +276,7 @@ def generate(request):
             class_m = classes[lessonplan_generated[2] - 1]
             subject = subjects[lessonplan_generated[3] - 1]
             teacher = teachers[lessonplan_generated[4] - 1]
-            room = rooms[lessonplan_generated[5 - 1]]
+            room = rooms[lessonplan_generated[5] - 1]
 
             lessonplan_item = LessonplanItem(
                 lessonplan=lessonplan,

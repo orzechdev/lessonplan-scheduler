@@ -13,7 +13,8 @@ def run_algorithm(
         rooms_count,
         classes_subjects,
         teachers_subjects,
-        rooms_subjects
+        rooms_subjects,
+        classes_subjects_count
 ):
     """
     Instantiate objects on the heap
@@ -27,7 +28,8 @@ def run_algorithm(
         rooms_count,
         classes_subjects,
         teachers_subjects,
-        rooms_subjects
+        rooms_subjects,
+        classes_subjects_count
     )
 
     lessonplan_scheduling_problem = new LessonplanSchedulingProblem(

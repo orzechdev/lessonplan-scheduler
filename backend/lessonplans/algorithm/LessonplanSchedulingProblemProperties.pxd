@@ -16,5 +16,6 @@ cdef extern from "./include/algorithm/LessonplanSchedulingProblemProperties.hpp"
                 unsigned short rooms_count,
                 vector[vector[ushort]] classes_subjects,
                 vector[vector[ushort]] teachers_subjects,
-                vector[vector[ushort]] rooms_subjects
+                vector[vector[ushort]] rooms_subjects,
+                vector[vector[ushort]] classes_subjects_count
         ) except +

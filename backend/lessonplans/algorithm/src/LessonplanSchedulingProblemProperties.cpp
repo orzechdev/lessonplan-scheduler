@@ -28,42 +28,40 @@ namespace lessonplans {
         return roomsCount;
     }
 
-    const vector <vector<unsigned short>> &LessonplanSchedulingProblemProperties::getClassesSubjects() const {
+    const vector<vector<unsigned short>> &LessonplanSchedulingProblemProperties::getClassesSubjects() const {
         return classesSubjects;
     }
-    const vector<unsigned short> &LessonplanSchedulingProblemProperties::getClassSubjects(unsigned short classIdx) const {
+
+    const vector<unsigned short> &
+    LessonplanSchedulingProblemProperties::getClassSubjects(unsigned short classIdx) const {
         return this->getClassesSubjects()[classIdx];
     }
 
-    const vector <vector<unsigned short>> &LessonplanSchedulingProblemProperties::getTeachersSubjects() const {
+    const vector<vector<unsigned short>> &LessonplanSchedulingProblemProperties::getTeachersSubjects() const {
         return teachersSubjects;
     }
-    const vector<unsigned short> &LessonplanSchedulingProblemProperties::getTeacherSubjects(unsigned short teacherIdx) const {
+
+    const vector<unsigned short> &
+    LessonplanSchedulingProblemProperties::getTeacherSubjects(unsigned short teacherIdx) const {
         return this->getTeachersSubjects()[teacherIdx];
     }
 
-    const vector <vector<unsigned short>> &LessonplanSchedulingProblemProperties::getRoomsSubjects() const {
+    const vector<vector<unsigned short>> &LessonplanSchedulingProblemProperties::getRoomsSubjects() const {
         return roomsSubjects;
     }
-    const vector<unsigned short> &LessonplanSchedulingProblemProperties::getRoomSubjects(unsigned short roomIdx) const {
+
+    const vector<unsigned short> &
+    LessonplanSchedulingProblemProperties::getRoomSubjects(unsigned short roomIdx) const {
         return this->getRoomsSubjects()[roomIdx];
     }
 
-    LessonplanSchedulingProblemProperties::LessonplanSchedulingProblemProperties(
-        unsigned short weekDaysCount, unsigned short lessonsCount,
-        unsigned short classesCount, unsigned short subjectsCount,
-        unsigned short teachersCount, unsigned short roomsCount,
-        vector<vector<unsigned short>> classesSubjects,
-        vector<vector<unsigned short>> teachersSubjects,
-        vector<vector<unsigned short>> roomsSubjects
-    ) :
-        weekDaysCount(weekDaysCount), lessonsCount(lessonsCount),
-        classesCount(classesCount), subjectsCount(subjectsCount),
-        teachersCount(teachersCount), roomsCount(roomsCount)
-    {
-        this->classesSubjects = std::move(classesSubjects);
-        this->teachersSubjects = std::move(teachersSubjects);
-        this->roomsSubjects = std::move(roomsSubjects);
+    const vector<vector<unsigned short>> &LessonplanSchedulingProblemProperties::getClassesSubjectsCount() const {
+        return classesSubjectsCount;
+    }
+
+    const vector<unsigned short> &
+    LessonplanSchedulingProblemProperties::getClassSubjectsCount(unsigned short classIdx) const {
+        return this->getClassesSubjectsCount()[classIdx];
     }
 
 }
