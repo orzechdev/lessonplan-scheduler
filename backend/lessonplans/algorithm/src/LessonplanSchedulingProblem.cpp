@@ -10,7 +10,13 @@ namespace lessonplans {
         return lessonplanIndividual;
     }
 
-    vector<int> LessonplanSchedulingProblem::evaluateLessonplan(LessonplanIndividual* lessonplanIndividual) {
+    vector<vector<int>> LessonplanSchedulingProblem::evaluateLessonplan(LessonplanIndividual* lessonplanIndividual) {
+        unsigned short invalidTeacherSameLessonsTimes = this->checkTeachersWithSameTimesLessons(lessonplanIndividual);
+
+        unsigned short invalidRoomSameLessonTimes = this->checkRoomWithSameTimesLessons(lessonplanIndividual);
+
+        unsigned short invalidTeacherChangesForClassesSubjects = this->checkTeacherChangesForClassesSubjects(lessonplanIndividual);
+
         //-1pt - for each lesson deviated from lessons in other days
         unsigned short invalidDifferenceBetweenStartLessons = this->checkStartLessonsDifferenceBetweenDays(lessonplanIndividual);
 
@@ -20,13 +26,44 @@ namespace lessonplans {
         //-1pt - for each free period between lessons
         unsigned short invalidFreePeriodsCountBetweenLessons = this->checkFreePeriodsExistenceBetweenLessons(lessonplanIndividual);
 
-        vector<int> grades = *new vector<int>(LessonplanSchedulingProblem::scoresTypes);
+        vector<vector<int>> grades = *new vector<vector<int>>(
+                2
+        );
 
-        grades[0] = 0 - invalidDifferenceBetweenStartLessons;
-        grades[1] = 0 - invalidDifferenceBetweenLessonsCount;
-        grades[2] = 0 - invalidFreePeriodsCountBetweenLessons;
+        grades[0] = *new vector<int>(
+                LessonplanSchedulingProblem::scoresTypesImportant
+        );
+        grades[1] = *new vector<int>(
+                LessonplanSchedulingProblem::scoresTypesOptimal
+        );
+
+        grades[0][0] = 0 - invalidTeacherSameLessonsTimes;
+        grades[0][1] = 0 - invalidRoomSameLessonTimes;
+        grades[0][2] = 0 - invalidTeacherChangesForClassesSubjects;
+
+        grades[1][0] = 0 - invalidDifferenceBetweenStartLessons;
+        grades[1][1] = 0 - invalidDifferenceBetweenLessonsCount;
+        grades[1][2] = 0 - invalidFreePeriodsCountBetweenLessons;
 
         return grades;
+    }
+
+    unsigned short LessonplanSchedulingProblem::checkTeachersWithSameTimesLessons(
+            LessonplanIndividual *lessonplanIndividual
+    ) {
+        return 0;
+    }
+
+    unsigned short LessonplanSchedulingProblem::checkRoomWithSameTimesLessons(
+            LessonplanIndividual *lessonplanIndividual
+    ) {
+        return 0;
+    }
+
+    unsigned short LessonplanSchedulingProblem::checkTeacherChangesForClassesSubjects(
+            LessonplanIndividual *lessonplanIndividual
+    ) {
+        return 0;
     }
 
     unsigned short LessonplanSchedulingProblem::checkStartLessonsDifferenceBetweenDays(

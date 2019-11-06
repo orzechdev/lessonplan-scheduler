@@ -33,6 +33,8 @@ add_executable(
         src/LessonplanSchedulingProblem.cpp
         include/algorithm/LessonplanSchedulingSolution.hpp
         src/LessonplanSchedulingSolution.cpp
+        include/algorithm/LessonplanSchedulingRandomSearchAlgorithm.hpp
+        src/LessonplanSchedulingRandomSearchAlgorithm.cpp
 )
 #target_link_libraries(algorithm cython)
 

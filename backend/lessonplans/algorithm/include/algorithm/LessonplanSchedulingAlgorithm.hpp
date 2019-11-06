@@ -21,13 +21,17 @@ namespace lessonplans {
                 mutationProbability(mutationProbability) {}
 
         LessonplanSchedulingSolution *findBestLessonplan(LessonplanSchedulingProblem *lessonplanSchedulingProblem);
+        LessonplanSchedulingSolution *findBestLessonplanWithRandomSearch(LessonplanSchedulingProblem *lessonplanSchedulingProblem);
+        LessonplanSchedulingSolution *findBestLessonplanWithGreedyAlgorithm(LessonplanSchedulingProblem *lessonplanSchedulingProblem);
+        LessonplanSchedulingSolution *findBestLessonplanWithGeneticAlgorithm(LessonplanSchedulingProblem *lessonplanSchedulingProblem);
 
     private:
         int individualsCount, generationsCount;
         float crossoverProbability, mutationProbability;
         LessonplanSchedulingProblem *lessonplanSchedulingProblem;
         vector<LessonplanIndividual *> individuals;
-        vector<vector<int>> individualsScores;
+        vector<vector<int>> individualsScoresImportant;
+        vector<vector<int>> individualsScoresOptimal;
         vector<int> individualsSummaryScores;
 
         void initializePopulation();
@@ -36,9 +40,15 @@ namespace lessonplans {
 
         void mutate();
 
-        void evaluate();
+        void evaluatePopulation();
+        void evaluateIndividual(unsigned int individualIdx);
 
         void select();
+
+        void mutateWeekDays();
+        void mutateLessons();
+        void mutateTeachers();
+        void mutateRoom();
     };
 }
 
