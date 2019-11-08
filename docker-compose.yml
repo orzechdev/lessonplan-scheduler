@@ -6,6 +6,8 @@ services:
         container_name: db-postgres
         ports:
             - "5432:5432"
+        volumes:
+            - db-postgres:/var/lib/postgresql/data
     db-mongo:
         image: mongo
         container_name: db-mongo
@@ -16,7 +18,7 @@ services:
         container_name: backend
         build: ./backend
         #command: bash -c "cd ./backend/lessonplans/algorithm && python ./setup.py build_ext --inplace && cd ../../ && python ./main.py"
-        command: bash -c "./wait-for-it.sh -t 10 db-postgres:5432 -- bash -c 'cd ./backend/lessonplans/algorithm && python ./setup.py build_ext --inplace && cd ../../ && python ./manage.py migrate && python ./manage.py runserver 0.0.0.0:8000'"
+        command: bash -c "./wait-for-it.sh -t 10 db-postgres:5432 -- bash -c 'cd ./lessonplans/algorithm && python ./setup.py build_ext --inplace && cd ../../ && python ./manage.py migrate && python ./manage.py runserver 0.0.0.0:8000'"
         #DANGEROUS!!! bellow command makes migrations everytime
         #command: bash -c "./wait-for-it.sh -t 10 db-postgres:5432 -- bash -c 'cd ./backend/lessonplans/algorithm && python ./setup.py build_ext --inplace && cd ../../ && python ./manage.py makemigrations && python ./manage.py migrate && python ./manage.py runserver 0.0.0.0:8000'"
         
@@ -28,10 +30,44 @@ services:
         #command: bash -c "cd ./backend && python manage.py migrate && python ./manage.py runserver 0.0.0.0:8000"
         #command: bash -c "cd ./backend/lessonplans/algorithm && python ./setup.py build_ext --inplace && cd ../ && python ./main.py"
         volumes:
-          - .:/backend
+            - backend:/backend
         ports:
-          - "8000:8000"
+            - "8000:8000"
         depends_on:
-          - db-postgres
-          - db-mongo
+            - db-postgres
+            - db-mongo
         #command: bash -c "cd ./backend && python ./main.py"
+    frontend:
+        image: frontend
+        container_name: frontend
+        build: ./frontend
+        command: bash -c "yarn serve"
+        ports:
+            - "8080:8080"
+        volumes:
+            - frontend:/frontend
+        depends_on:
+            - db-postgres
+            - db-mongo
+            - backend
+
+volumes:
+    db-postgres:
+        driver: local
+        driver_opts:
+            type: 'none'
+            o: 'bind'
+            device: '${PWD}/data-postgres'
+    backend:
+        driver: local
+        driver_opts:
+            type: 'none'
+            o: 'bind'
+            device: '${PWD}/backend'
+    frontend:
+        driver: local
+        driver_opts:
+            type: 'none'
+            o: 'bind'
+            device: '${PWD}/frontend'
+ 
