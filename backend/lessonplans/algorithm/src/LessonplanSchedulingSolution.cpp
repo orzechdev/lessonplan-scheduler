@@ -30,11 +30,16 @@ namespace lessonplans {
         return lessonplans;
     }
 
-    vector<vector<int>> LessonplanSchedulingSolution::getAllLessonplansScores() {
-        return this->individualsScores;
+    vector<vector<int>> LessonplanSchedulingSolution::getAllLessonplansHardScores() {
+        return this->individualsHardScores;
+    }
+
+    vector<vector<int>> LessonplanSchedulingSolution::getAllLessonplansSoftScores() {
+        return this->individualsSoftScores;
     }
 
     vector<int> LessonplanSchedulingSolution::getAllLessonplansSummaryScores() {
         return this->individualsSummaryScores;
     }
+
 }

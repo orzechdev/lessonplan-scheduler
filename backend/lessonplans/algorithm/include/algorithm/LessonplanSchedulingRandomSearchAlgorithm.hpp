@@ -20,7 +20,7 @@ namespace lessonplans {
         vector<vector<int>> individualsScoresOptimal;
         vector<int> individualsSummaryScores;
 
-        int getSummaryScore(LessonplanIndividual *lessonplanIndividual, LessonplanSchedulingProblem *lessonplanSchedulingProblem);
+        static int getSummaryScore(vector<vector<int>> obtainedScores);
     };
 }
 

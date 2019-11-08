@@ -28,13 +28,23 @@ namespace lessonplans {
             LessonplanSchedulingProblem *lessonplanSchedulingProblem
     ) {
         this->individuals[0] = lessonplanSchedulingProblem->getSampleLessonplan();
-        this->individualsSummaryScores[0] = this->getSummaryScore(this->individuals[0], lessonplanSchedulingProblem);
+        vector<vector<int>> obtainedScores = lessonplanSchedulingProblem->evaluateLessonplan(this->individuals[0]);
+
+        this->individualsScoresImportant[0] = obtainedScores[0];
+        this->individualsScoresOptimal[0] = obtainedScores[1];
+
+        this->individualsSummaryScores[0] = LessonplanSchedulingRandomSearchAlgorithm::getSummaryScore(obtainedScores);
 
         int bestIndividualIdx = 0;
 
         for (int i = 1; i < this->iterationsCount; i++) {
             this->individuals[i] = lessonplanSchedulingProblem->getSampleLessonplan();
-            this->individualsSummaryScores[i] = this->getSummaryScore(this->individuals[i], lessonplanSchedulingProblem);
+            obtainedScores = lessonplanSchedulingProblem->evaluateLessonplan(this->individuals[i]);
+
+            this->individualsScoresImportant[i] = obtainedScores[0];
+            this->individualsScoresOptimal[i] = obtainedScores[1];
+
+            this->individualsSummaryScores[i] = LessonplanSchedulingRandomSearchAlgorithm::getSummaryScore(obtainedScores);
 
             if (this->individualsSummaryScores[i] > this->individualsSummaryScores[bestIndividualIdx]) {
                 bestIndividualIdx = i;
@@ -45,6 +55,7 @@ namespace lessonplans {
                 this->iterationsCount,
                 this->individuals,
                 this->individualsScoresImportant,
+                this->individualsScoresOptimal,
                 this->individualsSummaryScores
         );
 
@@ -52,11 +63,13 @@ namespace lessonplans {
     }
 
     int LessonplanSchedulingRandomSearchAlgorithm::getSummaryScore(
-            LessonplanIndividual* lessonplanIndividual, LessonplanSchedulingProblem *lessonplanSchedulingProblem
+            vector<vector<int>> obtainedScores
     ) {
-        vector<vector<int>> obtainedScores = lessonplanSchedulingProblem->evaluateLessonplan(lessonplanIndividual);
         int summaryGrade = 0;
         std::for_each(obtainedScores[0].begin(), obtainedScores[0].end(), [&] (int grade) {
+            summaryGrade += grade;
+        });
+        std::for_each(obtainedScores[1].begin(), obtainedScores[1].end(), [&] (int grade) {
             summaryGrade += grade;
         });
         return summaryGrade;

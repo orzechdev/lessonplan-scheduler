@@ -14,26 +14,31 @@ namespace lessonplans {
         LessonplanSchedulingSolution(
                 int individualsCount,
                 vector<LessonplanIndividual *> individuals,
-                vector<vector<int>> individualsScores,
+                vector<vector<int>> individualsHardScores,
+                vector<vector<int>> individualsSoftScores,
                 vector<int> individualsSummaryScores
         ) :
                 individualsCount(individualsCount),
                 individuals(std::move(individuals)),
-                individualsScores(std::move(individualsScores)),
+                individualsHardScores(std::move(individualsHardScores)),
+                individualsSoftScores(std::move(individualsSoftScores)),
                 individualsSummaryScores(std::move(individualsSummaryScores)) {}
 
         vector<vector<unsigned short>> getBestLessonplan();
 
         vector<vector<vector<unsigned short>>> getAllLessonplans();
 
-        vector<vector<int>> getAllLessonplansScores();
+        vector<vector<int>> getAllLessonplansHardScores();
+
+        vector<vector<int>> getAllLessonplansSoftScores();
 
         vector<int> getAllLessonplansSummaryScores();
 
     private:
         int individualsCount;
         vector<LessonplanIndividual *> individuals;
-        vector<vector<int>> individualsScores;
+        vector<vector<int>> individualsHardScores;
+        vector<vector<int>> individualsSoftScores;
         vector<int> individualsSummaryScores;
     };
 }

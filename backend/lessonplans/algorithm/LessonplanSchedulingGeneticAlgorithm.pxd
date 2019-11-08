@@ -5,12 +5,12 @@ from numpy import ushort
 from LessonplanSchedulingProblem cimport LessonplanSchedulingProblem
 from LessonplanSchedulingSolution cimport LessonplanSchedulingSolution
 
-cdef extern from "./src/LessonplanSchedulingAlgorithm.cpp":
+cdef extern from "./src/LessonplanSchedulingGeneticAlgorithm.cpp":
     pass
 
-cdef extern from "./include/algorithm/LessonplanSchedulingAlgorithm.hpp" namespace "lessonplans":
-    cdef cppclass LessonplanSchedulingAlgorithm:
-        LessonplanSchedulingAlgorithm(
+cdef extern from "./include/algorithm/LessonplanSchedulingGeneticAlgorithm.hpp" namespace "lessonplans":
+    cdef cppclass LessonplanSchedulingGeneticAlgorithm:
+        LessonplanSchedulingGeneticAlgorithm(
                 int population_count,
                 int generations_count,
                 float crossover_probability,

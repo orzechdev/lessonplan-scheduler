@@ -18,11 +18,11 @@ set(CMAKE_CXX_STANDARD 11)
 #target_link_libraries(cython ...)
 
 
-#add_executable(algorithm main.cpp include/algorithm/LessonplanScheduler.hpp src/LessonplanScheduler.cpp src/LessonplanSchedulingAlgorithm.hpp src/LessonplanSchedulingAlgorithm.cpp src/LessonplanGenAlgorithm.hpp src/LessonplanGenAlgorithm.cpp)
+#add_executable(algorithm main.cpp include/algorithm/LessonplanScheduler.hpp src/LessonplanScheduler.cpp src/LessonplanSchedulingGeneticAlgorithm.hpp src/LessonplanSchedulingGeneticAlgorithm.cpp src/LessonplanGenAlgorithm.hpp src/LessonplanGenAlgorithm.cpp)
 add_executable(
         algorithm
-        include/algorithm/LessonplanSchedulingAlgorithm.hpp
-        src/LessonplanSchedulingAlgorithm.cpp
+        include/algorithm/LessonplanSchedulingGeneticAlgorithm.hpp
+        src/LessonplanSchedulingGeneticAlgorithm.cpp
         src/LessonplanIndividual.hpp
         src/LessonplanIndividual.cpp
         src/LessonplanIndividualAbstractFactory.hpp
@@ -39,6 +39,6 @@ add_executable(
 #target_link_libraries(algorithm cython)
 
 
-#add_library(algorithm MODULE ${cython} main.cpp include/algorithm/LessonplanScheduler.hpp src/LessonplanScheduler.cpp src/LessonplanSchedulingAlgorithm.hpp src/LessonplanSchedulingAlgorithm.cpp src/LessonplanGenAlgorithm.hpp src/LessonplanGenAlgorithm.cpp)
+#add_library(algorithm MODULE ${cython} main.cpp include/algorithm/LessonplanScheduler.hpp src/LessonplanScheduler.cpp src/LessonplanSchedulingGeneticAlgorithm.hpp src/LessonplanSchedulingGeneticAlgorithm.cpp src/LessonplanGenAlgorithm.hpp src/LessonplanGenAlgorithm.cpp)
 #python_extension_module(algorithm)
 #install(TARGETS algorithm LIBRARY DESTINATION algorithm)

@@ -9,5 +9,6 @@ cdef extern from "./include/algorithm/LessonplanSchedulingSolution.hpp" namespac
     cdef cppclass LessonplanSchedulingSolution:
         vector[vector[ushort]] getBestLessonplan()
         vector[vector[vector[ushort]]] getAllLessonplans()
-        vector[vector[int]] getAllLessonplansScores()
+        vector[vector[int]] getAllLessonplansHardScores()
+        vector[vector[int]] getAllLessonplansSoftScores()
         vector[int] getAllLessonplansSummaryScores()

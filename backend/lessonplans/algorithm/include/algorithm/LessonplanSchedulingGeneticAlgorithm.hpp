@@ -1,5 +1,5 @@
-#ifndef ALGORITHM_LESSONPLANSCHEDULINGALGORITHM_HPP
-#define ALGORITHM_LESSONPLANSCHEDULINGALGORITHM_HPP
+#ifndef ALGORITHM_LESSONPLANSCHEDULINGGENETICALGORITHM_HPP
+#define ALGORITHM_LESSONPLANSCHEDULINGGENETICALGORITHM_HPP
 
 #include "LessonplanSchedulingProblem.hpp"
 #include "LessonplanSchedulingProblemProperties.hpp"
@@ -7,9 +7,9 @@
 #include "LessonplanSchedulingSolution.hpp"
 
 namespace lessonplans {
-    class LessonplanSchedulingAlgorithm {
+    class LessonplanSchedulingGeneticAlgorithm {
     public:
-        LessonplanSchedulingAlgorithm(
+        LessonplanSchedulingGeneticAlgorithm(
                 int populationCount,
                 int generationsCount,
                 float crossoverProbability,
@@ -21,9 +21,6 @@ namespace lessonplans {
                 mutationProbability(mutationProbability) {}
 
         LessonplanSchedulingSolution *findBestLessonplan(LessonplanSchedulingProblem *lessonplanSchedulingProblem);
-        LessonplanSchedulingSolution *findBestLessonplanWithRandomSearch(LessonplanSchedulingProblem *lessonplanSchedulingProblem);
-        LessonplanSchedulingSolution *findBestLessonplanWithGreedyAlgorithm(LessonplanSchedulingProblem *lessonplanSchedulingProblem);
-        LessonplanSchedulingSolution *findBestLessonplanWithGeneticAlgorithm(LessonplanSchedulingProblem *lessonplanSchedulingProblem);
 
     private:
         int individualsCount, generationsCount;
@@ -52,4 +49,4 @@ namespace lessonplans {
     };
 }
 
-#endif //ALGORITHM_LESSONPLANSCHEDULINGALGORITHM_HPP
+#endif //ALGORITHM_LESSONPLANSCHEDULINGGENETICALGORITHM_HPP

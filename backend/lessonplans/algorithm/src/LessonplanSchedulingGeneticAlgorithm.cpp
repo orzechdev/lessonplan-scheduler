@@ -1,55 +1,11 @@
 #include <algorithm>
-#include "../include/algorithm/LessonplanSchedulingAlgorithm.hpp"
+#include "../include/algorithm/LessonplanSchedulingGeneticAlgorithm.hpp"
 
 namespace lessonplans {
 
-    LessonplanSchedulingSolution* LessonplanSchedulingAlgorithm::findBestLessonplan(LessonplanSchedulingProblem* lessonplanSchedulingProblem) {
-        this->findBestLessonplanWithGeneticAlgorithm(lessonplanSchedulingProblem);
-    }
-
-    LessonplanSchedulingSolution *LessonplanSchedulingAlgorithm::findBestLessonplanWithRandomSearch(
-            LessonplanSchedulingProblem *lessonplanSchedulingProblem) {
-        this->lessonplanSchedulingProblem = lessonplanSchedulingProblem;
-
-        LessonplanIndividual* lessonplanIndividual = this->lessonplanSchedulingProblem->getSampleLessonplan();
-
-        vector<vector<int>> obtainedScores = this->lessonplanSchedulingProblem->evaluateLessonplan(lessonplanIndividual);
-        int summaryGrade = 0;
-        std::for_each(obtainedScores[0].begin(), obtainedScores[0].end(), [&] (int grade) {
-            summaryGrade += grade;
-        });
-
-        for (int i = 0; i < this->generationsCount; i++) {
-            LessonplanIndividual* lessonplanIndividualAnother = this->lessonplanSchedulingProblem->getSampleLessonplan();
-
-            vector<vector<int>> obtainedScoresAnother = this->lessonplanSchedulingProblem->evaluateLessonplan(lessonplanIndividual);
-            int summaryGradeAnother = 0;
-            std::for_each(obtainedScores[0].begin(), obtainedScores[0].end(), [&] (int grade) {
-                summaryGradeAnother += grade;
-            });
-
-            if (obtainedScoresAnother > obtainedScores) {
-                lessonplanIndividual = lessonplanIndividualAnother;
-            }
-        }
-
-        auto* lessonplanSchedulingSoultion = new LessonplanSchedulingSolution(
-                this->individualsCount,
-                this->individuals,
-                this->individualsScoresImportant,
-                this->individualsSummaryScores
-        );
-
-        return lessonplanSchedulingSoultion;
-    }
-
-    LessonplanSchedulingSolution *LessonplanSchedulingAlgorithm::findBestLessonplanWithGreedyAlgorithm(
-            LessonplanSchedulingProblem *lessonplanSchedulingProblem) {
-        return nullptr;
-    }
-
-    LessonplanSchedulingSolution *LessonplanSchedulingAlgorithm::findBestLessonplanWithGeneticAlgorithm(
-            LessonplanSchedulingProblem *lessonplanSchedulingProblem) {
+    LessonplanSchedulingSolution *LessonplanSchedulingGeneticAlgorithm::findBestLessonplan(
+            LessonplanSchedulingProblem *lessonplanSchedulingProblem
+    ) {
         this->lessonplanSchedulingProblem = lessonplanSchedulingProblem;
 
         this->initializePopulation();
@@ -66,13 +22,14 @@ namespace lessonplans {
                 this->individualsCount,
                 this->individuals,
                 this->individualsScoresImportant,
+                this->individualsScoresOptimal,
                 this->individualsSummaryScores
         );
 
         return lessonplanSchedulingSoultion;
     }
 
-    void LessonplanSchedulingAlgorithm::initializePopulation() {
+    void LessonplanSchedulingGeneticAlgorithm::initializePopulation() {
         this->individuals = *new vector<LessonplanIndividual*>(
                 this->individualsCount
         );
@@ -95,21 +52,21 @@ namespace lessonplans {
         }
     }
 
-    void LessonplanSchedulingAlgorithm::crossover() {
+    void LessonplanSchedulingGeneticAlgorithm::crossover() {
 
     }
 
-    void LessonplanSchedulingAlgorithm::mutate() {
+    void LessonplanSchedulingGeneticAlgorithm::mutate() {
 
     }
 
-    void LessonplanSchedulingAlgorithm::evaluatePopulation(){
+    void LessonplanSchedulingGeneticAlgorithm::evaluatePopulation(){
         for (int i = 0; i < this->individualsCount; i++) {
             this->evaluateIndividual(i);
         }
     }
 
-    void LessonplanSchedulingAlgorithm::evaluateIndividual(unsigned int individualIdx) {
+    void LessonplanSchedulingGeneticAlgorithm::evaluateIndividual(unsigned int individualIdx) {
         // Get scores for different aspects of problem
         vector<vector<int>> obtainedScores = this->lessonplanSchedulingProblem->evaluateLessonplan(this->individuals[individualIdx]);
         this->individualsScoresImportant[individualIdx] = obtainedScores[0];
@@ -128,7 +85,7 @@ namespace lessonplans {
         }
     }
 
-    void LessonplanSchedulingAlgorithm::select() {
+    void LessonplanSchedulingGeneticAlgorithm::select() {
 
     }
 
