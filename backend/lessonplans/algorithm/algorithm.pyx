@@ -3,6 +3,7 @@
 from SchedulingProblemProperties cimport SchedulingProblemProperties
 from SchedulingProblem cimport SchedulingProblem
 from SchedulingGeneticAlgorithm cimport SchedulingGeneticAlgorithm
+from SchedulingGreedyAlgorithm cimport SchedulingGreedyAlgorithm
 from SchedulingRandomSearchAlgorithm cimport SchedulingRandomSearchAlgorithm
 
 def run_algorithm(
@@ -44,6 +45,9 @@ def run_algorithm(
     scheduling_random_search_algorithm = new SchedulingRandomSearchAlgorithm(
         population_count
     )
+    # scheduling_greedy_algorithm = new SchedulingGreedyAlgorithm(
+    #     population_count
+    # )
     # scheduling_algorithm = new SchedulingGeneticAlgorithm(
     #     population_count,
     #     generations_count,

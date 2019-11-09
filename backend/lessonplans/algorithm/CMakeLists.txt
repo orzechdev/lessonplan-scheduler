@@ -33,6 +33,8 @@ add_executable(
         src/SchedulingProblem.cpp
         include/algorithm/SchedulingSolution.hpp
         src/SchedulingSolution.cpp
+        include/algorithm/SchedulingGreedyAlgorithm.hpp
+        src/SchedulingGreedyAlgorithm.cpp
         include/algorithm/SchedulingRandomSearchAlgorithm.hpp
         src/SchedulingRandomSearchAlgorithm.cpp
 )
