@@ -1,5 +1,5 @@
-#ifndef ALGORITHM_LESSONPLANSCHEDULINGSOLUTION_HPP
-#define ALGORITHM_LESSONPLANSCHEDULINGSOLUTION_HPP
+#ifndef ALGORITHM_SCHEDULINGSOLUTION_HPP
+#define ALGORITHM_SCHEDULINGSOLUTION_HPP
 
 #include <utility>
 #include <vector>
@@ -9,9 +9,9 @@
 using std::vector;
 
 namespace lessonplans {
-    class LessonplanSchedulingSolution {
+    class SchedulingSolution {
     public:
-        LessonplanSchedulingSolution(
+        SchedulingSolution(
                 int individualsCount,
                 vector<LessonplanIndividual *> individuals,
                 vector<vector<int>> individualsHardScores,
@@ -43,4 +43,4 @@ namespace lessonplans {
     };
 }
 
-#endif //ALGORITHM_LESSONPLANSCHEDULINGSOLUTION_HPP
+#endif //ALGORITHM_SCHEDULINGSOLUTION_HPP

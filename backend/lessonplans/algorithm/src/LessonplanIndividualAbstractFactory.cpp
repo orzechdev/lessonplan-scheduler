@@ -7,7 +7,7 @@
 namespace lessonplans {
 
     LessonplanIndividual *LessonplanIndividualAbstractFactory::createLessonplanIndividual(
-            LessonplanSchedulingProblemProperties *lessonplanSchedulingProblemProperties
+            SchedulingProblemProperties *lessonplanSchedulingProblemProperties
     ) {
         auto *lessonplanIndividual = new LessonplanIndividual();
 
@@ -62,7 +62,7 @@ namespace lessonplans {
 
     void LessonplanIndividualAbstractFactory::assignClassesWithSubjects(
             LessonplanIndividual *lessonplanIndividual,
-            LessonplanSchedulingProblemProperties *lessonplanSchedulingProblemProperties
+            SchedulingProblemProperties *lessonplanSchedulingProblemProperties
     ) {
         unsigned short individualDataIdx = 0;
 
@@ -108,7 +108,7 @@ namespace lessonplans {
 
     bool LessonplanIndividualAbstractFactory::tryAssignTeacher(
             LessonplanIndividual *lessonplanIndividual,
-            LessonplanSchedulingProblemProperties *lessonplanSchedulingProblemProperties,
+            SchedulingProblemProperties *lessonplanSchedulingProblemProperties,
             unsigned short individualDataIdx,
             unsigned short classId, unsigned short subjectId
     ) {
@@ -149,7 +149,7 @@ namespace lessonplans {
 
     bool LessonplanIndividualAbstractFactory::tryAssignRoom(
             LessonplanIndividual *lessonplanIndividual,
-            LessonplanSchedulingProblemProperties *lessonplanSchedulingProblemProperties,
+            SchedulingProblemProperties *lessonplanSchedulingProblemProperties,
             unsigned short individualDataIdx,
             unsigned short classId, unsigned short subjectId, unsigned short teacherId
     ) {
@@ -203,7 +203,7 @@ namespace lessonplans {
 
     bool LessonplanIndividualAbstractFactory::tryAssignWeekDayAndLesson(
             LessonplanIndividual *lessonplanIndividual,
-            LessonplanSchedulingProblemProperties *lessonplanSchedulingProblemProperties,
+            SchedulingProblemProperties *lessonplanSchedulingProblemProperties,
             unsigned short individualDataIdx,
             unsigned short classId, unsigned short subjectId, unsigned short teacherId, unsigned short roomId
     ) {
@@ -283,7 +283,7 @@ namespace lessonplans {
     }
 
     unsigned int LessonplanIndividualAbstractFactory::calculateMaxDataCount(
-            LessonplanSchedulingProblemProperties *lessonplanSchedulingProblemProperties) {
+            SchedulingProblemProperties *lessonplanSchedulingProblemProperties) {
         unsigned int maxDataCount = 0;
 
         unsigned short classesCount = lessonplanSchedulingProblemProperties->getClassesCount();

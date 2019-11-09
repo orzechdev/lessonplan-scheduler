@@ -18,27 +18,27 @@ set(CMAKE_CXX_STANDARD 11)
 #target_link_libraries(cython ...)
 
 
-#add_executable(algorithm main.cpp include/algorithm/LessonplanScheduler.hpp src/LessonplanScheduler.cpp src/LessonplanSchedulingGeneticAlgorithm.hpp src/LessonplanSchedulingGeneticAlgorithm.cpp src/LessonplanGenAlgorithm.hpp src/LessonplanGenAlgorithm.cpp)
+#add_executable(algorithm main.cpp include/algorithm/LessonplanScheduler.hpp src/LessonplanScheduler.cpp src/SchedulingGeneticAlgorithm.hpp src/SchedulingGeneticAlgorithm.cpp src/LessonplanGenAlgorithm.hpp src/LessonplanGenAlgorithm.cpp)
 add_executable(
         algorithm
-        include/algorithm/LessonplanSchedulingGeneticAlgorithm.hpp
-        src/LessonplanSchedulingGeneticAlgorithm.cpp
+        include/algorithm/SchedulingGeneticAlgorithm.hpp
+        src/SchedulingGeneticAlgorithm.cpp
         src/LessonplanIndividual.hpp
         src/LessonplanIndividual.cpp
         src/LessonplanIndividualAbstractFactory.hpp
         src/LessonplanIndividualAbstractFactory.cpp
-        include/algorithm/LessonplanSchedulingProblemProperties.hpp
-        src/LessonplanSchedulingProblemProperties.cpp
-        include/algorithm/LessonplanSchedulingProblem.hpp
-        src/LessonplanSchedulingProblem.cpp
-        include/algorithm/LessonplanSchedulingSolution.hpp
-        src/LessonplanSchedulingSolution.cpp
-        include/algorithm/LessonplanSchedulingRandomSearchAlgorithm.hpp
-        src/LessonplanSchedulingRandomSearchAlgorithm.cpp
+        include/algorithm/SchedulingProblemProperties.hpp
+        src/SchedulingProblemProperties.cpp
+        include/algorithm/SchedulingProblem.hpp
+        src/SchedulingProblem.cpp
+        include/algorithm/SchedulingSolution.hpp
+        src/SchedulingSolution.cpp
+        include/algorithm/SchedulingRandomSearchAlgorithm.hpp
+        src/SchedulingRandomSearchAlgorithm.cpp
 )
 #target_link_libraries(algorithm cython)
 
 
-#add_library(algorithm MODULE ${cython} main.cpp include/algorithm/LessonplanScheduler.hpp src/LessonplanScheduler.cpp src/LessonplanSchedulingGeneticAlgorithm.hpp src/LessonplanSchedulingGeneticAlgorithm.cpp src/LessonplanGenAlgorithm.hpp src/LessonplanGenAlgorithm.cpp)
+#add_library(algorithm MODULE ${cython} main.cpp include/algorithm/LessonplanScheduler.hpp src/LessonplanScheduler.cpp src/SchedulingGeneticAlgorithm.hpp src/SchedulingGeneticAlgorithm.cpp src/LessonplanGenAlgorithm.hpp src/LessonplanGenAlgorithm.cpp)
 #python_extension_module(algorithm)
 #install(TARGETS algorithm LIBRARY DESTINATION algorithm)

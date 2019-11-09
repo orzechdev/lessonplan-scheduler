@@ -1,9 +1,9 @@
 # distutils: language = c++
 
-from LessonplanSchedulingProblemProperties cimport LessonplanSchedulingProblemProperties
-from LessonplanSchedulingProblem cimport LessonplanSchedulingProblem
-from LessonplanSchedulingGeneticAlgorithm cimport LessonplanSchedulingGeneticAlgorithm
-from LessonplanSchedulingRandomSearchAlgorithm cimport LessonplanSchedulingRandomSearchAlgorithm
+from SchedulingProblemProperties cimport SchedulingProblemProperties
+from SchedulingProblem cimport SchedulingProblem
+from SchedulingGeneticAlgorithm cimport SchedulingGeneticAlgorithm
+from SchedulingRandomSearchAlgorithm cimport SchedulingRandomSearchAlgorithm
 
 def run_algorithm(
         population_count,
@@ -24,7 +24,7 @@ def run_algorithm(
     """
     Instantiate objects on the heap
     """
-    lessonplan_scheduling_problem_properties = new LessonplanSchedulingProblemProperties(
+    scheduling_problem_properties = new SchedulingProblemProperties(
         week_days_count,
         lessons_count,
         classes_count,
@@ -37,35 +37,35 @@ def run_algorithm(
         classes_subjects_count
     )
 
-    lessonplan_scheduling_problem = new LessonplanSchedulingProblem(
-        lessonplan_scheduling_problem_properties
+    scheduling_problem = new SchedulingProblem(
+        scheduling_problem_properties
     )
 
-    lessonplan_scheduling_random_search_algorithm = new LessonplanSchedulingRandomSearchAlgorithm(
+    scheduling_random_search_algorithm = new SchedulingRandomSearchAlgorithm(
         population_count
     )
-    # lessonplan_scheduling_algorithm = new LessonplanSchedulingGeneticAlgorithm(
+    # scheduling_algorithm = new SchedulingGeneticAlgorithm(
     #     population_count,
     #     generations_count,
     #     crossover_probability,
     #     mutation_probability
     # )
 
-    lessonplan_scheduling_solution = lessonplan_scheduling_random_search_algorithm.findBestLessonplan(
-        lessonplan_scheduling_problem
+    scheduling_solution = scheduling_random_search_algorithm.findBestLessonplan(
+        scheduling_problem
     )
 
-    best_lessonplan = lessonplan_scheduling_solution.getBestLessonplan()
-    all_lessonplans = lessonplan_scheduling_solution.getAllLessonplans()
-    all_lessonplans_hard_scores = lessonplan_scheduling_solution.getAllLessonplansHardScores()
-    all_lessonplans_soft_scores = lessonplan_scheduling_solution.getAllLessonplansSoftScores()
-    all_lessonplans_summary_scores = lessonplan_scheduling_solution.getAllLessonplansSummaryScores()
+    best_lessonplan = scheduling_solution.getBestLessonplan()
+    all_lessonplans = scheduling_solution.getAllLessonplans()
+    all_lessonplans_hard_scores = scheduling_solution.getAllLessonplansHardScores()
+    all_lessonplans_soft_scores = scheduling_solution.getAllLessonplansSoftScores()
+    all_lessonplans_summary_scores = scheduling_solution.getAllLessonplansSummaryScores()
 
     print('best lessonplan')
     print(best_lessonplan)
-    print('all lessonplans')
-    for some_lessonplan in all_lessonplans:
-        print(some_lessonplan)
+    # print('all lessonplans')
+    # for some_lessonplan in all_lessonplans:
+    #     print(some_lessonplan)
     print('all lessonplans hard scores')
     for all_lessonplan_hard_scores in all_lessonplans_hard_scores:
         print(all_lessonplan_hard_scores)
@@ -79,9 +79,9 @@ def run_algorithm(
     """
     Delete heap allocated objects
     """
-    del lessonplan_scheduling_random_search_algorithm
-    del lessonplan_scheduling_problem
-    del lessonplan_scheduling_problem_properties
-    del lessonplan_scheduling_solution
+    del scheduling_random_search_algorithm
+    del scheduling_problem
+    del scheduling_problem_properties
+    del scheduling_solution
 
     return best_lessonplan

@@ -1,18 +1,18 @@
-#ifndef ALGORITHM_LESSONPLANSCHEDULINGPROBLEM_HPP
-#define ALGORITHM_LESSONPLANSCHEDULINGPROBLEM_HPP
+#ifndef ALGORITHM_SCHEDULINGPROBLEM_HPP
+#define ALGORITHM_SCHEDULINGPROBLEM_HPP
 
 #include "../../src/LessonplanIndividual.hpp"
 
 namespace lessonplans {
-    class LessonplanSchedulingProblem {
+    class SchedulingProblem {
     public:
-        LessonplanSchedulingProblem(LessonplanSchedulingProblemProperties* lessonplanSchedulingProblemProperties) : lessonplanSchedulingProblemProperties(lessonplanSchedulingProblemProperties) {}
+        SchedulingProblem(SchedulingProblemProperties* lessonplanSchedulingProblemProperties) : lessonplanSchedulingProblemProperties(lessonplanSchedulingProblemProperties) {}
         LessonplanIndividual* getSampleLessonplan();
         vector<vector<int>> evaluateLessonplan(LessonplanIndividual* lessonplanIndividual);
         static const short scoresTypesImportant = 3;
         static const short scoresTypesOptimal = 3;
     private:
-        LessonplanSchedulingProblemProperties* lessonplanSchedulingProblemProperties;
+        SchedulingProblemProperties* lessonplanSchedulingProblemProperties;
         unsigned short checkTeachersWithSameTimesLessons(LessonplanIndividual* lessonplanIndividual);
         unsigned short checkRoomWithSameTimesLessons(LessonplanIndividual* lessonplanIndividual);
         unsigned short checkTeacherChangesForClassesSubjects(LessonplanIndividual* lessonplanIndividual);
@@ -22,4 +22,4 @@ namespace lessonplans {
     };
 }
 
-#endif //ALGORITHM_LESSONPLANSCHEDULINGPROBLEM_HPP
+#endif //ALGORITHM_SCHEDULINGPROBLEM_HPP

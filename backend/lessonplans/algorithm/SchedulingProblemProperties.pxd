@@ -2,12 +2,12 @@ from libcpp.vector cimport vector
 from libcpp cimport bool
 from numpy import ushort
 
-cdef extern from "./src/LessonplanSchedulingProblemProperties.cpp":
+cdef extern from "./src/SchedulingProblemProperties.cpp":
     pass
 
-cdef extern from "./include/algorithm/LessonplanSchedulingProblemProperties.hpp" namespace "lessonplans":
-    cdef cppclass LessonplanSchedulingProblemProperties:
-        LessonplanSchedulingProblemProperties(
+cdef extern from "./include/algorithm/SchedulingProblemProperties.hpp" namespace "lessonplans":
+    cdef cppclass SchedulingProblemProperties:
+        SchedulingProblemProperties(
                 unsigned short week_days_count,
                 unsigned short lessons_count,
                 unsigned short classes_count,

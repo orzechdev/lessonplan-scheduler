@@ -1,9 +1,9 @@
 #include <algorithm>
-#include "../include/algorithm/LessonplanSchedulingRandomSearchAlgorithm.hpp"
+#include "../include/algorithm/SchedulingRandomSearchAlgorithm.hpp"
 
 namespace lessonplans {
 
-    LessonplanSchedulingRandomSearchAlgorithm::LessonplanSchedulingRandomSearchAlgorithm(int iterationsCount) {
+    SchedulingRandomSearchAlgorithm::SchedulingRandomSearchAlgorithm(int iterationsCount) {
         this->iterationsCount = iterationsCount;
 
         this->individuals = *new vector<LessonplanIndividual*>(
@@ -11,12 +11,12 @@ namespace lessonplans {
         );
         this->individualsScoresImportant = *new vector<vector<int>>(
                 this->iterationsCount, vector<int>(
-                        LessonplanSchedulingProblem::scoresTypesImportant
+                        SchedulingProblem::scoresTypesImportant
                 )
         );
         this->individualsScoresOptimal = *new vector<vector<int>>(
                 this->iterationsCount, vector<int>(
-                        LessonplanSchedulingProblem::scoresTypesOptimal
+                        SchedulingProblem::scoresTypesOptimal
                 )
         );
         this->individualsSummaryScores = *new vector<int>(
@@ -24,8 +24,8 @@ namespace lessonplans {
         );
     }
 
-    LessonplanSchedulingSolution *LessonplanSchedulingRandomSearchAlgorithm::findBestLessonplan(
-            LessonplanSchedulingProblem *lessonplanSchedulingProblem
+    SchedulingSolution *SchedulingRandomSearchAlgorithm::findBestLessonplan(
+            SchedulingProblem *lessonplanSchedulingProblem
     ) {
         this->individuals[0] = lessonplanSchedulingProblem->getSampleLessonplan();
         vector<vector<int>> obtainedScores = lessonplanSchedulingProblem->evaluateLessonplan(this->individuals[0]);
@@ -33,7 +33,7 @@ namespace lessonplans {
         this->individualsScoresImportant[0] = obtainedScores[0];
         this->individualsScoresOptimal[0] = obtainedScores[1];
 
-        this->individualsSummaryScores[0] = LessonplanSchedulingRandomSearchAlgorithm::getSummaryScore(obtainedScores);
+        this->individualsSummaryScores[0] = SchedulingRandomSearchAlgorithm::getSummaryScore(obtainedScores);
 
         int bestIndividualIdx = 0;
 
@@ -44,14 +44,14 @@ namespace lessonplans {
             this->individualsScoresImportant[i] = obtainedScores[0];
             this->individualsScoresOptimal[i] = obtainedScores[1];
 
-            this->individualsSummaryScores[i] = LessonplanSchedulingRandomSearchAlgorithm::getSummaryScore(obtainedScores);
+            this->individualsSummaryScores[i] = SchedulingRandomSearchAlgorithm::getSummaryScore(obtainedScores);
 
             if (this->individualsSummaryScores[i] > this->individualsSummaryScores[bestIndividualIdx]) {
                 bestIndividualIdx = i;
             }
         }
 
-        auto* lessonplanSchedulingSoultion = new LessonplanSchedulingSolution(
+        auto* lessonplanSchedulingSoultion = new SchedulingSolution(
                 this->iterationsCount,
                 this->individuals,
                 this->individualsScoresImportant,
@@ -62,7 +62,7 @@ namespace lessonplans {
         return lessonplanSchedulingSoultion;
     }
 
-    int LessonplanSchedulingRandomSearchAlgorithm::getSummaryScore(
+    int SchedulingRandomSearchAlgorithm::getSummaryScore(
             vector<vector<int>> obtainedScores
     ) {
         int summaryGrade = 0;

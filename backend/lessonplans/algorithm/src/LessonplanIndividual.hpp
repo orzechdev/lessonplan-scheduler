@@ -3,7 +3,7 @@
 
 #include <vector>
 
-#include "../include/algorithm/LessonplanSchedulingProblemProperties.hpp"
+#include "../include/algorithm/SchedulingProblemProperties.hpp"
 
 using std::vector;
 

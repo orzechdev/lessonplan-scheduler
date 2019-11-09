@@ -190,6 +190,7 @@ def generate(request):
     teachers = Teacher.objects.all()
     rooms = Room.objects.all()
 
+    print('data count')
     week_days_count = len(week_days)
     print(week_days_count)
     lessons_count = len(lessons)
@@ -218,8 +219,10 @@ def generate(request):
 
         classes_subjects.append(class_subjects_idxs)
         classes_subjects_count.append(class_subjects_count)
+    print('classes subjects')
     print(classes_subjects)
     classes_subjects = np.array(classes_subjects, dtype=object)
+    print('classes subjects count')
     print(classes_subjects_count)
     classes_subjects_count = np.array(classes_subjects_count, dtype=object)
 
@@ -234,6 +237,7 @@ def generate(request):
                     teacher_subjects_idxs.append(subject_idx + 1)
 
         teachers_subjects.append(teacher_subjects_idxs)
+    print('teachers subjects')
     print(teachers_subjects)
     teachers_subjects = np.array(teachers_subjects, dtype=object)
 
@@ -248,6 +252,7 @@ def generate(request):
                     room_subjects_idxs.append(subject_idx + 1)
 
         rooms_subjects.append(room_subjects_idxs)
+    print('rooms subjects')
     print(rooms_subjects)
     rooms_subjects = np.array(rooms_subjects, dtype=object)
 

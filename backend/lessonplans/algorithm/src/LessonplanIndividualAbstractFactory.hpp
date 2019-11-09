@@ -6,29 +6,29 @@
 namespace lessonplans {
     class LessonplanIndividualAbstractFactory {
     public:
-        static LessonplanIndividual* createLessonplanIndividual(LessonplanSchedulingProblemProperties* lessonplanSchedulingProblemProperties);
+        static LessonplanIndividual* createLessonplanIndividual(SchedulingProblemProperties* lessonplanSchedulingProblemProperties);
 
     private:
-        static unsigned int calculateMaxDataCount(LessonplanSchedulingProblemProperties* lessonplanData);
+        static unsigned int calculateMaxDataCount(SchedulingProblemProperties* lessonplanData);
         static void assignClassesWithSubjects(
                 LessonplanIndividual* lessonplanIndividual,
-                LessonplanSchedulingProblemProperties* lessonplanSchedulingProblemProperties
+                SchedulingProblemProperties* lessonplanSchedulingProblemProperties
         );
         static bool tryAssignTeacher(
                 LessonplanIndividual* lessonplanIndividual,
-                LessonplanSchedulingProblemProperties* lessonplanSchedulingProblemProperties,
+                SchedulingProblemProperties* lessonplanSchedulingProblemProperties,
                 unsigned short individualDataIdx,
                 unsigned short classId, unsigned short subjectId
         );
         static bool tryAssignRoom(
                 LessonplanIndividual* lessonplanIndividual,
-                LessonplanSchedulingProblemProperties* lessonplanSchedulingProblemProperties,
+                SchedulingProblemProperties* lessonplanSchedulingProblemProperties,
                 unsigned short individualDataIdx,
                 unsigned short classId, unsigned short subjectId, unsigned short teacherId
         );
         static bool tryAssignWeekDayAndLesson(
                 LessonplanIndividual* lessonplanIndividual,
-                LessonplanSchedulingProblemProperties* lessonplanSchedulingProblemProperties,
+                SchedulingProblemProperties* lessonplanSchedulingProblemProperties,
                 unsigned short individualDataIdx,
                 unsigned short classId, unsigned short subjectId, unsigned short teacherId, unsigned short roomId
         );

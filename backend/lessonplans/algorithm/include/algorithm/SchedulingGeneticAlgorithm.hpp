@@ -1,15 +1,15 @@
-#ifndef ALGORITHM_LESSONPLANSCHEDULINGGENETICALGORITHM_HPP
-#define ALGORITHM_LESSONPLANSCHEDULINGGENETICALGORITHM_HPP
+#ifndef ALGORITHM_SCHEDULINGGENETICALGORITHM_HPP
+#define ALGORITHM_SCHEDULINGGENETICALGORITHM_HPP
 
-#include "LessonplanSchedulingProblem.hpp"
-#include "LessonplanSchedulingProblemProperties.hpp"
+#include "SchedulingProblem.hpp"
+#include "SchedulingProblemProperties.hpp"
 #include "../../src/LessonplanIndividual.hpp"
-#include "LessonplanSchedulingSolution.hpp"
+#include "SchedulingSolution.hpp"
 
 namespace lessonplans {
-    class LessonplanSchedulingGeneticAlgorithm {
+    class SchedulingGeneticAlgorithm {
     public:
-        LessonplanSchedulingGeneticAlgorithm(
+        SchedulingGeneticAlgorithm(
                 int populationCount,
                 int generationsCount,
                 float crossoverProbability,
@@ -20,12 +20,12 @@ namespace lessonplans {
                 crossoverProbability(crossoverProbability),
                 mutationProbability(mutationProbability) {}
 
-        LessonplanSchedulingSolution *findBestLessonplan(LessonplanSchedulingProblem *lessonplanSchedulingProblem);
+        SchedulingSolution *findBestLessonplan(SchedulingProblem *lessonplanSchedulingProblem);
 
     private:
         int individualsCount, generationsCount;
         float crossoverProbability, mutationProbability;
-        LessonplanSchedulingProblem *lessonplanSchedulingProblem;
+        SchedulingProblem *lessonplanSchedulingProblem;
         vector<LessonplanIndividual *> individuals;
         vector<vector<int>> individualsScoresImportant;
         vector<vector<int>> individualsScoresOptimal;
@@ -49,4 +49,4 @@ namespace lessonplans {
     };
 }
 
-#endif //ALGORITHM_LESSONPLANSCHEDULINGGENETICALGORITHM_HPP
+#endif //ALGORITHM_SCHEDULINGGENETICALGORITHM_HPP

@@ -1,16 +1,16 @@
 #include <cstdlib>
-#include "../include/algorithm/LessonplanSchedulingProblem.hpp"
+#include "../include/algorithm/SchedulingProblem.hpp"
 #include "LessonplanIndividualAbstractFactory.hpp"
 
 namespace lessonplans {
 
-    LessonplanIndividual* LessonplanSchedulingProblem::getSampleLessonplan(){
+    LessonplanIndividual* SchedulingProblem::getSampleLessonplan(){
         LessonplanIndividual* lessonplanIndividual = LessonplanIndividualAbstractFactory::createLessonplanIndividual(this->lessonplanSchedulingProblemProperties);
 
         return lessonplanIndividual;
     }
 
-    vector<vector<int>> LessonplanSchedulingProblem::evaluateLessonplan(LessonplanIndividual* lessonplanIndividual) {
+    vector<vector<int>> SchedulingProblem::evaluateLessonplan(LessonplanIndividual* lessonplanIndividual) {
         unsigned short invalidTeacherSameLessonsTimes = this->checkTeachersWithSameTimesLessons(lessonplanIndividual);
 
         unsigned short invalidRoomSameLessonTimes = this->checkRoomWithSameTimesLessons(lessonplanIndividual);
@@ -31,10 +31,10 @@ namespace lessonplans {
         );
 
         grades[0] = *new vector<int>(
-                LessonplanSchedulingProblem::scoresTypesImportant
+                SchedulingProblem::scoresTypesImportant
         );
         grades[1] = *new vector<int>(
-                LessonplanSchedulingProblem::scoresTypesOptimal
+                SchedulingProblem::scoresTypesOptimal
         );
 
         grades[0][0] = 0 - invalidTeacherSameLessonsTimes;
@@ -48,25 +48,25 @@ namespace lessonplans {
         return grades;
     }
 
-    unsigned short LessonplanSchedulingProblem::checkTeachersWithSameTimesLessons(
+    unsigned short SchedulingProblem::checkTeachersWithSameTimesLessons(
             LessonplanIndividual *lessonplanIndividual
     ) {
         return 0;
     }
 
-    unsigned short LessonplanSchedulingProblem::checkRoomWithSameTimesLessons(
+    unsigned short SchedulingProblem::checkRoomWithSameTimesLessons(
             LessonplanIndividual *lessonplanIndividual
     ) {
         return 0;
     }
 
-    unsigned short LessonplanSchedulingProblem::checkTeacherChangesForClassesSubjects(
+    unsigned short SchedulingProblem::checkTeacherChangesForClassesSubjects(
             LessonplanIndividual *lessonplanIndividual
     ) {
         return 0;
     }
 
-    unsigned short LessonplanSchedulingProblem::checkStartLessonsDifferenceBetweenDays(
+    unsigned short SchedulingProblem::checkStartLessonsDifferenceBetweenDays(
             LessonplanIndividual* lessonplanIndividual
     ) {
         unsigned int maxDataCount = lessonplanIndividual->getMaxDataCount();
@@ -130,7 +130,7 @@ namespace lessonplans {
         return startLessonsDifferencesCount;
     }
 
-    unsigned short LessonplanSchedulingProblem::checkLessonsCountDifferenceBetweenDays(
+    unsigned short SchedulingProblem::checkLessonsCountDifferenceBetweenDays(
             LessonplanIndividual* lessonplanIndividual
     ) {
         unsigned int maxDataCount = lessonplanIndividual->getMaxDataCount();
@@ -174,7 +174,7 @@ namespace lessonplans {
         return lessonsDifferencesCount;
     }
 
-    unsigned short LessonplanSchedulingProblem::checkFreePeriodsExistenceBetweenLessons(
+    unsigned short SchedulingProblem::checkFreePeriodsExistenceBetweenLessons(
             LessonplanIndividual *lessonplanIndividual
     ) {
         unsigned int maxDataCount = lessonplanIndividual->getMaxDataCount();

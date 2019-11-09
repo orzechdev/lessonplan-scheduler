@@ -1,5 +1,5 @@
-#ifndef ALGORITHM_LESSONPLANSCHEDULINGPROBLEMPROPERTIES_HPP
-#define ALGORITHM_LESSONPLANSCHEDULINGPROBLEMPROPERTIES_HPP
+#ifndef ALGORITHM_SCHEDULINGPROBLEMPROPERTIES_HPP
+#define ALGORITHM_SCHEDULINGPROBLEMPROPERTIES_HPP
 
 #include <utility>
 #include <vector>
@@ -7,9 +7,9 @@
 using std::vector;
 
 namespace lessonplans {
-    class LessonplanSchedulingProblemProperties {
+    class SchedulingProblemProperties {
     public:
-        LessonplanSchedulingProblemProperties(
+        SchedulingProblemProperties(
                 unsigned short weekDaysCount, unsigned short lessonsCount, unsigned short classesCount,
                 unsigned short subjectsCount, unsigned short teachersCount, unsigned short roomsCount,
                 vector<vector<unsigned short>> classesSubjects,
@@ -68,4 +68,4 @@ namespace lessonplans {
     };
 }
 
-#endif //ALGORITHM_LESSONPLANSCHEDULINGPROBLEMPROPERTIES_HPP
+#endif //ALGORITHM_SCHEDULINGPROBLEMPROPERTIES_HPP
