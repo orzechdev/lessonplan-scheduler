@@ -35,10 +35,15 @@ namespace lessonplans {
         this->assignedLessonAndDaysToClasses = std::move(assignedLessonAndDaysToClasses);
     }
 
-    void LessonplanIndividual::setAssignedLessonAndDayToClass(unsigned short currentWeekDayIdx,
+    void LessonplanIndividual::increaseAssignedLessonAndDayToClass(unsigned short currentWeekDayIdx,
                                                               unsigned short currentLessonIdx,
                                                               unsigned short classIdx) {
-        this->assignedLessonAndDaysToClasses[currentWeekDayIdx][currentLessonIdx][classIdx] = 1;
+        this->assignedLessonAndDaysToClasses[currentWeekDayIdx][currentLessonIdx][classIdx]++;
+    }
+    void LessonplanIndividual::decreaseAssignedLessonAndDayToClass(unsigned short currentWeekDayIdx,
+                                                                   unsigned short currentLessonIdx,
+                                                                   unsigned short classIdx) {
+        this->assignedLessonAndDaysToClasses[currentWeekDayIdx][currentLessonIdx][classIdx]--;
     }
 
     unsigned short LessonplanIndividual::getAssignedLessonAndDayToTeacher(unsigned short currentWeekDayIdx,
@@ -52,10 +57,15 @@ namespace lessonplans {
         this->assignedLessonAndDaysToTeachers = std::move(assignedLessonAndDaysToTeachers);
     }
 
-    void LessonplanIndividual::setAssignedLessonAndDayToTeacher(unsigned short currentWeekDayIdx,
+    void LessonplanIndividual::increaseAssignedLessonAndDayToTeacher(unsigned short currentWeekDayIdx,
                                                                 unsigned short currentLessonIdx,
                                                                 unsigned short teacherIdx) {
-        this->assignedLessonAndDaysToTeachers[currentWeekDayIdx][currentLessonIdx][teacherIdx] = 1;
+        this->assignedLessonAndDaysToTeachers[currentWeekDayIdx][currentLessonIdx][teacherIdx]++;
+    }
+    void LessonplanIndividual::decreaseAssignedLessonAndDayToTeacher(unsigned short currentWeekDayIdx,
+                                                                     unsigned short currentLessonIdx,
+                                                                     unsigned short teacherIdx) {
+        this->assignedLessonAndDaysToTeachers[currentWeekDayIdx][currentLessonIdx][teacherIdx]--;
     }
 
     unsigned short LessonplanIndividual::getAssignedLessonAndDayToRoom(unsigned short currentWeekDayIdx,
@@ -69,9 +79,13 @@ namespace lessonplans {
         this->assignedLessonAndDaysToRooms = std::move(assignedLessonAndDaysToRooms);
     }
 
-    void LessonplanIndividual::setAssignedLessonAndDayToRoom(unsigned short currentWeekDayIdx,
+    void LessonplanIndividual::increaseAssignedLessonAndDayToRoom(unsigned short currentWeekDayIdx,
                                                              unsigned short currentLessonIdx, unsigned short roomIdx) {
-        this->assignedLessonAndDaysToRooms[currentWeekDayIdx][currentLessonIdx][roomIdx] = 1;
+        this->assignedLessonAndDaysToRooms[currentWeekDayIdx][currentLessonIdx][roomIdx]++;
+    }
+    void LessonplanIndividual::decreaseAssignedLessonAndDayToRoom(unsigned short currentWeekDayIdx,
+                                                             unsigned short currentLessonIdx, unsigned short roomIdx) {
+        this->assignedLessonAndDaysToRooms[currentWeekDayIdx][currentLessonIdx][roomIdx]--;
     }
 
     void LessonplanIndividual::setLessonplanDataItem(
@@ -100,6 +114,18 @@ namespace lessonplans {
 
     void LessonplanIndividual::setLessonplanDataItemRoom(unsigned short dataIdx, unsigned short roomId) {
         this->lessonplan[dataIdx][5] = roomId;
+    }
+
+    vector<vector<vector<unsigned short>>> LessonplanIndividual::getAssignedLessonAndDaysToClasses() const {
+        return this->assignedLessonAndDaysToClasses;
+    }
+
+    vector<vector<vector<unsigned short>>> LessonplanIndividual::getAssignedLessonAndDaysToTeachers() const {
+        return this->assignedLessonAndDaysToTeachers;
+    }
+
+    vector<vector<vector<unsigned short>>> LessonplanIndividual::getAssignedLessonAndDaysToRooms() const {
+        return this->assignedLessonAndDaysToRooms;
     }
 
 }

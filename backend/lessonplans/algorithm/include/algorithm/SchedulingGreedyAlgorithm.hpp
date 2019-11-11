@@ -16,13 +16,14 @@ namespace lessonplans {
     private:
         int iterationsCount;
         vector<LessonplanIndividual *> individuals;
-        vector<vector<int>> individualsScoresImportant;
-        vector<vector<int>> individualsScoresOptimal;
-        vector<int> individualsSummaryScores;
+        vector<vector<int>> individualsHardScores;
+        vector<vector<int>> individualsSoftScores;
+        vector<int> individualsSummaryHardScores;
+        vector<int> individualsSummarySoftScores;
 
         LessonplanIndividual* alterLessonplan(LessonplanIndividual* lessonplanIndividual, SchedulingProblem *schedulingProblem);
 
-        static int getSummaryScore(vector<vector<int>> obtainedScores);
+        static int getSummaryScore(vector<int> obtainedScores);
     };
 }
 

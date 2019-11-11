@@ -27,6 +27,19 @@ rooms_file_path = os.path.join(module_dir, 'predefined_data/rooms.json')
 algorithm_setup_file_path = os.path.join(module_dir, 'algorithm/setup.py')
 
 
+def print_scores(scores):
+    print(scores[0])
+    print(scores[1])
+    print(scores[2])
+    print(scores[3])
+    print('...')
+    scores_len = len(scores)
+    print(scores[scores_len - 4])
+    print(scores[scores_len - 3])
+    print(scores[scores_len - 2])
+    print(scores[scores_len - 1])
+
+
 def index(request):
     return HttpResponse("Hello, world. You're at the lessonplans index.")
 
@@ -259,12 +272,12 @@ def generate(request):
     validity, message = is_data_valid(classes_subjects, teachers_subjects, rooms_subjects)
 
     if validity:
-        population_count = 10
+        population_count = 1000
         generations_count = 10
         crossover_probability = 0.2
         mutation_probability = 0.1
 
-        lessonplans_generated = run_algorithm(
+        best_lessonplan, all_lessonplans, all_lessonplans_hard_scores, all_lessonplans_soft_scores, all_lessonplans_summary_scores = run_algorithm(
             population_count,
             generations_count,
             crossover_probability,
@@ -281,16 +294,28 @@ def generate(request):
             classes_subjects_count
         )
 
+        print('best lessonplan')
+        print(best_lessonplan)
+
+        print('all lessonplans hard scores')
+        print_scores(all_lessonplans_hard_scores)
+
+        print('all lessonplans soft scores')
+        print_scores(all_lessonplans_soft_scores)
+
+        print('all lessonplans summary scores')
+        print_scores(all_lessonplans_summary_scores)
+
         lessonplan = Lessonplan(name='Noname')
         lessonplan.save()
 
-        for lessonplan_generated in lessonplans_generated:
-            week_day = week_days[lessonplan_generated[0] - 1]
-            lesson = lessons[lessonplan_generated[1] - 1]
-            class_m = classes[lessonplan_generated[2] - 1]
-            subject = subjects[lessonplan_generated[3] - 1]
-            teacher = teachers[lessonplan_generated[4] - 1]
-            room = rooms[lessonplan_generated[5] - 1]
+        for best_lessonplan_data_item in best_lessonplan:
+            week_day = week_days[best_lessonplan_data_item[0] - 1]
+            lesson = lessons[best_lessonplan_data_item[1] - 1]
+            class_m = classes[best_lessonplan_data_item[2] - 1]
+            subject = subjects[best_lessonplan_data_item[3] - 1]
+            teacher = teachers[best_lessonplan_data_item[4] - 1]
+            room = rooms[best_lessonplan_data_item[5] - 1]
 
             lessonplan_item = LessonplanItem(
                 lessonplan=lessonplan,
@@ -316,4 +341,3 @@ def build_algorithm(request):
     sandbox.run_setup(algorithm_setup_file_path, ['build_ext', '--inplace'])
 
     return HttpResponse("algorithm built")
-

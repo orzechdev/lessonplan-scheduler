@@ -30,13 +30,19 @@ namespace lessonplans {
 
         void setLessonplanDataItemRoom(unsigned short dataIdx, unsigned short roomId);
 
+        vector<vector<vector<unsigned short>>> getAssignedLessonAndDaysToClasses() const;
+        vector<vector<vector<unsigned short>>> getAssignedLessonAndDaysToTeachers() const;
+        vector<vector<vector<unsigned short>>> getAssignedLessonAndDaysToRooms() const;
+
         unsigned short getAssignedLessonAndDayToClass(unsigned short currentWeekDayIdx, unsigned short currentLessonIdx,
                                                       unsigned short classIdx) const;
 
         void setAssignedLessonAndDaysToClasses(vector<vector<vector<unsigned short>>> assignedLessonAndDaysToClasses);
 
-        void setAssignedLessonAndDayToClass(unsigned short currentWeekDayIdx, unsigned short currentLessonIdx,
+        void increaseAssignedLessonAndDayToClass(unsigned short currentWeekDayIdx, unsigned short currentLessonIdx,
                                             unsigned short classIdx);
+        void decreaseAssignedLessonAndDayToClass(unsigned short currentWeekDayIdx, unsigned short currentLessonIdx,
+                                                 unsigned short classIdx);
 
         unsigned short
         getAssignedLessonAndDayToTeacher(unsigned short currentWeekDayIdx, unsigned short currentLessonIdx,
@@ -44,16 +50,20 @@ namespace lessonplans {
 
         void setAssignedLessonAndDaysToTeachers(vector<vector<vector<unsigned short>>> assignedLessonAndDaysToTeachers);
 
-        void setAssignedLessonAndDayToTeacher(unsigned short currentWeekDayIdx, unsigned short currentLessonIdx,
+        void increaseAssignedLessonAndDayToTeacher(unsigned short currentWeekDayIdx, unsigned short currentLessonIdx,
                                               unsigned short teacherIdx);
+        void decreaseAssignedLessonAndDayToTeacher(unsigned short currentWeekDayIdx, unsigned short currentLessonIdx,
+                                                   unsigned short teacherIdx);
 
         unsigned short getAssignedLessonAndDayToRoom(unsigned short currentWeekDayIdx, unsigned short currentLessonIdx,
                                                      unsigned short roomIdx) const;
 
         void setAssignedLessonAndDaysToRooms(vector<vector<vector<unsigned short>>> assignedLessonAndDaysToRooms);
 
-        void setAssignedLessonAndDayToRoom(unsigned short currentWeekDayIdx, unsigned short currentLessonIdx,
+        void increaseAssignedLessonAndDayToRoom(unsigned short currentWeekDayIdx, unsigned short currentLessonIdx,
                                            unsigned short roomIdx);
+        void decreaseAssignedLessonAndDayToRoom(unsigned short currentWeekDayIdx, unsigned short currentLessonIdx,
+                                                unsigned short roomIdx);
 
         static const short dataTypes = 6;
 

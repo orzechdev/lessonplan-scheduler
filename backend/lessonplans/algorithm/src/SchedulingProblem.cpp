@@ -51,13 +51,61 @@ namespace lessonplans {
     unsigned short SchedulingProblem::checkTeachersWithSameTimesLessons(
             LessonplanIndividual *lessonplanIndividual
     ) {
-        return 0;
+        unsigned short weekDaysCount = schedulingProblemProperties->getWeekDaysCount();
+        unsigned short lessonsCount = schedulingProblemProperties->getLessonsCount();
+        unsigned short teachersCount = schedulingProblemProperties->getTeachersCount();
+
+        unsigned short teachersSameTimeSlotsCount = 0;
+
+        // Iterate through list of week days
+        for (unsigned short weekDayIdx = 0; weekDayIdx < weekDaysCount; weekDayIdx++) {
+
+            // Iterate through list of lessons
+            for (unsigned short lessonIdx = 0; lessonIdx < lessonsCount; lessonIdx++) {
+
+                // Iterate through list of teachers
+                for (unsigned short teacherIdx = 0; teacherIdx < teachersCount; teacherIdx++) {
+
+                    unsigned short assignedLessonAndDayToTeacherCount = lessonplanIndividual->getAssignedLessonAndDayToTeacher(weekDayIdx, lessonIdx, teacherIdx);
+
+                    if (assignedLessonAndDayToTeacherCount > 1) {
+                        teachersSameTimeSlotsCount += assignedLessonAndDayToTeacherCount - 1;
+                    }
+                }
+            }
+        }
+
+        return teachersSameTimeSlotsCount;
     }
 
     unsigned short SchedulingProblem::checkRoomWithSameTimesLessons(
             LessonplanIndividual *lessonplanIndividual
     ) {
-        return 0;
+        unsigned short weekDaysCount = schedulingProblemProperties->getWeekDaysCount();
+        unsigned short lessonsCount = schedulingProblemProperties->getLessonsCount();
+        unsigned short roomsCount = schedulingProblemProperties->getRoomsCount();
+
+        unsigned short roomsSameTimeSlotsCount = 0;
+
+        // Iterate through list of week days
+        for (unsigned short weekDayIdx = 0; weekDayIdx < weekDaysCount; weekDayIdx++) {
+
+            // Iterate through list of lessons
+            for (unsigned short lessonIdx = 0; lessonIdx < lessonsCount; lessonIdx++) {
+
+                // Iterate through list of rooms
+                for (unsigned short roomIdx = 0; roomIdx < roomsCount; roomIdx++) {
+
+                    unsigned short assignedLessonAndDayToRoomCount = lessonplanIndividual->getAssignedLessonAndDayToRoom(weekDayIdx, lessonIdx, roomIdx);
+
+                    if (assignedLessonAndDayToRoomCount > 1) {
+                        roomsSameTimeSlotsCount += assignedLessonAndDayToRoomCount - 1;
+                    }
+                }
+            }
+        }
+
+        return roomsSameTimeSlotsCount;
     }
 
     unsigned short SchedulingProblem::checkTeacherChangesForClassesSubjects(

@@ -10,17 +10,20 @@ namespace lessonplans {
         this->individuals = *new vector<LessonplanIndividual*>(
                 this->iterationsCount
         );
-        this->individualsScoresImportant = *new vector<vector<int>>(
+        this->individualsHardScores = *new vector<vector<int>>(
                 this->iterationsCount, vector<int>(
                         SchedulingProblem::scoresTypesImportant
                 )
         );
-        this->individualsScoresOptimal = *new vector<vector<int>>(
+        this->individualsSoftScores = *new vector<vector<int>>(
                 this->iterationsCount, vector<int>(
                         SchedulingProblem::scoresTypesOptimal
                 )
         );
-        this->individualsSummaryScores = *new vector<int>(
+        this->individualsSummaryHardScores = *new vector<int>(
+                this->iterationsCount
+        );
+        this->individualsSummarySoftScores = *new vector<int>(
                 this->iterationsCount
         );
     }
@@ -29,10 +32,11 @@ namespace lessonplans {
         this->individuals[0] = schedulingProblem->getSampleLessonplan();
         vector<vector<int>> obtainedScores = schedulingProblem->evaluateLessonplan(this->individuals[0]);
 
-        this->individualsScoresImportant[0] = obtainedScores[0];
-        this->individualsScoresOptimal[0] = obtainedScores[1];
+        this->individualsHardScores[0] = obtainedScores[0];
+        this->individualsSoftScores[0] = obtainedScores[1];
 
-        this->individualsSummaryScores[0] = SchedulingGreedyAlgorithm::getSummaryScore(obtainedScores);
+        this->individualsSummaryHardScores[0] = SchedulingGreedyAlgorithm::getSummaryScore(obtainedScores[0]);
+        this->individualsSummarySoftScores[0] = SchedulingGreedyAlgorithm::getSummaryScore(obtainedScores[1]);
 
         int bestIndividualIdx = 0;
 
@@ -40,12 +44,21 @@ namespace lessonplans {
             this->individuals[i] = this->alterLessonplan(this->individuals[bestIndividualIdx], schedulingProblem);
             obtainedScores = schedulingProblem->evaluateLessonplan(this->individuals[i]);
 
-            this->individualsScoresImportant[i] = obtainedScores[0];
-            this->individualsScoresOptimal[i] = obtainedScores[1];
+            this->individualsHardScores[i] = obtainedScores[0];
+            this->individualsSoftScores[i] = obtainedScores[1];
 
-            this->individualsSummaryScores[i] = SchedulingGreedyAlgorithm::getSummaryScore(obtainedScores);
+            this->individualsSummaryHardScores[i] = SchedulingGreedyAlgorithm::getSummaryScore(obtainedScores[0]);
+            this->individualsSummarySoftScores[i] = SchedulingGreedyAlgorithm::getSummaryScore(obtainedScores[1]);
 
-            if (this->individualsSummaryScores[i] > this->individualsSummaryScores[bestIndividualIdx]) {
+            // Compare scores in greedy way:
+            // choose best move in currently occurred situation, i.e. first maximize hard score, and just after then
+            // maximize soft score - it might be not be the best chosen path, although it is the greedy chosen path,
+            // the best from individual perspective
+            if (this->individualsSummaryHardScores[i] == this->individualsSummaryHardScores[bestIndividualIdx]) {
+                if (this->individualsSummarySoftScores[i] > this->individualsSummarySoftScores[bestIndividualIdx]) {
+                    bestIndividualIdx = i;
+                }
+            } else if (this->individualsSummaryHardScores[i] > this->individualsSummaryHardScores[bestIndividualIdx]) {
                 bestIndividualIdx = i;
             }
         }
@@ -53,9 +66,9 @@ namespace lessonplans {
         auto* lessonplanSchedulingSoultion = new SchedulingSolution(
                 this->iterationsCount,
                 this->individuals,
-                this->individualsScoresImportant,
-                this->individualsScoresOptimal,
-                this->individualsSummaryScores
+                this->individualsHardScores,
+                this->individualsSoftScores,
+                this->individualsSummaryHardScores
         );
 
         return lessonplanSchedulingSoultion;
@@ -63,7 +76,10 @@ namespace lessonplans {
 
     LessonplanIndividual *SchedulingGreedyAlgorithm::alterLessonplan(LessonplanIndividual *lessonplanIndividual, SchedulingProblem *schedulingProblem) {
         /*
-         * method not yet implemented
+         * TODO: consider dividing scores during fitness function evaluation into e.g. classes and use those grades
+         *  when determining what part of lesson plan should be changed (classIdWithChange and classSubjectIdWithChange)
+         *  in order to not just rely on randomness - instead do it as in ideal greedy algorithm (doing best move
+         *  in currently occurred situation)
          */
 
         /*
@@ -77,6 +93,17 @@ namespace lessonplans {
          */
 
         unsigned int maxDataCount = lessonplanIndividual->getMaxDataCount();
+//        vector<vector<vector<unsigned short>>> assignedLessonAndDaysToClasses = lessonplanIndividual->getAssignedLessonAndDaysToClasses();
+//        vector<vector<vector<unsigned short>>> assignedLessonAndDaysToTeachers = lessonplanIndividual->getAssignedLessonAndDaysToTeachers();
+//        vector<vector<vector<unsigned short>>> assignedLessonAndDaysToRooms = lessonplanIndividual->getAssignedLessonAndDaysToRooms();
+
+        auto *newLessonplanIndividual = new LessonplanIndividual();
+
+        newLessonplanIndividual->setMaxDataCount(maxDataCount);
+        newLessonplanIndividual->setAssignedLessonAndDaysToClasses(lessonplanIndividual->getAssignedLessonAndDaysToClasses());
+        newLessonplanIndividual->setAssignedLessonAndDaysToTeachers(lessonplanIndividual->getAssignedLessonAndDaysToTeachers());
+        newLessonplanIndividual->setAssignedLessonAndDaysToRooms(lessonplanIndividual->getAssignedLessonAndDaysToRooms());
+
         vector<vector<unsigned short>> lessonplan = lessonplanIndividual->getLessonplan();
 
         unsigned short weekDaysCount = schedulingProblem->getSchedulingProblemProperties()->getWeekDaysCount();
@@ -111,35 +138,107 @@ namespace lessonplans {
             unsigned short subjectId = lessonplan[dataIdx][3];
 
            if (classId == classIdWithChange1 && subjectId == classSubjectIdWithChange1) {
+
+               unsigned short weekDayId = lessonplan[dataIdx][0];
+               unsigned short lessonId = lessonplan[dataIdx][1];
+               unsigned short teacherId = lessonplan[dataIdx][4];
+               unsigned short roomId = lessonplan[dataIdx][5];
+
+               unsigned short weekDayIdx = weekDayId - 1;
+               unsigned short lessonIdx = lessonId - 1;
+               unsigned short classIdx = classId - 1;
+               unsigned short teacherIdx = teacherId - 1;
+               unsigned short roomIdx = roomId - 1;
+
+               newLessonplanIndividual->decreaseAssignedLessonAndDayToClass(weekDayIdx, lessonIdx, classIdx);
+               newLessonplanIndividual->decreaseAssignedLessonAndDayToTeacher(weekDayIdx, lessonIdx, teacherIdx);
+               newLessonplanIndividual->decreaseAssignedLessonAndDayToRoom(weekDayIdx, lessonIdx, roomIdx);
+
+               // Change assignment count in memory
                unsigned short weekDayIdToChange = RandomNumberGenerator::getRandomNumber(1, weekDaysCount);
                lessonplan[dataIdx][0] = weekDayIdToChange;
+               unsigned short weekDayIdxToChange = weekDayIdToChange - 1;
+
+               newLessonplanIndividual->increaseAssignedLessonAndDayToClass(weekDayIdxToChange, lessonIdx, classIdx);
+               newLessonplanIndividual->increaseAssignedLessonAndDayToTeacher(weekDayIdxToChange, lessonIdx, teacherIdx);
+               newLessonplanIndividual->increaseAssignedLessonAndDayToRoom(weekDayIdxToChange, lessonIdx, roomIdx);
+
            } else if (classId == classIdWithChange2 && subjectId == classSubjectIdWithChange2) {
+
+               unsigned short weekDayId = lessonplan[dataIdx][0];
+               unsigned short lessonId = lessonplan[dataIdx][1];
+               unsigned short teacherId = lessonplan[dataIdx][4];
+               unsigned short roomId = lessonplan[dataIdx][5];
+
+               unsigned short weekDayIdx = weekDayId - 1;
+               unsigned short lessonIdx = lessonId - 1;
+               unsigned short classIdx = classId - 1;
+               unsigned short teacherIdx = teacherId - 1;
+               unsigned short roomIdx = roomId - 1;
+
+               newLessonplanIndividual->decreaseAssignedLessonAndDayToClass(weekDayIdx, lessonIdx, classIdx);
+               newLessonplanIndividual->decreaseAssignedLessonAndDayToTeacher(weekDayIdx, lessonIdx, teacherIdx);
+               newLessonplanIndividual->decreaseAssignedLessonAndDayToRoom(weekDayIdx, lessonIdx, roomIdx);
+
+               // Change assignment count in memory
                unsigned short lessonIdToChange = RandomNumberGenerator::getRandomNumber(1, lessonsCount);
                lessonplan[dataIdx][1] = lessonIdToChange;
+               unsigned short lessonIdxToChange = lessonIdToChange - 1;
+
+               newLessonplanIndividual->increaseAssignedLessonAndDayToClass(weekDayIdx, lessonIdxToChange, classIdx);
+               newLessonplanIndividual->increaseAssignedLessonAndDayToTeacher(weekDayIdx, lessonIdxToChange, teacherIdx);
+               newLessonplanIndividual->increaseAssignedLessonAndDayToRoom(weekDayIdx, lessonIdxToChange, roomIdx);
+
            } else if (classId == classIdWithChange3 && subjectId == classSubjectIdWithChange3) {
+
+               unsigned short weekDayId = lessonplan[dataIdx][0];
+               unsigned short lessonId = lessonplan[dataIdx][1];
+               unsigned short teacherId = lessonplan[dataIdx][4];
+
+               unsigned short weekDayIdx = weekDayId - 1;
+               unsigned short lessonIdx = lessonId - 1;
+               unsigned short teacherIdx = teacherId - 1;
+
+               newLessonplanIndividual->decreaseAssignedLessonAndDayToTeacher(weekDayIdx, lessonIdx, teacherIdx);
+
+               // Change assignment count in memory
                lessonplan[dataIdx][4] = teacherIdToChange;
+               unsigned short teacherIdxToChange = teacherIdToChange - 1;
+
+               newLessonplanIndividual->increaseAssignedLessonAndDayToTeacher(weekDayIdx, lessonIdx, teacherIdxToChange);
+
            } else if (classId == classIdWithChange4 && subjectId == classSubjectIdWithChange4) {
+
+               unsigned short weekDayId = lessonplan[dataIdx][0];
+               unsigned short lessonId = lessonplan[dataIdx][1];
+               unsigned short roomId = lessonplan[dataIdx][5];
+
+               unsigned short weekDayIdx = weekDayId - 1;
+               unsigned short lessonIdx = lessonId - 1;
+               unsigned short roomIdx = roomId - 1;
+
+               newLessonplanIndividual->decreaseAssignedLessonAndDayToRoom(weekDayIdx, lessonIdx, roomIdx);
+
+               // Change assignment count in memory
                unsigned short roomIdToChange = RandomNumberGenerator::getRandomNumber(1, roomsCount);
                lessonplan[dataIdx][5] = roomIdToChange;
+               unsigned short roomIdxToChange = roomIdToChange - 1;
+
+               newLessonplanIndividual->increaseAssignedLessonAndDayToRoom(weekDayIdx, lessonIdx, roomIdxToChange);
+
            }
         }
 
-        auto *newLessonplanIndividual = new LessonplanIndividual();
-
-        newLessonplanIndividual->setMaxDataCount(maxDataCount);
         newLessonplanIndividual->setLessonplan(lessonplan);
 
         return newLessonplanIndividual;
     }
 
     int SchedulingGreedyAlgorithm::getSummaryScore(
-            vector<vector<int>> obtainedScores
+            vector<int> obtainedScores
     ) {
         int summaryGrade = 0;
-        std::for_each(obtainedScores[0].begin(), obtainedScores[0].end(), [&] (int grade) {
-            summaryGrade += grade;
-        });
-        std::for_each(obtainedScores[1].begin(), obtainedScores[1].end(), [&] (int grade) {
+        std::for_each(obtainedScores.begin(), obtainedScores.end(), [&] (int grade) {
             summaryGrade += grade;
         });
         return summaryGrade;

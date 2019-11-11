@@ -6,6 +6,7 @@ from SchedulingGeneticAlgorithm cimport SchedulingGeneticAlgorithm
 from SchedulingGreedyAlgorithm cimport SchedulingGreedyAlgorithm
 from SchedulingRandomSearchAlgorithm cimport SchedulingRandomSearchAlgorithm
 
+
 def run_algorithm(
         population_count,
         generations_count,
@@ -65,21 +66,6 @@ def run_algorithm(
     all_lessonplans_soft_scores = scheduling_solution.getAllLessonplansSoftScores()
     all_lessonplans_summary_scores = scheduling_solution.getAllLessonplansSummaryScores()
 
-    print('best lessonplan')
-    print(best_lessonplan)
-    # print('all lessonplans')
-    # for some_lessonplan in all_lessonplans:
-    #     print(some_lessonplan)
-    print('all lessonplans hard scores')
-    for all_lessonplan_hard_scores in all_lessonplans_hard_scores:
-        print(all_lessonplan_hard_scores)
-    print('all lessonplans soft scores')
-    for all_lessonplan_soft_scores in all_lessonplans_soft_scores:
-        print(all_lessonplan_soft_scores)
-    print('all lessonplans summary scores')
-    for all_lessonplan_summary_scores in all_lessonplans_summary_scores:
-        print(all_lessonplan_summary_scores)
-
     """
     Delete heap allocated objects
     """
@@ -88,4 +74,4 @@ def run_algorithm(
     del scheduling_problem_properties
     del scheduling_solution
 
-    return best_lessonplan
+    return best_lessonplan, all_lessonplans, all_lessonplans_hard_scores, all_lessonplans_soft_scores, all_lessonplans_summary_scores

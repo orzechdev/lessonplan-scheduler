@@ -30,21 +30,21 @@ namespace lessonplans {
         vector<vector<vector<unsigned short>>> assignedLessonAndDaysToClasses = *new vector<vector<vector<unsigned short>>>(
                 weekDaysCount, vector<vector<unsigned short>>(
                         lessonsCount, vector<unsigned short>(
-                                classesCount
+                                classesCount, 0
                         )
                 )
         );
         vector<vector<vector<unsigned short>>> assignedLessonAndDaysToTeachers = *new vector<vector<vector<unsigned short>>>(
                 weekDaysCount, vector<vector<unsigned short>>(
                         lessonsCount, vector<unsigned short>(
-                                teachersCount
+                                teachersCount, 0
                         )
                 )
         );
         vector<vector<vector<unsigned short>>> assignedLessonAndDaysToRooms = *new vector<vector<vector<unsigned short>>>(
                 weekDaysCount, vector<vector<unsigned short>>(
                         lessonsCount, vector<unsigned short>(
-                                roomsCount
+                                roomsCount, 0
                         )
                 )
         );
@@ -237,11 +237,11 @@ namespace lessonplans {
                         ) {
                     // WEEK DAY AND LESSON OK
 
-                    lessonplanIndividual->setAssignedLessonAndDayToClass(currentWeekDayIdx, currentLessonIdx,
+                    lessonplanIndividual->increaseAssignedLessonAndDayToClass(currentWeekDayIdx, currentLessonIdx,
                                                                          classId - 1);
-                    lessonplanIndividual->setAssignedLessonAndDayToTeacher(currentWeekDayIdx, currentLessonIdx,
+                    lessonplanIndividual->increaseAssignedLessonAndDayToTeacher(currentWeekDayIdx, currentLessonIdx,
                                                                            teacherId - 1);
-                    lessonplanIndividual->setAssignedLessonAndDayToRoom(currentWeekDayIdx, currentLessonIdx,
+                    lessonplanIndividual->increaseAssignedLessonAndDayToRoom(currentWeekDayIdx, currentLessonIdx,
                                                                         roomId - 1);
 
                     lessonplanIndividual->setLessonplanDataItem(individualDataIdx, weekDayId, lessonId, classId,
