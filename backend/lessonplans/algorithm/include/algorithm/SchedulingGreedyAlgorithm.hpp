@@ -11,7 +11,7 @@ namespace lessonplans {
     public:
         SchedulingGreedyAlgorithm(int iterationsCount);
 
-        SchedulingSolution *findBestLessonplan(SchedulingProblem *lessonplanSchedulingProblem);
+        SchedulingSolution *findBestLessonplan(SchedulingProblem *schedulingProblem);
 
     private:
         int iterationsCount;
@@ -20,7 +20,7 @@ namespace lessonplans {
         vector<vector<int>> individualsScoresOptimal;
         vector<int> individualsSummaryScores;
 
-        LessonplanIndividual* alterLessonplan(LessonplanIndividual* lessonplanIndividual);
+        LessonplanIndividual* alterLessonplan(LessonplanIndividual* lessonplanIndividual, SchedulingProblem *schedulingProblem);
 
         static int getSummaryScore(vector<vector<int>> obtainedScores);
     };

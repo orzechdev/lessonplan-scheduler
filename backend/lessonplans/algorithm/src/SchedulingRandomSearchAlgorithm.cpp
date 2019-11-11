@@ -25,10 +25,10 @@ namespace lessonplans {
     }
 
     SchedulingSolution *SchedulingRandomSearchAlgorithm::findBestLessonplan(
-            SchedulingProblem *lessonplanSchedulingProblem
+            SchedulingProblem *schedulingProblem
     ) {
-        this->individuals[0] = lessonplanSchedulingProblem->getSampleLessonplan();
-        vector<vector<int>> obtainedScores = lessonplanSchedulingProblem->evaluateLessonplan(this->individuals[0]);
+        this->individuals[0] = schedulingProblem->getSampleLessonplan();
+        vector<vector<int>> obtainedScores = schedulingProblem->evaluateLessonplan(this->individuals[0]);
 
         this->individualsScoresImportant[0] = obtainedScores[0];
         this->individualsScoresOptimal[0] = obtainedScores[1];
@@ -38,8 +38,8 @@ namespace lessonplans {
         int bestIndividualIdx = 0;
 
         for (int i = 1; i < this->iterationsCount; i++) {
-            this->individuals[i] = lessonplanSchedulingProblem->getSampleLessonplan();
-            obtainedScores = lessonplanSchedulingProblem->evaluateLessonplan(this->individuals[i]);
+            this->individuals[i] = schedulingProblem->getSampleLessonplan();
+            obtainedScores = schedulingProblem->evaluateLessonplan(this->individuals[i]);
 
             this->individualsScoresImportant[i] = obtainedScores[0];
             this->individualsScoresOptimal[i] = obtainedScores[1];

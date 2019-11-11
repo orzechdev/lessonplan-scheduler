@@ -23,6 +23,7 @@ setup(
                       # "./src/LessonplanSchedulingSolution.cpp",
                       "./src/LessonplanIndividual.cpp",
                       "./src/LessonplanIndividualAbstractFactory.cpp",
+                      "./src/RandomNumberGenerator.cpp",
                   ],  # "algorithm.pyx" and also all ".cpp" files must be listed here !!!!
               )
           ],

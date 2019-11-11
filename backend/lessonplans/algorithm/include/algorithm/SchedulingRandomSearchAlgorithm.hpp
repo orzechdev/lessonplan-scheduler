@@ -11,7 +11,7 @@ namespace lessonplans {
     public:
         SchedulingRandomSearchAlgorithm(int iterationsCount);
 
-        SchedulingSolution *findBestLessonplan(SchedulingProblem *lessonplanSchedulingProblem);
+        SchedulingSolution *findBestLessonplan(SchedulingProblem *schedulingProblem);
 
     private:
         int iterationsCount;

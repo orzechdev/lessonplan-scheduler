@@ -86,4 +86,20 @@ namespace lessonplans {
         this->lessonplan[dataIdx][5] = roomId;
     }
 
+    void LessonplanIndividual::setLessonplanDataItemWeekDay(unsigned short dataIdx, unsigned short weekDayId) {
+        this->lessonplan[dataIdx][0] = weekDayId;
+    }
+
+    void LessonplanIndividual::setLessonplanDataItemLesson(unsigned short dataIdx, unsigned short lessonId) {
+        this->lessonplan[dataIdx][1] = lessonId;
+    }
+
+    void LessonplanIndividual::setLessonplanDataItemTeacher(unsigned short dataIdx, unsigned short teacherId) {
+        this->lessonplan[dataIdx][4] = teacherId;
+    }
+
+    void LessonplanIndividual::setLessonplanDataItemRoom(unsigned short dataIdx, unsigned short roomId) {
+        this->lessonplan[dataIdx][5] = roomId;
+    }
+
 }

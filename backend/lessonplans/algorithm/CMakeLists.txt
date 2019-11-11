@@ -37,6 +37,8 @@ add_executable(
         src/SchedulingGreedyAlgorithm.cpp
         include/algorithm/SchedulingRandomSearchAlgorithm.hpp
         src/SchedulingRandomSearchAlgorithm.cpp
+        src/RandomNumberGenerator.hpp
+        src/RandomNumberGenerator.cpp
 )
 #target_link_libraries(algorithm cython)
 

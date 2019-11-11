@@ -5,7 +5,7 @@
 namespace lessonplans {
 
     LessonplanIndividual* SchedulingProblem::getSampleLessonplan(){
-        LessonplanIndividual* lessonplanIndividual = LessonplanIndividualAbstractFactory::createLessonplanIndividual(this->lessonplanSchedulingProblemProperties);
+        LessonplanIndividual* lessonplanIndividual = LessonplanIndividualAbstractFactory::createLessonplanIndividual(this->schedulingProblemProperties);
 
         return lessonplanIndividual;
     }
@@ -70,8 +70,8 @@ namespace lessonplans {
             LessonplanIndividual* lessonplanIndividual
     ) {
         unsigned int maxDataCount = lessonplanIndividual->getMaxDataCount();
-        unsigned short classesCount = this->lessonplanSchedulingProblemProperties->getClassesCount();
-        unsigned short weekDaysCount = this->lessonplanSchedulingProblemProperties->getWeekDaysCount();
+        unsigned short classesCount = this->schedulingProblemProperties->getClassesCount();
+        unsigned short weekDaysCount = this->schedulingProblemProperties->getWeekDaysCount();
 
         vector<vector<unsigned short>> lessonplan = lessonplanIndividual->getLessonplan();
 
@@ -134,8 +134,8 @@ namespace lessonplans {
             LessonplanIndividual* lessonplanIndividual
     ) {
         unsigned int maxDataCount = lessonplanIndividual->getMaxDataCount();
-        unsigned short classesCount = this->lessonplanSchedulingProblemProperties->getClassesCount();
-        unsigned short weekDaysCount = this->lessonplanSchedulingProblemProperties->getWeekDaysCount();
+        unsigned short classesCount = this->schedulingProblemProperties->getClassesCount();
+        unsigned short weekDaysCount = this->schedulingProblemProperties->getWeekDaysCount();
 
         vector<vector<unsigned short>> lessonplan = lessonplanIndividual->getLessonplan();
 
@@ -178,8 +178,8 @@ namespace lessonplans {
             LessonplanIndividual *lessonplanIndividual
     ) {
         unsigned int maxDataCount = lessonplanIndividual->getMaxDataCount();
-        unsigned short classesCount = this->lessonplanSchedulingProblemProperties->getClassesCount();
-        unsigned short weekDaysCount = this->lessonplanSchedulingProblemProperties->getWeekDaysCount();
+        unsigned short classesCount = this->schedulingProblemProperties->getClassesCount();
+        unsigned short weekDaysCount = this->schedulingProblemProperties->getWeekDaysCount();
 
         vector<vector<unsigned short>> lessonplan = lessonplanIndividual->getLessonplan();
 
@@ -245,6 +245,10 @@ namespace lessonplans {
         }
 
         return classesFreePeriodsCount;
+    }
+
+    SchedulingProblemProperties *SchedulingProblem::getSchedulingProblemProperties() const {
+        return schedulingProblemProperties;
     }
 
 }

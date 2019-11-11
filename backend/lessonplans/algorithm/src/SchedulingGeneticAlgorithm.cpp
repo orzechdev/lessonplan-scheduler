@@ -4,9 +4,9 @@
 namespace lessonplans {
 
     SchedulingSolution *SchedulingGeneticAlgorithm::findBestLessonplan(
-            SchedulingProblem *lessonplanSchedulingProblem
+            SchedulingProblem *schedulingProblem
     ) {
-        this->lessonplanSchedulingProblem = lessonplanSchedulingProblem;
+        this->schedulingProblem = schedulingProblem;
 
         this->initializePopulation();
         this->evaluatePopulation();
@@ -48,7 +48,7 @@ namespace lessonplans {
         );
 
         for (int i = 0; i < this->individualsCount; i++) {
-            this->individuals[i] = this->lessonplanSchedulingProblem->getSampleLessonplan();
+            this->individuals[i] = this->schedulingProblem->getSampleLessonplan();
         }
     }
 
@@ -68,7 +68,7 @@ namespace lessonplans {
 
     void SchedulingGeneticAlgorithm::evaluateIndividual(unsigned int individualIdx) {
         // Get scores for different aspects of problem
-        vector<vector<int>> obtainedScores = this->lessonplanSchedulingProblem->evaluateLessonplan(this->individuals[individualIdx]);
+        vector<vector<int>> obtainedScores = this->schedulingProblem->evaluateLessonplan(this->individuals[individualIdx]);
         this->individualsScoresImportant[individualIdx] = obtainedScores[0];
         this->individualsScoresOptimal[individualIdx] = obtainedScores[1];
 

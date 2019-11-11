@@ -20,12 +20,12 @@ namespace lessonplans {
                 crossoverProbability(crossoverProbability),
                 mutationProbability(mutationProbability) {}
 
-        SchedulingSolution *findBestLessonplan(SchedulingProblem *lessonplanSchedulingProblem);
+        SchedulingSolution *findBestLessonplan(SchedulingProblem *schedulingProblem);
 
     private:
         int individualsCount, generationsCount;
         float crossoverProbability, mutationProbability;
-        SchedulingProblem *lessonplanSchedulingProblem;
+        SchedulingProblem *schedulingProblem;
         vector<LessonplanIndividual *> individuals;
         vector<vector<int>> individualsScoresImportant;
         vector<vector<int>> individualsScoresOptimal;

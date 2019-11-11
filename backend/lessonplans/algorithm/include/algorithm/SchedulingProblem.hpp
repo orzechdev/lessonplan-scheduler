@@ -6,13 +6,15 @@
 namespace lessonplans {
     class SchedulingProblem {
     public:
-        SchedulingProblem(SchedulingProblemProperties* lessonplanSchedulingProblemProperties) : lessonplanSchedulingProblemProperties(lessonplanSchedulingProblemProperties) {}
+        SchedulingProblem(SchedulingProblemProperties* schedulingProblemProperties) : schedulingProblemProperties(schedulingProblemProperties) {}
         LessonplanIndividual* getSampleLessonplan();
         vector<vector<int>> evaluateLessonplan(LessonplanIndividual* lessonplanIndividual);
         static const short scoresTypesImportant = 3;
         static const short scoresTypesOptimal = 3;
+        SchedulingProblemProperties *getSchedulingProblemProperties() const;
+
     private:
-        SchedulingProblemProperties* lessonplanSchedulingProblemProperties;
+        SchedulingProblemProperties* schedulingProblemProperties;
         unsigned short checkTeachersWithSameTimesLessons(LessonplanIndividual* lessonplanIndividual);
         unsigned short checkRoomWithSameTimesLessons(LessonplanIndividual* lessonplanIndividual);
         unsigned short checkTeacherChangesForClassesSubjects(LessonplanIndividual* lessonplanIndividual);

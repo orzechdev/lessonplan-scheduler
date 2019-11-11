@@ -42,12 +42,12 @@ def run_algorithm(
         scheduling_problem_properties
     )
 
-    scheduling_random_search_algorithm = new SchedulingRandomSearchAlgorithm(
-        population_count
-    )
-    # scheduling_greedy_algorithm = new SchedulingGreedyAlgorithm(
+    # scheduling_random_search_algorithm = new SchedulingRandomSearchAlgorithm(
     #     population_count
     # )
+    scheduling_greedy_algorithm = new SchedulingGreedyAlgorithm(
+        population_count
+    )
     # scheduling_algorithm = new SchedulingGeneticAlgorithm(
     #     population_count,
     #     generations_count,
@@ -55,7 +55,7 @@ def run_algorithm(
     #     mutation_probability
     # )
 
-    scheduling_solution = scheduling_random_search_algorithm.findBestLessonplan(
+    scheduling_solution = scheduling_greedy_algorithm.findBestLessonplan(
         scheduling_problem
     )
 
@@ -83,7 +83,7 @@ def run_algorithm(
     """
     Delete heap allocated objects
     """
-    del scheduling_random_search_algorithm
+    del scheduling_greedy_algorithm
     del scheduling_problem
     del scheduling_problem_properties
     del scheduling_solution
