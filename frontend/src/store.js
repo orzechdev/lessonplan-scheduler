@@ -34,10 +34,10 @@ export default new Vuex.Store({
     async getLessonplans(context) {
       const { value, error } = await MainApi.getLessonplans()
       
-      if (error || !value) {
+      if (error || !value || !value.data || !value.data.lessonplans_lessonplanitem) {
         context.commit('SET_ERROR', error)
       } else {
-        context.commit('SET_LESSONPLANS', value)
+        context.commit('SET_LESSONPLANS', value.data.lessonplans_lessonplanitem)
       }
     }
   }

@@ -1,3 +1,5 @@
+import { gql_query } from "./graphQuery";
+
 const getResponseValue = async (response) => {
     const contentType = response.headers.get("content-type");
     if (contentType && contentType.indexOf("application/json") !== -1) {
@@ -55,19 +57,14 @@ const fetchFromGraphApi = async ({ method = 'POST', body }) => {
 }
 
 export default {
-    getLessonplans: async () => await fetchFromRestApi({
-        path: 'lessonplans/lessonplans'
+    getLessonplans: async () => await fetchFromGraphApi({
+        body: {
+            query: gql_query.lessonplan_items
+        }
     }),
     getClasses: async () => await fetchFromGraphApi({
         body: {
-          query: `
-            query {
-              lessonplans_class {
-                id
-                name
-              }
-            }
-          `
+            query: gql_query.classes
         },
     }),
 }

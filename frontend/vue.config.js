@@ -10,5 +10,8 @@ module.exports = {
     watchOptions: {
       poll: true
     }
+  },
+  configureWebpack: {
+    devtool: 'source-map'
   }
 }

@@ -20,8 +20,8 @@ const router = new Router({
     }
   ]
 })
-router.replace({ path: '/example-school/lessonplans', redirect: '/' })
-router.replace({ path: '/example-school/lessonplans', redirect: '/#' })
-router.replace({ path: '/example-school/lessonplans', redirect: '/#/' })
+router.replace({ path: '/example-school/lessonplans', redirect: '/' }).catch(() => {})
+router.replace({ path: '/example-school/lessonplans', redirect: '/#' }).catch(() => {})
+router.replace({ path: '/example-school/lessonplans', redirect: '/#/' }).catch(() => {})
 
 export default router
