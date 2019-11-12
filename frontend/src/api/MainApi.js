@@ -11,12 +11,12 @@ const fetchFromApi = async ({ path, method = 'GET', body }) => {
     try {
         const headers = {
             method: method,
-            headers: new Headers({ "Content-Type": "application/json" })
+            headers: { "Content-Type": "application/json" }
         };
         if (body) {
             headers.body = JSON.stringify(body)
         }
-        const response = await fetch(`http://localhost:8000/${path}`, headers)
+        const response = await fetch(path, headers)
 
         if (!response.ok) {
             throw new Error(response.statusText)
@@ -29,7 +29,7 @@ const fetchFromApi = async ({ path, method = 'GET', body }) => {
             error: null
         }
     } catch (error) {
-        console.log(err)
+        console.log(error)
 
         return {
             value: null,
@@ -38,11 +38,36 @@ const fetchFromApi = async ({ path, method = 'GET', body }) => {
     }
 }
 
-export default {
-    getClasses: async () => await fetchFromApi({
-        path: 'lessonplans/classes'
-    }),
-    getLessonplans: async () => await fetchFromApi({
-        path: 'lessonplans/lessonplans'
+const fetchFromRestApi = async ({ path, method = 'GET', body }) => {
+    return await fetchFromApi({
+        path: `http://localhost:8000/${path}`,
+        method,
+        body,
     })
+}
+
+const fetchFromGraphApi = async ({ method = 'POST', body }) => {
+    return await fetchFromApi({
+        path: `http://localhost:7000/v1/graphql`,
+        method,
+        body,
+    })
+}
+
+export default {
+    getLessonplans: async () => await fetchFromRestApi({
+        path: 'lessonplans/lessonplans'
+    }),
+    getClasses: async () => await fetchFromGraphApi({
+        body: {
+          query: `
+            query {
+              lessonplans_class {
+                id
+                name
+              }
+            }
+          `
+        },
+    }),
 }

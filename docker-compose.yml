@@ -6,6 +6,7 @@ services:
         container_name: db-postgres
         ports:
             - "5432:5432"
+        restart: always
         volumes:
             - db-postgres:/var/lib/postgresql/data
     db-mongo:
@@ -13,6 +14,18 @@ services:
         container_name: db-mongo
         ports:
             - "27017:27017"
+        restart: always
+    graphql:
+        image: hasura/graphql-engine:v1.0.0-beta.9
+        container_name: graphql
+        ports:
+            - "7000:8080"
+        depends_on:
+            - db-postgres
+        restart: always
+        environment:
+            HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:@db-postgres:5432/postgres
+            HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
     backend:
         image: backend
         container_name: backend
@@ -36,6 +49,7 @@ services:
         depends_on:
             - db-postgres
             - db-mongo
+        restart: always
         #command: bash -c "cd ./backend && python ./main.py"
     frontend:
         image: frontend
@@ -50,6 +64,7 @@ services:
             - db-postgres
             - db-mongo
             - backend
+        restart: always
 
 volumes:
     db-postgres:

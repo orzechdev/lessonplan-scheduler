@@ -16,9 +16,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
-
-import MainApi from "@/api/MainApi";
+import { mapActions } from "vuex";
 
 export default {
   name: "app",
