@@ -21,7 +21,7 @@ def run_algorithm(
         classes_subjects,
         teachers_subjects,
         rooms_subjects,
-        classes_subjects_count
+        classes_subjects_instances_number
 ):
     """
     Instantiate objects on the heap
@@ -36,7 +36,7 @@ def run_algorithm(
         classes_subjects,
         teachers_subjects,
         rooms_subjects,
-        classes_subjects_count
+        classes_subjects_instances_number
     )
 
     scheduling_problem = new SchedulingProblem(

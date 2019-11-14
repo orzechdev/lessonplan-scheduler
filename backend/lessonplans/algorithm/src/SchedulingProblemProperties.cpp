@@ -55,13 +55,17 @@ namespace lessonplans {
         return this->getRoomsSubjects()[roomIdx];
     }
 
-    const vector<vector<unsigned short>> &SchedulingProblemProperties::getClassesSubjectsCount() const {
-        return classesSubjectsCount;
+    const vector<vector<unsigned short>> &SchedulingProblemProperties::getClassesSubjectsInstancesNumber() const {
+        return classesSubjectsInstancesNumber;
     }
 
     const vector<unsigned short> &
-    SchedulingProblemProperties::getClassSubjectsCount(unsigned short classIdx) const {
-        return this->getClassesSubjectsCount()[classIdx];
+    SchedulingProblemProperties::getClassSubjectsInstancesNumber(unsigned short classIdx) const {
+        return this->getClassesSubjectsInstancesNumber()[classIdx];
+    }
+
+    unsigned short SchedulingProblemProperties::getClassSubjectsCount(unsigned short classIdx) const {
+        return static_cast<unsigned short>(this->getClassesSubjects()[classIdx].size());
     }
 
 }

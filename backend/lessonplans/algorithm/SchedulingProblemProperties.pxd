@@ -17,5 +17,5 @@ cdef extern from "./include/algorithm/SchedulingProblemProperties.hpp" namespace
                 vector[vector[ushort]] classes_subjects,
                 vector[vector[ushort]] teachers_subjects,
                 vector[vector[ushort]] rooms_subjects,
-                vector[vector[ushort]] classes_subjects_count
+                vector[vector[ushort]] classes_subjects_instances_number
         ) except +

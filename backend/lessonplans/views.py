@@ -218,7 +218,7 @@ def generate(request):
     print(rooms_count)
 
     classes_subjects = []
-    classes_subjects_count = []
+    classes_subjects_instances_number = []
     for class_m in classes:
         class_subjects = ClassSubject.objects.filter(class_model=class_m)
         class_subjects_idxs = []
@@ -231,13 +231,13 @@ def generate(request):
                     class_subjects_count.append(class_subject.count_in_week)
 
         classes_subjects.append(class_subjects_idxs)
-        classes_subjects_count.append(class_subjects_count)
+        classes_subjects_instances_number.append(class_subjects_count)
     print('classes subjects')
     print(classes_subjects)
     classes_subjects = np.array(classes_subjects, dtype=object)
-    print('classes subjects count')
-    print(classes_subjects_count)
-    classes_subjects_count = np.array(classes_subjects_count, dtype=object)
+    print('classes subjects instances number')
+    print(classes_subjects_instances_number)
+    classes_subjects_instances_number = np.array(classes_subjects_instances_number, dtype=object)
 
     teachers_subjects = []
     for teacher in teachers:
@@ -291,7 +291,7 @@ def generate(request):
             classes_subjects,
             teachers_subjects,
             rooms_subjects,
-            classes_subjects_count
+            classes_subjects_instances_number
         )
 
         print('best lessonplan')

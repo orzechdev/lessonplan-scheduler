@@ -76,7 +76,7 @@ namespace lessonplans {
         for (unsigned short classIdx = 0; classIdx < classesCount; classIdx++) {
             unsigned short classId = classesIdsSequence[classIdx];
             vector<unsigned short> classSubjects = schedulingProblemProperties->getClassSubjects(classId - 1);
-            vector<unsigned short> classSubjectsEachCount = schedulingProblemProperties->getClassSubjectsCount(
+            vector<unsigned short> classSubjectsEachCount = schedulingProblemProperties->getClassSubjectsInstancesNumber(
                     classId - 1);
             auto classSubjectsCount = static_cast<unsigned short>(classSubjects.size());
 
@@ -262,7 +262,7 @@ namespace lessonplans {
         unsigned short classesCount = schedulingProblemProperties->getClassesCount();
 
         for (unsigned short classIdx = 0; classIdx < classesCount; classIdx++) {
-            auto classSubjectsEachCount = schedulingProblemProperties->getClassSubjectsCount(classIdx);
+            auto classSubjectsEachCount = schedulingProblemProperties->getClassSubjectsInstancesNumber(classIdx);
 
             std::for_each(classSubjectsEachCount.begin(), classSubjectsEachCount.end(), [&] (unsigned short classSubjectNCount) {
                 maxDataCount += classSubjectNCount;

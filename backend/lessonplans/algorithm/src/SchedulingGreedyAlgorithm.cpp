@@ -117,14 +117,10 @@ namespace lessonplans {
         unsigned short classIdWithChange3 = RandomNumberGenerator::getRandomNumber(1, classesCount);
         unsigned short classIdWithChange4 = RandomNumberGenerator::getRandomNumber(1, classesCount);
 
-        vector<unsigned short> class1EachSubjectCount = schedulingProblem->getSchedulingProblemProperties()->getClassSubjectsCount(classIdWithChange1 - 1);
-        auto class1SubjectsCount = static_cast<unsigned short>(class1EachSubjectCount.size());
-        vector<unsigned short> class2EachSubjectCount = schedulingProblem->getSchedulingProblemProperties()->getClassSubjectsCount(classIdWithChange2 - 1);
-        auto class2SubjectsCount = static_cast<unsigned short>(class2EachSubjectCount.size());
-        vector<unsigned short> class3EachSubjectCount = schedulingProblem->getSchedulingProblemProperties()->getClassSubjectsCount(classIdWithChange3 - 1);
-        auto class3SubjectsCount = static_cast<unsigned short>(class3EachSubjectCount.size());
-        vector<unsigned short> class4EachSubjectCount = schedulingProblem->getSchedulingProblemProperties()->getClassSubjectsCount(classIdWithChange4 - 1);
-        auto class4SubjectsCount = static_cast<unsigned short>(class4EachSubjectCount.size());
+        auto class1SubjectsCount = schedulingProblem->getSchedulingProblemProperties()->getClassSubjectsCount(classIdWithChange1 - 1);
+        auto class2SubjectsCount = schedulingProblem->getSchedulingProblemProperties()->getClassSubjectsCount(classIdWithChange2 - 1);
+        auto class3SubjectsCount = schedulingProblem->getSchedulingProblemProperties()->getClassSubjectsCount(classIdWithChange3 - 1);
+        auto class4SubjectsCount = schedulingProblem->getSchedulingProblemProperties()->getClassSubjectsCount(classIdWithChange4 - 1);
 
         unsigned short classSubjectIdWithChange1 = RandomNumberGenerator::getRandomNumber(1, class1SubjectsCount);
         unsigned short classSubjectIdWithChange2 = RandomNumberGenerator::getRandomNumber(1, class2SubjectsCount);

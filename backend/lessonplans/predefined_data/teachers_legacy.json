@@ -3,8 +3,8 @@
     "id": 1,
     "name": "John Kowalski",
     "subjects": [
-      6,
-      7,
+      12,
+      13,
       18
     ]
   },
@@ -12,103 +12,110 @@
     "id": 2,
     "name": "Steve Nowak",
     "subjects": [
-      2
+      6,
+      7,
+      18
     ]
   },
   {
     "id": 3,
     "name": "Adam Potocki",
     "subjects": [
-      2,
-      9
+      4,
+      5,
+      18
     ]
   },
   {
     "id": 4,
     "name": "Sylwia Wybicka",
     "subjects": [
-      13
+      1,
+      18
     ]
   },
   {
     "id": 5,
     "name": "Zygmunt Wiśniewski",
     "subjects": [
-      13
+      3
     ]
   },
   {
     "id": 6,
     "name": "Tadeusz Mazur",
     "subjects": [
-      20
+      2
     ]
   },
   {
     "id": 7,
     "name": "Wiktor Korzeniowski",
     "subjects": [
-      4
+      8,
+      9
     ]
   },
   {
     "id": 8,
     "name": "Adam Wójcik",
     "subjects": [
-      3,
-      18
+      8,
+      10,
+      11
     ]
   },
   {
     "id": 9,
     "name": "Krzysztof Kowalczyk",
     "subjects": [
-      13,
-      18
+      14,
+      15
     ]
   },
   {
     "id": 10,
     "name": "Aleksandra Kamińska",
     "subjects": [
-      5
+      16,
+      18
     ]
   },
   {
     "id": 11,
     "name": "Zygmunt Piotrowski",
     "subjects": [
-      3,
-      15
+      2
     ]
   },
   {
     "id": 12,
     "name": "Maciej Jankowski",
     "subjects": [
-      16,
-      18
+      3
     ]
   },
   {
     "id": 13,
     "name": "Ewa Zając",
     "subjects": [
-      10,
-      18
+      1
     ]
   },
   {
     "id": 14,
     "name": "Mirosław Kaczmarek",
     "subjects": [
-      20
+      4,
+      5
     ]
   },
   {
     "id": 15,
     "name": "Adam Woźniak",
     "subjects": [
+      6,
+      7,
       9,
       18
     ]
@@ -117,54 +124,55 @@
     "id": 16,
     "name": "Zygmunt Piotrowski",
     "subjects": [
-      16
+      2
     ]
   },
   {
     "id": 17,
     "name": "Aleksandra Zielińska",
     "subjects": [
-      1,
-      19
+      8,
+      10,
+      11
     ]
   },
   {
     "id": 18,
     "name": "Grzegorz Grabowski",
     "subjects": [
-      19,
-      16
+      12,
+      13,
+      18
     ]
   },
   {
     "id": 19,
     "name": "Bogusław Wójcik",
     "subjects": [
-      2
+      14,
+      15
     ]
   },
   {
     "id": 20,
     "name": "Kamil Grzebień",
     "subjects": [
-      1,
-      18
+      2
     ]
   },
   {
     "id": 21,
     "name": "Ireneusz Dąbrowski",
     "subjects": [
-      3,
-      18
+      16,
+      17
     ]
   },
   {
     "id": 22,
     "name": "Grażyna Nowak",
     "subjects": [
-      6,
-      7,
+      19,
       18
     ]
   },
@@ -172,15 +180,14 @@
     "id": 23,
     "name": "Alicja Kowalska",
     "subjects": [
-      16
+      19
     ]
   },
   {
     "id": 24,
     "name": "Krystyna Wiśniewska",
     "subjects": [
-      2,
-      7,
+      19,
       18
     ]
   },
@@ -188,6 +195,8 @@
     "id": 25,
     "name": "Edyta Zdebiak",
     "subjects": [
+      1,
+      18,
       19
     ]
   },
@@ -202,7 +211,7 @@
     "id": 27,
     "name": "Krzysztof Stefanko",
     "subjects": [
-      8
+      19
     ]
   },
   {
@@ -210,35 +219,44 @@
     "name": "Eugeniusz Kwiatkowski",
     "subjects": [
       1,
-      18
+      2,
+      3
     ]
   },
   {
     "id": 26,
     "name": "Zbigniew Gruźlik",
     "subjects": [
-      19
+      4,
+      5,
+      8
     ]
   },
   {
     "id": 27,
     "name": "Krzysztof Wesołowski",
     "subjects": [
-      11
+      10,
+      11,
+      12
     ]
   },
   {
     "id": 25,
     "name": "Monika Wróblewska",
     "subjects": [
-      17
+      6,
+      7,
+      9,
+      16
     ]
   },
   {
     "id": 26,
     "name": "Tadeusz Michalski",
     "subjects": [
-      16
+      13,
+      18
     ]
   },
   {
@@ -246,14 +264,37 @@
     "name": "Mirosław Wróbel",
     "subjects": [
       14,
-      18
+      15,
+      18,
+      5,
+      4
     ]
   },
   {
     "id": 25,
     "name": "Wiktor Próchnicki",
     "subjects": [
-      12
+      16,
+      17,
+      18
+    ]
+  },
+  {
+    "id": 26,
+    "name": "Mikołaj Muc",
+    "subjects": [
+      1,
+      2,
+      6,
+      7
+    ]
+  },
+  {
+    "id": 27,
+    "name": "Katarzyna Zaporowska",
+    "subjects": [
+      13,
+      14
     ]
   }
 ]

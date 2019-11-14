@@ -15,7 +15,7 @@ namespace lessonplans {
                 vector<vector<unsigned short>> classesSubjects,
                 vector<vector<unsigned short>> teachersSubjects,
                 vector<vector<unsigned short>> roomsSubjects,
-                vector<vector<unsigned short>> classesSubjectsCount
+                vector<vector<unsigned short>> classesSubjectsInstancesNumber
         ) :
                 weekDaysCount(weekDaysCount), lessonsCount(lessonsCount),
                 classesCount(classesCount), subjectsCount(subjectsCount),
@@ -23,7 +23,7 @@ namespace lessonplans {
                 classesSubjects(std::move(classesSubjects)),
                 teachersSubjects(std::move(teachersSubjects)),
                 roomsSubjects(std::move(roomsSubjects)),
-                classesSubjectsCount(std::move(classesSubjectsCount)) {}
+                classesSubjectsInstancesNumber(std::move(classesSubjectsInstancesNumber)) {}
 
         unsigned short getWeekDaysCount() const;
 
@@ -49,9 +49,11 @@ namespace lessonplans {
 
         const vector<unsigned short> &getRoomSubjects(unsigned short roomIdx) const;
 
-        const vector<vector<unsigned short>> &getClassesSubjectsCount() const;
+        const vector<vector<unsigned short>> &getClassesSubjectsInstancesNumber() const;
 
-        const vector<unsigned short> &getClassSubjectsCount(unsigned short classIdx) const;
+        const vector<unsigned short> &getClassSubjectsInstancesNumber(unsigned short classIdx) const;
+
+        unsigned short getClassSubjectsCount(unsigned short classIdx) const;
 
     private:
         unsigned short weekDaysCount;
@@ -64,7 +66,7 @@ namespace lessonplans {
         vector<vector<unsigned short>> classesSubjects;
         vector<vector<unsigned short>> teachersSubjects;
         vector<vector<unsigned short>> roomsSubjects;
-        vector<vector<unsigned short>> classesSubjectsCount;
+        vector<vector<unsigned short>> classesSubjectsInstancesNumber;
     };
 }
 
