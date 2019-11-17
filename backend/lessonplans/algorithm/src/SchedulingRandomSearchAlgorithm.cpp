@@ -52,8 +52,7 @@ namespace lessonplans {
         }
 
         auto* lessonplanSchedulingSoultion = new SchedulingSolution(
-                this->iterationsCount,
-                this->individuals,
+                this->individuals[bestIndividualIdx],
                 this->individualsScoresImportant,
                 this->individualsScoresOptimal,
                 this->individualsSummaryScores

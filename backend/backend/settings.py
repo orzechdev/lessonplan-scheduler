@@ -91,15 +91,15 @@ DATABASES = {
         'HOST': 'db-postgres',
         'PORT': 5432,
     },
-    'mongodb': {
-        'ENGINE': 'django.db.backends.dummy',
-    }
+    # 'mongodb': {
+    #     'ENGINE': 'django.db.backends.dummy',
+    # }
 }
 
-AUTHENTICATION_BACKENDS = (
-    'mongoengine.django.auth.MongoEngineBackend',
-)
-mongoengine.connect("db-mongo", host="db-mongo",  port=27017)
+# AUTHENTICATION_BACKENDS = (
+#     'mongoengine.django.auth.MongoEngineBackend',
+# )
+# mongoengine.connect("db-mongo", host="db-mongo",  port=27017)
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators

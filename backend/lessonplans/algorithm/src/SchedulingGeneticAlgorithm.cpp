@@ -19,8 +19,7 @@ namespace lessonplans {
         }
 
         auto* lessonplanSchedulingSoultion = new SchedulingSolution(
-                this->individualsCount,
-                this->individuals,
+                this->individuals[0],
                 this->individualsScoresImportant,
                 this->individualsScoresOptimal,
                 this->individualsSummaryScores

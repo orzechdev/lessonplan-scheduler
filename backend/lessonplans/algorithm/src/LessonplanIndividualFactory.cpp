@@ -2,30 +2,22 @@
 #include <chrono>
 #include <random>
 #include <algorithm>
-#include "LessonplanIndividualAbstractFactory.hpp"
+#include "LessonplanIndividualFactory.hpp"
 #include "RandomNumberGenerator.hpp"
 
 namespace lessonplans {
 
-    LessonplanIndividual *LessonplanIndividualAbstractFactory::createLessonplanIndividual(
+    LessonplanIndividual *LessonplanIndividualFactory::createLessonplanIndividual(
             SchedulingProblemProperties *schedulingProblemProperties
     ) {
         auto *lessonplanIndividual = new LessonplanIndividual();
+        auto *lessonplanIndividualDescriptor = new LessonplanIndividualDescriptor();
 
         unsigned short weekDaysCount = schedulingProblemProperties->getWeekDaysCount();
         unsigned short lessonsCount = schedulingProblemProperties->getLessonsCount();
         unsigned short classesCount = schedulingProblemProperties->getClassesCount();
         unsigned short teachersCount = schedulingProblemProperties->getTeachersCount();
         unsigned short roomsCount = schedulingProblemProperties->getRoomsCount();
-
-        unsigned int maxDataCount = LessonplanIndividualAbstractFactory::calculateMaxDataCount(
-                schedulingProblemProperties);
-
-        vector<vector<unsigned short>> lessonplan = *new vector<vector<unsigned short>>(
-                maxDataCount, vector<unsigned short>(
-                        LessonplanIndividual::dataTypes
-                )
-        );
 
         vector<vector<vector<unsigned short>>> assignedLessonAndDaysToClasses = *new vector<vector<vector<unsigned short>>>(
                 weekDaysCount, vector<vector<unsigned short>>(
@@ -49,20 +41,33 @@ namespace lessonplans {
                 )
         );
 
+        lessonplanIndividualDescriptor->setAssignedLessonAndDaysToClasses(assignedLessonAndDaysToClasses);
+        lessonplanIndividualDescriptor->setAssignedLessonAndDaysToTeachers(assignedLessonAndDaysToTeachers);
+        lessonplanIndividualDescriptor->setAssignedLessonAndDaysToRooms(assignedLessonAndDaysToRooms);
+
+        lessonplanIndividual->setLessonplanIndividualDescriptor(lessonplanIndividualDescriptor);
+
+        unsigned int maxDataCount = LessonplanIndividualFactory::calculateMaxDataCount(
+                schedulingProblemProperties);
+
+        vector<vector<unsigned short>> lessonplan = *new vector<vector<unsigned short>>(
+                maxDataCount, vector<unsigned short>(
+                        LessonplanIndividual::dataTypes
+                )
+        );
+
         lessonplanIndividual->setMaxDataCount(maxDataCount);
         lessonplanIndividual->setLessonplan(lessonplan);
-        lessonplanIndividual->setAssignedLessonAndDaysToClasses(assignedLessonAndDaysToClasses);
-        lessonplanIndividual->setAssignedLessonAndDaysToTeachers(assignedLessonAndDaysToTeachers);
-        lessonplanIndividual->setAssignedLessonAndDaysToRooms(assignedLessonAndDaysToRooms);
 
-        LessonplanIndividualAbstractFactory::assignClassesWithSubjects(lessonplanIndividual,
-                                                                       schedulingProblemProperties);
+        LessonplanIndividualFactory::assignClassesWithSubjects(lessonplanIndividual, lessonplanIndividualDescriptor,
+                                                               schedulingProblemProperties);
 
         return lessonplanIndividual;
     }
 
-    void LessonplanIndividualAbstractFactory::assignClassesWithSubjects(
+    void LessonplanIndividualFactory::assignClassesWithSubjects(
             LessonplanIndividual *lessonplanIndividual,
+            LessonplanIndividualDescriptor* lessonplanIndividualDescriptor,
             SchedulingProblemProperties *schedulingProblemProperties
     ) {
         unsigned short individualDataIdx = 0;
@@ -94,10 +99,11 @@ namespace lessonplans {
                 // SUBJECT OK
 
                 for (unsigned short subjectNumber = 1; subjectNumber <= classSubjectEachCount; subjectNumber++) {
-                    bool teacherFound = LessonplanIndividualAbstractFactory::tryAssignTeacher(lessonplanIndividual,
-                                                                                              schedulingProblemProperties,
-                                                                                              individualDataIdx,
-                                                                                              classId, subjectId);
+                    bool teacherFound = LessonplanIndividualFactory::tryAssignTeacher(lessonplanIndividual,
+                                                                                      lessonplanIndividualDescriptor,
+                                                                                      schedulingProblemProperties,
+                                                                                      individualDataIdx,
+                                                                                      classId, subjectId);
 
                     if (teacherFound) {
                         individualDataIdx++;
@@ -107,8 +113,9 @@ namespace lessonplans {
         }
     }
 
-    bool LessonplanIndividualAbstractFactory::tryAssignTeacher(
+    bool LessonplanIndividualFactory::tryAssignTeacher(
             LessonplanIndividual *lessonplanIndividual,
+            LessonplanIndividualDescriptor* lessonplanIndividualDescriptor,
             SchedulingProblemProperties *schedulingProblemProperties,
             unsigned short individualDataIdx,
             unsigned short classId, unsigned short subjectId
@@ -132,11 +139,12 @@ namespace lessonplans {
                 if (subjectId == subjectId2) {
                     // TEACHER OK
 
-                    bool roomFound = LessonplanIndividualAbstractFactory::tryAssignRoom(lessonplanIndividual,
-                                                                                        schedulingProblemProperties,
-                                                                                        individualDataIdx, classId,
-                                                                                        subjectId,
-                                                                                        teacherId);
+                    bool roomFound = LessonplanIndividualFactory::tryAssignRoom(lessonplanIndividual,
+                                                                                lessonplanIndividualDescriptor,
+                                                                                schedulingProblemProperties,
+                                                                                individualDataIdx, classId,
+                                                                                subjectId,
+                                                                                teacherId);
 
                     if (roomFound) {
                         return true;
@@ -148,8 +156,9 @@ namespace lessonplans {
         return false;
     }
 
-    bool LessonplanIndividualAbstractFactory::tryAssignRoom(
+    bool LessonplanIndividualFactory::tryAssignRoom(
             LessonplanIndividual *lessonplanIndividual,
+            LessonplanIndividualDescriptor* lessonplanIndividualDescriptor,
             SchedulingProblemProperties *schedulingProblemProperties,
             unsigned short individualDataIdx,
             unsigned short classId, unsigned short subjectId, unsigned short teacherId
@@ -173,8 +182,9 @@ namespace lessonplans {
                     if (subjectId == subjectId3) {
                         // ROOM OK
 
-                        bool weekDayAndLessonFound = LessonplanIndividualAbstractFactory::tryAssignWeekDayAndLesson(
+                        bool weekDayAndLessonFound = LessonplanIndividualFactory::tryAssignWeekDayAndLesson(
                                 lessonplanIndividual,
+                                lessonplanIndividualDescriptor,
                                 schedulingProblemProperties,
                                 individualDataIdx, classId,
                                 subjectId, teacherId, roomId);
@@ -187,8 +197,9 @@ namespace lessonplans {
             } else {
                 // ROOM OK
 
-                bool weekDayAndLessonFound = LessonplanIndividualAbstractFactory::tryAssignWeekDayAndLesson(
+                bool weekDayAndLessonFound = LessonplanIndividualFactory::tryAssignWeekDayAndLesson(
                         lessonplanIndividual,
+                        lessonplanIndividualDescriptor,
                         schedulingProblemProperties,
                         individualDataIdx, classId, subjectId, teacherId,
                         roomId);
@@ -202,8 +213,9 @@ namespace lessonplans {
         return false;
     }
 
-    bool LessonplanIndividualAbstractFactory::tryAssignWeekDayAndLesson(
+    bool LessonplanIndividualFactory::tryAssignWeekDayAndLesson(
             LessonplanIndividual *lessonplanIndividual,
+            LessonplanIndividualDescriptor* lessonplanIndividualDescriptor,
             SchedulingProblemProperties *schedulingProblemProperties,
             unsigned short individualDataIdx,
             unsigned short classId, unsigned short subjectId, unsigned short teacherId, unsigned short roomId
@@ -227,35 +239,35 @@ namespace lessonplans {
                 unsigned short currentWeekDayIdx = weekDayId - 1;
                 unsigned short currentLessonIdx = lessonId - 1;
 
-                if (
-                        !lessonplanIndividual->getAssignedLessonAndDayToClass(currentWeekDayIdx, currentLessonIdx,
-                                                                              classId - 1)
-                        && !lessonplanIndividual->getAssignedLessonAndDayToTeacher(currentWeekDayIdx, currentLessonIdx,
-                                                                                   teacherId - 1)
-                        && !lessonplanIndividual->getAssignedLessonAndDayToRoom(currentWeekDayIdx, currentLessonIdx,
-                                                                                roomId - 1)
-                        ) {
+//                if (
+//                        !lessonplanIndividualDescriptor->getAssignedLessonAndDayToClass(currentWeekDayIdx, currentLessonIdx,
+//                                                                              classId - 1)
+//                        && !lessonplanIndividualDescriptor->getAssignedLessonAndDayToTeacher(currentWeekDayIdx, currentLessonIdx,
+//                                                                                   teacherId - 1)
+//                        && !lessonplanIndividualDescriptor->getAssignedLessonAndDayToRoom(currentWeekDayIdx, currentLessonIdx,
+//                                                                                roomId - 1)
+//                        ) {
                     // WEEK DAY AND LESSON OK
 
-                    lessonplanIndividual->increaseAssignedLessonAndDayToClass(currentWeekDayIdx, currentLessonIdx,
+                    lessonplanIndividualDescriptor->increaseAssignedLessonAndDayToClass(currentWeekDayIdx, currentLessonIdx,
                                                                          classId - 1);
-                    lessonplanIndividual->increaseAssignedLessonAndDayToTeacher(currentWeekDayIdx, currentLessonIdx,
+                    lessonplanIndividualDescriptor->increaseAssignedLessonAndDayToTeacher(currentWeekDayIdx, currentLessonIdx,
                                                                            teacherId - 1);
-                    lessonplanIndividual->increaseAssignedLessonAndDayToRoom(currentWeekDayIdx, currentLessonIdx,
+                    lessonplanIndividualDescriptor->increaseAssignedLessonAndDayToRoom(currentWeekDayIdx, currentLessonIdx,
                                                                         roomId - 1);
 
                     lessonplanIndividual->setLessonplanDataItem(individualDataIdx, weekDayId, lessonId, classId,
                                                                 subjectId, teacherId, roomId);
 
                     return true;
-                }
+//                }
             }
         }
 
         return false;
     }
 
-    unsigned int LessonplanIndividualAbstractFactory::calculateMaxDataCount(
+    unsigned int LessonplanIndividualFactory::calculateMaxDataCount(
             SchedulingProblemProperties *schedulingProblemProperties) {
         unsigned int maxDataCount = 0;
 

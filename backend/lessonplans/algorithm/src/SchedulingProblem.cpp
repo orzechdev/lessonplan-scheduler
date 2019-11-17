@@ -1,11 +1,11 @@
 #include <cstdlib>
 #include "../include/algorithm/SchedulingProblem.hpp"
-#include "LessonplanIndividualAbstractFactory.hpp"
+#include "LessonplanIndividualFactory.hpp"
 
 namespace lessonplans {
 
     LessonplanIndividual* SchedulingProblem::getSampleLessonplan(){
-        LessonplanIndividual* lessonplanIndividual = LessonplanIndividualAbstractFactory::createLessonplanIndividual(this->schedulingProblemProperties);
+        LessonplanIndividual* lessonplanIndividual = LessonplanIndividualFactory::createLessonplanIndividual(this->schedulingProblemProperties);
 
         return lessonplanIndividual;
     }
@@ -51,6 +51,8 @@ namespace lessonplans {
     unsigned short SchedulingProblem::checkTeachersWithSameTimesLessons(
             LessonplanIndividual *lessonplanIndividual
     ) {
+        LessonplanIndividualDescriptor* lessonplanIndividualDescriptor = lessonplanIndividual->getLessonplanIndividualDescriptor();
+
         unsigned short weekDaysCount = schedulingProblemProperties->getWeekDaysCount();
         unsigned short lessonsCount = schedulingProblemProperties->getLessonsCount();
         unsigned short teachersCount = schedulingProblemProperties->getTeachersCount();
@@ -66,7 +68,7 @@ namespace lessonplans {
                 // Iterate through list of teachers
                 for (unsigned short teacherIdx = 0; teacherIdx < teachersCount; teacherIdx++) {
 
-                    unsigned short assignedLessonAndDayToTeacherCount = lessonplanIndividual->getAssignedLessonAndDayToTeacher(weekDayIdx, lessonIdx, teacherIdx);
+                    unsigned short assignedLessonAndDayToTeacherCount = lessonplanIndividualDescriptor->getAssignedLessonAndDayToTeacher(weekDayIdx, lessonIdx, teacherIdx);
 
                     if (assignedLessonAndDayToTeacherCount > 1) {
                         teachersSameTimeSlotsCount += assignedLessonAndDayToTeacherCount - 1;
@@ -81,6 +83,8 @@ namespace lessonplans {
     unsigned short SchedulingProblem::checkRoomWithSameTimesLessons(
             LessonplanIndividual *lessonplanIndividual
     ) {
+        LessonplanIndividualDescriptor* lessonplanIndividualDescriptor = lessonplanIndividual->getLessonplanIndividualDescriptor();
+
         unsigned short weekDaysCount = schedulingProblemProperties->getWeekDaysCount();
         unsigned short lessonsCount = schedulingProblemProperties->getLessonsCount();
         unsigned short roomsCount = schedulingProblemProperties->getRoomsCount();
@@ -96,7 +100,7 @@ namespace lessonplans {
                 // Iterate through list of rooms
                 for (unsigned short roomIdx = 0; roomIdx < roomsCount; roomIdx++) {
 
-                    unsigned short assignedLessonAndDayToRoomCount = lessonplanIndividual->getAssignedLessonAndDayToRoom(weekDayIdx, lessonIdx, roomIdx);
+                    unsigned short assignedLessonAndDayToRoomCount = lessonplanIndividualDescriptor->getAssignedLessonAndDayToRoom(weekDayIdx, lessonIdx, roomIdx);
 
                     if (assignedLessonAndDayToRoomCount > 1) {
                         roomsSameTimeSlotsCount += assignedLessonAndDayToRoomCount - 1;
@@ -127,6 +131,10 @@ namespace lessonplans {
                 classesCount, vector<unsigned short>(
                         weekDaysCount, 0
                 )
+        );
+
+        vector<unsigned short> classesStartLessonsDifferenceCountAverage = *new vector<unsigned short>(
+                classesCount, 0
         );
 
         for(unsigned int dataIdx = 0; dataIdx < maxDataCount; dataIdx++) {
@@ -171,9 +179,12 @@ namespace lessonplans {
             unsigned short availableWeekDays = weekDaysCount - weekDaysWithoutLessons;
             if (availableWeekDays != 0) {
                 auto classDifferencesCountAverage = static_cast<unsigned short>(classDifferencesCountForAllWeekDays / availableWeekDays);
+                classesStartLessonsDifferenceCountAverage[classIdx] = classDifferencesCountAverage;
                 startLessonsDifferencesCount += classDifferencesCountAverage;
             }
         }
+
+        lessonplanIndividual->getLessonplanIndividualDescriptor()->setClassesStartLessonsDifferenceCountAverage(classesStartLessonsDifferenceCountAverage);
 
         return startLessonsDifferencesCount;
     }
@@ -191,6 +202,10 @@ namespace lessonplans {
                 classesCount, vector<unsigned short>(
                         weekDaysCount, 0
                 )
+        );
+
+        vector<unsigned short> classesLessonsCountDifferenceBetweenDaysAverage = *new vector<unsigned short>(
+                classesCount, 0
         );
 
         for(unsigned int dataIdx = 0; dataIdx < maxDataCount; dataIdx++) {
@@ -216,8 +231,11 @@ namespace lessonplans {
             }
 
             auto classDifferencesCountAverage = static_cast<unsigned short>(classDifferencesCountForAllWeekDays / weekDaysCount);
+            classesLessonsCountDifferenceBetweenDaysAverage[classIdx] = classDifferencesCountAverage;
             lessonsDifferencesCount += classDifferencesCountAverage;
         }
+
+        lessonplanIndividual->getLessonplanIndividualDescriptor()->setClassesLessonsCountAverageDifferenceBetweenDays(classesLessonsCountDifferenceBetweenDaysAverage);
 
         return lessonsDifferencesCount;
     }
@@ -246,6 +264,10 @@ namespace lessonplans {
                 classesCount, vector<unsigned short>(
                         weekDaysCount, 0
                 )
+        );
+
+        vector<unsigned short> classesFreePeriodsExistenceBetweenLessonsCount = *new vector<unsigned short>(
+                classesCount, 0
         );
 
         for(unsigned int dataIdx = 0; dataIdx < maxDataCount; dataIdx++) {
@@ -289,8 +311,11 @@ namespace lessonplans {
                 unsigned short freePeriodsCountInAnotherDay = classesWeekDayFreePeriods[classIdx][weekDayIdx];
 
                 classesFreePeriodsCount += freePeriodsCountInAnotherDay;
+                classesFreePeriodsExistenceBetweenLessonsCount[classIdx] += freePeriodsCountInAnotherDay;
             }
         }
+
+        lessonplanIndividual->getLessonplanIndividualDescriptor()->setClassesFreePeriodsExistenceBetweenLessonsCount(classesFreePeriodsExistenceBetweenLessonsCount);
 
         return classesFreePeriodsCount;
     }

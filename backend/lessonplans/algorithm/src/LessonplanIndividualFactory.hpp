@@ -1,10 +1,10 @@
-#ifndef ALGORITHM_LESSONPLANINDIVIDUALABSTRACTFACTORY_HPP
-#define ALGORITHM_LESSONPLANINDIVIDUALABSTRACTFACTORY_HPP
+#ifndef ALGORITHM_LESSONPLANINDIVIDUALFACTORY_HPP
+#define ALGORITHM_LESSONPLANINDIVIDUALFACTORY_HPP
 
 #include "LessonplanIndividual.hpp"
 
 namespace lessonplans {
-    class LessonplanIndividualAbstractFactory {
+    class LessonplanIndividualFactory {
     public:
         static LessonplanIndividual* createLessonplanIndividual(SchedulingProblemProperties* schedulingProblemProperties);
 
@@ -12,22 +12,26 @@ namespace lessonplans {
         static unsigned int calculateMaxDataCount(SchedulingProblemProperties* lessonplanData);
         static void assignClassesWithSubjects(
                 LessonplanIndividual* lessonplanIndividual,
+                LessonplanIndividualDescriptor* lessonplanIndividualDescriptor,
                 SchedulingProblemProperties* schedulingProblemProperties
         );
         static bool tryAssignTeacher(
                 LessonplanIndividual* lessonplanIndividual,
+                LessonplanIndividualDescriptor* lessonplanIndividualDescriptor,
                 SchedulingProblemProperties* schedulingProblemProperties,
                 unsigned short individualDataIdx,
                 unsigned short classId, unsigned short subjectId
         );
         static bool tryAssignRoom(
                 LessonplanIndividual* lessonplanIndividual,
+                LessonplanIndividualDescriptor* lessonplanIndividualDescriptor,
                 SchedulingProblemProperties* schedulingProblemProperties,
                 unsigned short individualDataIdx,
                 unsigned short classId, unsigned short subjectId, unsigned short teacherId
         );
         static bool tryAssignWeekDayAndLesson(
                 LessonplanIndividual* lessonplanIndividual,
+                LessonplanIndividualDescriptor* lessonplanIndividualDescriptor,
                 SchedulingProblemProperties* schedulingProblemProperties,
                 unsigned short individualDataIdx,
                 unsigned short classId, unsigned short subjectId, unsigned short teacherId, unsigned short roomId
@@ -35,4 +39,4 @@ namespace lessonplans {
     };
 }
 
-#endif //ALGORITHM_LESSONPLANINDIVIDUALABSTRACTFACTORY_HPP
+#endif //ALGORITHM_LESSONPLANINDIVIDUALFACTORY_HPP

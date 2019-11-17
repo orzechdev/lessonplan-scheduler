@@ -61,7 +61,7 @@ def run_algorithm(
     )
 
     best_lessonplan = scheduling_solution.getBestLessonplan()
-    all_lessonplans = scheduling_solution.getAllLessonplans()
+    all_lessonplans = 0 # scheduling_solution.getAllLessonplans()
     all_lessonplans_hard_scores = scheduling_solution.getAllLessonplansHardScores()
     all_lessonplans_soft_scores = scheduling_solution.getAllLessonplansSoftScores()
     all_lessonplans_summary_scores = scheduling_solution.getAllLessonplansSummaryScores()

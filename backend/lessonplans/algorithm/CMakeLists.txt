@@ -25,8 +25,8 @@ add_executable(
         src/SchedulingGeneticAlgorithm.cpp
         src/LessonplanIndividual.hpp
         src/LessonplanIndividual.cpp
-        src/LessonplanIndividualAbstractFactory.hpp
-        src/LessonplanIndividualAbstractFactory.cpp
+        src/LessonplanIndividualFactory.hpp
+        src/LessonplanIndividualFactory.cpp
         include/algorithm/SchedulingProblemProperties.hpp
         src/SchedulingProblemProperties.cpp
         include/algorithm/SchedulingProblem.hpp
@@ -39,6 +39,8 @@ add_executable(
         src/SchedulingRandomSearchAlgorithm.cpp
         src/RandomNumberGenerator.hpp
         src/RandomNumberGenerator.cpp
+        src/LessonplanIndividualDescriptor.hpp
+        src/LessonplanIndividualDescriptor.cpp
 )
 #target_link_libraries(algorithm cython)
 

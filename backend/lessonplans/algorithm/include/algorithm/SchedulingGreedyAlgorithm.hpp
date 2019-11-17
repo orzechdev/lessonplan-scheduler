@@ -15,13 +15,30 @@ namespace lessonplans {
 
     private:
         int iterationsCount;
-        vector<LessonplanIndividual *> individuals;
+        LessonplanIndividual *bestIndividual;
         vector<vector<int>> individualsHardScores;
         vector<vector<int>> individualsSoftScores;
         vector<int> individualsSummaryHardScores;
         vector<int> individualsSummarySoftScores;
 
-        LessonplanIndividual* alterLessonplan(LessonplanIndividual* lessonplanIndividual, SchedulingProblem *schedulingProblem);
+        LessonplanIndividual *
+        reformLessonplan(LessonplanIndividual *lessonplanIndividual, SchedulingProblem *schedulingProblem);
+
+        void reformLessonplanTeacherDataItem(LessonplanIndividualDescriptor *lessonplanIndividualDescriptor,
+                                                               SchedulingProblemProperties *schedulingProblemProperties,
+                                                               vector<unsigned short> *lessonplanDataItem,
+                                                               vector<vector<vector<unsigned short>>> *assignedLessonAndDaysToTeachers);
+
+        void
+        reformLessonplanRoomDataItem(LessonplanIndividualDescriptor *lessonplanIndividualDescriptor,
+                                     SchedulingProblemProperties *schedulingProblemProperties,
+                                     vector<unsigned short> *lessonplanDataItem,
+                                     vector<vector<vector<unsigned short>>> *assignedLessonAndDaysToRooms);
+
+        void reformLessonplanClassSubjectDataItem(LessonplanIndividualDescriptor *lessonplanIndividualDescriptor,
+                                                   SchedulingProblemProperties *schedulingProblemProperties,
+                                                   vector<unsigned short> *lessonplanDataItem,
+                                                   vector<vector<vector<unsigned short>>> *assignedLessonAndDaysToClasses);
 
         static int getSummaryScore(vector<int> obtainedScores);
     };

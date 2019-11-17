@@ -12,21 +12,17 @@ namespace lessonplans {
     class SchedulingSolution {
     public:
         SchedulingSolution(
-                int individualsCount,
-                vector<LessonplanIndividual *> individuals,
+                LessonplanIndividual* bestIndividual,
                 vector<vector<int>> individualsHardScores,
                 vector<vector<int>> individualsSoftScores,
                 vector<int> individualsSummaryScores
         ) :
-                individualsCount(individualsCount),
-                individuals(std::move(individuals)),
+                bestIndividual(bestIndividual),
                 individualsHardScores(std::move(individualsHardScores)),
                 individualsSoftScores(std::move(individualsSoftScores)),
                 individualsSummaryScores(std::move(individualsSummaryScores)) {}
 
         vector<vector<unsigned short>> getBestLessonplan();
-
-        vector<vector<vector<unsigned short>>> getAllLessonplans();
 
         vector<vector<int>> getAllLessonplansHardScores();
 
@@ -35,8 +31,7 @@ namespace lessonplans {
         vector<int> getAllLessonplansSummaryScores();
 
     private:
-        int individualsCount;
-        vector<LessonplanIndividual *> individuals;
+        LessonplanIndividual* bestIndividual;
         vector<vector<int>> individualsHardScores;
         vector<vector<int>> individualsSoftScores;
         vector<int> individualsSummaryScores;
