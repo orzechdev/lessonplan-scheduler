@@ -11,6 +11,8 @@ namespace lessonplans {
     }
 
     vector<vector<int>> SchedulingProblem::evaluateLessonplan(LessonplanIndividual* lessonplanIndividual) {
+        unsigned short invalidClassSubjectSameLessonsTimes = this->checkClassesSubjectsWithSameTimesLessons(lessonplanIndividual);
+
         unsigned short invalidTeacherSameLessonsTimes = this->checkTeachersWithSameTimesLessons(lessonplanIndividual);
 
         unsigned short invalidRoomSameLessonTimes = this->checkRoomWithSameTimesLessons(lessonplanIndividual);
@@ -37,15 +39,48 @@ namespace lessonplans {
                 SchedulingProblem::scoresTypesOptimal
         );
 
-        grades[0][0] = 0 - invalidTeacherSameLessonsTimes;
-        grades[0][1] = 0 - invalidRoomSameLessonTimes;
-        grades[0][2] = 0 - invalidTeacherChangesForClassesSubjects;
+        grades[0][0] = 0 - invalidClassSubjectSameLessonsTimes;
+        grades[0][1] = 0 - invalidTeacherSameLessonsTimes;
+        grades[0][2] = 0 - invalidRoomSameLessonTimes;
+        grades[0][3] = 0 - invalidTeacherChangesForClassesSubjects;
 
         grades[1][0] = 0 - invalidDifferenceBetweenStartLessons;
         grades[1][1] = 0 - invalidDifferenceBetweenLessonsCount;
         grades[1][2] = 0 - invalidFreePeriodsCountBetweenLessons;
 
         return grades;
+    }
+
+    unsigned short SchedulingProblem::checkClassesSubjectsWithSameTimesLessons(
+            LessonplanIndividual *lessonplanIndividual
+    ) {
+        LessonplanIndividualDescriptor* lessonplanIndividualDescriptor = lessonplanIndividual->getLessonplanIndividualDescriptor();
+
+        unsigned short weekDaysCount = schedulingProblemProperties->getWeekDaysCount();
+        unsigned short lessonsCount = schedulingProblemProperties->getLessonsCount();
+        unsigned short classesCount = schedulingProblemProperties->getClassesCount();
+
+        unsigned short classesSubjectsSameTimeSlotsCount = 0;
+
+        // Iterate through list of week days
+        for (unsigned short weekDayIdx = 0; weekDayIdx < weekDaysCount; weekDayIdx++) {
+
+            // Iterate through list of lessons
+            for (unsigned short lessonIdx = 0; lessonIdx < lessonsCount; lessonIdx++) {
+
+                // Iterate through list of teachers
+                for (unsigned short classIdx = 0; classIdx < classesCount; classIdx++) {
+
+                    unsigned short assignedLessonAndDayToClassCount = lessonplanIndividualDescriptor->getAssignedLessonAndDayToClass(weekDayIdx, lessonIdx, classIdx);
+
+                    if (assignedLessonAndDayToClassCount > 1) {
+                        classesSubjectsSameTimeSlotsCount += assignedLessonAndDayToClassCount - 1;
+                    }
+                }
+            }
+        }
+
+        return classesSubjectsSameTimeSlotsCount;
     }
 
     unsigned short SchedulingProblem::checkTeachersWithSameTimesLessons(

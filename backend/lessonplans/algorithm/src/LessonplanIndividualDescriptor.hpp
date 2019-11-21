@@ -63,6 +63,7 @@ namespace lessonplans {
         void setClassesFreePeriodsExistenceBetweenLessonsCount(vector<unsigned short> classesFreePeriodsExistenceBetweenLessonsCount);
 
     private:
+        int invalidClassesSubjectsSameLessonsTimesCount;
         int invalidTeachersSameLessonsTimesCount;
         int invalidRoomsSameLessonTimesCount;
         int invalidTeachersChangesForClassesSubjectsCount;

@@ -88,7 +88,7 @@ namespace lessonplans {
          * Room may change
          */
 
-        SchedulingProblemProperties* schedulingProblemProperties = schedulingProblem->getSchedulingProblemProperties();
+        SchedulingProblemProperties *schedulingProblemProperties = schedulingProblem->getSchedulingProblemProperties();
 
         LessonplanIndividualDescriptor *lessonplanIndividualDescriptor = lessonplanIndividual->getLessonplanIndividualDescriptor();
         vector<vector<vector<unsigned short>>> assignedLessonAndDaysToTeachers = lessonplanIndividualDescriptor->getAssignedLessonAndDaysToTeachers();
@@ -106,11 +106,15 @@ namespace lessonplans {
 
             vector<unsigned short> *lessonplanDataItem = &lessonplan[dataIdx];
 
-            this->reformLessonplanTeacherDataItem(lessonplanIndividualDescriptor, schedulingProblemProperties, lessonplanDataItem, &assignedLessonAndDaysToTeachers);
-            this->reformLessonplanRoomDataItem(lessonplanIndividualDescriptor, schedulingProblemProperties, lessonplanDataItem, &assignedLessonAndDaysToRooms);
-            this->reformLessonplanClassSubjectDataItem(lessonplanIndividualDescriptor, schedulingProblemProperties, lessonplanDataItem, &assignedLessonAndDaysToClasses);
+            this->reformLessonplanTeacherDataItem(lessonplanIndividualDescriptor, schedulingProblemProperties,
+                                                  lessonplanDataItem, &assignedLessonAndDaysToTeachers);
+            this->reformLessonplanRoomDataItem(lessonplanIndividualDescriptor, schedulingProblemProperties,
+                                               lessonplanDataItem, &assignedLessonAndDaysToRooms);
+            this->reformLessonplanClassSubjectDataItem(lessonplanIndividualDescriptor, schedulingProblemProperties,
+                                                       lessonplanDataItem, &assignedLessonAndDaysToClasses);
 
-
+            lessonplanIndividual->setLessonplan(lessonplan);
+            schedulingProblem->evaluateLessonplan(lessonplanIndividual);
         }
 
         lessonplanIndividual->setLessonplan(lessonplan);
@@ -122,10 +126,11 @@ namespace lessonplans {
     }
 
 
-    void SchedulingGreedyAlgorithm::reformLessonplanTeacherDataItem(LessonplanIndividualDescriptor *lessonplanIndividualDescriptor,
-                                                               SchedulingProblemProperties *schedulingProblemProperties,
-                                                               vector<unsigned short> *lessonplanDataItem,
-                                                               vector<vector<vector<unsigned short>>> *assignedLessonAndDaysToTeachers) {
+    void SchedulingGreedyAlgorithm::reformLessonplanTeacherDataItem(
+            LessonplanIndividualDescriptor *lessonplanIndividualDescriptor,
+            SchedulingProblemProperties *schedulingProblemProperties,
+            vector<unsigned short> *lessonplanDataItem,
+            vector<vector<vector<unsigned short>>> *assignedLessonAndDaysToTeachers) {
 
         unsigned short teachersCount = schedulingProblemProperties->getTeachersCount();
 
@@ -136,7 +141,7 @@ namespace lessonplans {
         unsigned short prevAssignedLessonAndDayToTeacher = lessonplanIndividualDescriptor->getAssignedLessonAndDayToTeacher(
                 weekDayIdx, lessonIdx, teacherIdx);
 
-        while (prevAssignedLessonAndDayToTeacher > 1) {
+        if (prevAssignedLessonAndDayToTeacher > 1) {
             unsigned short teacherIdToChange = RandomNumberGenerator::getRandomNumber(1, teachersCount);
 
             prevAssignedLessonAndDayToTeacher--;
@@ -147,14 +152,16 @@ namespace lessonplans {
             unsigned short teacherIdxToChange = teacherIdToChange - 1;
 
 //            (*assignedLessonAndDaysToTeachers)[weekDayIdx][lessonIdx][teacherIdxToChange]++;
-            lessonplanIndividualDescriptor->increaseAssignedLessonAndDayToTeacher(weekDayIdx, lessonIdx, teacherIdxToChange);
+            lessonplanIndividualDescriptor->increaseAssignedLessonAndDayToTeacher(weekDayIdx, lessonIdx,
+                                                                                  teacherIdxToChange);
         }
     }
 
-    void SchedulingGreedyAlgorithm::reformLessonplanRoomDataItem(LessonplanIndividualDescriptor *lessonplanIndividualDescriptor,
-                                                                 SchedulingProblemProperties *schedulingProblemProperties,
-                                                                 vector<unsigned short> *lessonplanDataItem,
-                                                                 vector<vector<vector<unsigned short>>> *assignedLessonAndDaysToRooms) {
+    void SchedulingGreedyAlgorithm::reformLessonplanRoomDataItem(
+            LessonplanIndividualDescriptor *lessonplanIndividualDescriptor,
+            SchedulingProblemProperties *schedulingProblemProperties,
+            vector<unsigned short> *lessonplanDataItem,
+            vector<vector<vector<unsigned short>>> *assignedLessonAndDaysToRooms) {
         unsigned short roomsCount = schedulingProblemProperties->getRoomsCount();
 
         unsigned short weekDayIdx = (*lessonplanDataItem)[0] - 1;
@@ -164,7 +171,7 @@ namespace lessonplans {
         unsigned short prevAssignedLessonAndDayToRoom = lessonplanIndividualDescriptor->getAssignedLessonAndDayToRoom(
                 weekDayIdx, lessonIdx, roomIdx);
 
-        while (prevAssignedLessonAndDayToRoom > 1) {
+        if (prevAssignedLessonAndDayToRoom > 1) {
             unsigned short roomIdToChange = RandomNumberGenerator::getRandomNumber(1, roomsCount);
 
             prevAssignedLessonAndDayToRoom--;
@@ -179,10 +186,11 @@ namespace lessonplans {
         }
     }
 
-    void SchedulingGreedyAlgorithm::reformLessonplanClassSubjectDataItem(LessonplanIndividualDescriptor *lessonplanIndividualDescriptor,
-                                                                         SchedulingProblemProperties *schedulingProblemProperties,
-                                                                         vector<unsigned short> *lessonplanDataItem,
-                                                                         vector<vector<vector<unsigned short>>> *assignedLessonAndDaysToClasses) {
+    void SchedulingGreedyAlgorithm::reformLessonplanClassSubjectDataItem(
+            LessonplanIndividualDescriptor *lessonplanIndividualDescriptor,
+            SchedulingProblemProperties *schedulingProblemProperties,
+            vector<unsigned short> *lessonplanDataItem,
+            vector<vector<vector<unsigned short>>> *assignedLessonAndDaysToClasses) {
         unsigned short lessonsCount = schedulingProblemProperties->getLessonsCount();
         unsigned short weekDaysCount = schedulingProblemProperties->getWeekDaysCount();
 
@@ -196,36 +204,32 @@ namespace lessonplans {
         unsigned short classLessonsCountDifferenceBetweenDaysAverage = lessonplanIndividualDescriptor->getClassesLessonsCountAverageDifferenceBetweenDays()[classIdx];
         unsigned short classFreePeriodsExistenceBetweenLessonsCount = lessonplanIndividualDescriptor->getClassesFreePeriodsExistenceBetweenLessonsCount()[classIdx];
 
-        int totalChangesToDo = 0;
+        if (prevAssignedLessonAndDayToClass > 1 ||
+            classStartLessonsDifferenceCountAverage > 1 ||
+            classLessonsCountDifferenceBetweenDaysAverage > 1 ||
+            classFreePeriodsExistenceBetweenLessonsCount > 0) {
+            for (unsigned short lessonIdxToChange = 0; lessonIdxToChange < lessonsCount; lessonIdxToChange++) {
+                vector<unsigned short> weekDaysIdxsSequence = RandomNumberGenerator::getRandomIdxsSequence(weekDaysCount);
+                for (unsigned short weekDayIdxNum = 0; weekDayIdxNum < weekDaysCount; weekDayIdxNum++) {
+                    unsigned short weekDayIdxToChange = weekDaysIdxsSequence[weekDayIdxNum];
+                    unsigned short anotherAssignedLessonAndDayToClass = lessonplanIndividualDescriptor->getAssignedLessonAndDayToClass(
+                            weekDayIdxToChange, lessonIdxToChange, classIdx);
 
-        if (prevAssignedLessonAndDayToClass - 1 > totalChangesToDo) {
-            totalChangesToDo += prevAssignedLessonAndDayToClass - 1;
-        }
-        if (classStartLessonsDifferenceCountAverage - 1 > totalChangesToDo) {
-            totalChangesToDo += classStartLessonsDifferenceCountAverage - 1 - totalChangesToDo;
-        }
-        if (classLessonsCountDifferenceBetweenDaysAverage - 1 > totalChangesToDo) {
-            totalChangesToDo += classLessonsCountDifferenceBetweenDaysAverage - 1 - totalChangesToDo;
-        }
-        if (static_cast<unsigned short>(classFreePeriodsExistenceBetweenLessonsCount / 2) > totalChangesToDo) {
-            totalChangesToDo += static_cast<unsigned short>(classFreePeriodsExistenceBetweenLessonsCount / 2) - totalChangesToDo;
-        }
+                    if (anotherAssignedLessonAndDayToClass <= 0) {
 
-        while (totalChangesToDo > 0) {
-            unsigned short weekDayIdToChange = RandomNumberGenerator::getRandomNumber(1, weekDaysCount);
-            unsigned short lessonIdToChange = RandomNumberGenerator::getRandomNumber(1, lessonsCount);
+                        lessonplanIndividualDescriptor->decreaseAssignedLessonAndDayToClass(weekDayIdx, lessonIdx,
+                                                                                            classIdx);
 
-            totalChangesToDo--;
-//            (*assignedLessonAndDaysToClasses)[weekDayIdx][lessonIdx][classIdx]--;
-            lessonplanIndividualDescriptor->decreaseAssignedLessonAndDayToClass(weekDayIdx, lessonIdx, classIdx);
+                        (*lessonplanDataItem)[0] = weekDayIdxToChange + 1;
+                        (*lessonplanDataItem)[1] = lessonIdxToChange + 1;
 
-            (*lessonplanDataItem)[0] = weekDayIdToChange;
-            (*lessonplanDataItem)[1] = lessonIdToChange;
-            unsigned short weekDayIdxToChange = weekDayIdToChange - 1;
-            unsigned short lessonIdxToChange = lessonIdToChange - 1;
-
-//            (*assignedLessonAndDaysToClasses)[weekDayIdxToChange][lessonIdxToChange][classIdx]++;
-            lessonplanIndividualDescriptor->increaseAssignedLessonAndDayToClass(weekDayIdxToChange, lessonIdxToChange, classIdx);
+                        lessonplanIndividualDescriptor->increaseAssignedLessonAndDayToClass(weekDayIdxToChange,
+                                                                                            lessonIdxToChange,
+                                                                                            classIdx);
+                        return;
+                    }
+                }
+            }
         }
 
 
@@ -243,4 +247,5 @@ namespace lessonplans {
         });
         return summaryGrade;
     }
+
 }
