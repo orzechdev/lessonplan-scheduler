@@ -41,4 +41,4 @@ export const gql_query = {
       }
     }
   `
-}
+};

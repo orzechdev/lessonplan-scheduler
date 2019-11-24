@@ -1,10 +1,8 @@
 module.exports = {
-  "transpileDependencies": [
-    "vuetify"
-  ],
+  transpileDependencies: ["vuetify"],
   chainWebpack: config => {
     // remove vue-cli-service's progress output
-    config.plugins.delete('progress')
+    config.plugins.delete("progress");
   },
   devServer: {
     watchOptions: {
@@ -12,6 +10,6 @@ module.exports = {
     }
   },
   configureWebpack: {
-    devtool: 'source-map'
+    devtool: "source-map"
   }
-}
+};

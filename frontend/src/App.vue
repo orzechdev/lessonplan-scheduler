@@ -16,12 +16,12 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions } from 'vuex';
 
 export default {
-  name: "app",
+  name: 'app',
   methods: {
-    ...mapActions(["getClasses", "getLessonplans"])
+    ...mapActions(['getClasses', 'getLessonplans'])
   },
   created() {
     this.getClasses();

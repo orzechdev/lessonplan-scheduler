@@ -104,9 +104,7 @@ export default {
               1}-${lessonCurrentDate.getDate()}`;
 
             return {
-              start: `${lessonCurrentDateString} ${startTimes[0]}:${
-                startTimes[1]
-              }`,
+              start: `${lessonCurrentDateString} ${startTimes[0]}:${startTimes[1]}`,
               end: `${lessonCurrentDateString} ${endTimes[0]}:${endTimes[1]}`,
               name: subject.name
             };
