@@ -62,11 +62,19 @@ namespace lessonplans {
 
         void setClassesFreePeriodsExistenceBetweenLessonsCount(vector<unsigned short> classesFreePeriodsExistenceBetweenLessonsCount);
 
+        vector<vector<unsigned short>> getAssignedTeachersToClassesSubjectsWrong() const;
+
+        unsigned short getAssignedTeachersToClassSubjectWrong(unsigned short classIdx, unsigned short subjectIdx) const;
+
+        void setAssignedTeachersToClassesSubjectsWrong(vector<vector<unsigned short>> assignedTeachersToClassesSubjectsWrong);
+
+        void setAssignedTeachersToClassSubjectWrong(unsigned short classIdx, unsigned short subjectIdx,
+                                                    unsigned short isWrong);
+
     private:
         int invalidClassesSubjectsSameLessonsTimesCount;
         int invalidTeachersSameLessonsTimesCount;
         int invalidRoomsSameLessonTimesCount;
-        int invalidTeachersChangesForClassesSubjectsCount;
 
         vector<vector<vector<unsigned short>>> assignedLessonAndDaysToClasses;
         vector<vector<vector<unsigned short>>> assignedLessonAndDaysToTeachers;
@@ -75,6 +83,9 @@ namespace lessonplans {
         vector<unsigned short> classesStartLessonsDifferenceCountAverage;
         vector<unsigned short> classesLessonsCountAverageDifferenceBetweenDays;
         vector<unsigned short> classesFreePeriodsExistenceBetweenLessonsCount;
+
+        int invalidTeachersChangesForClassesSubjectsCount;
+        vector<vector<unsigned short>> assignedTeachersToClassesSubjectsWrong;
     };
 }
 

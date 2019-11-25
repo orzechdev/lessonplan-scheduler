@@ -94,12 +94,22 @@ namespace lessonplans {
         vector<vector<vector<unsigned short>>> assignedLessonAndDaysToTeachers = lessonplanIndividualDescriptor->getAssignedLessonAndDaysToTeachers();
         vector<vector<vector<unsigned short>>> assignedLessonAndDaysToRooms = lessonplanIndividualDescriptor->getAssignedLessonAndDaysToRooms();
         vector<vector<vector<unsigned short>>> assignedLessonAndDaysToClasses = lessonplanIndividualDescriptor->getAssignedLessonAndDaysToClasses();
+        vector<vector<unsigned short>> assignedTeachersToClassesSubjects = lessonplanIndividualDescriptor->getAssignedTeachersToClassesSubjectsWrong();
 
         unsigned int maxDataCount = lessonplanIndividual->getMaxDataCount();
 
         vector<vector<unsigned short>> lessonplan = lessonplanIndividual->getLessonplan();
 
         vector<unsigned short> dataItemIdxsSequence = RandomNumberGenerator::getRandomIdxsSequence(maxDataCount);
+
+        unsigned short classesCount = schedulingProblemProperties->getClassesCount();
+        unsigned short subjectsCount = schedulingProblemProperties->getSubjectsCount();
+
+        vector<vector<unsigned short>> classesSubjectsTeachersToAssign = *new vector<vector<unsigned short>>(
+                classesCount, vector<unsigned short>(
+                        subjectsCount, 0
+                )
+        );
 
         for (unsigned int dataIdxNum = 0; dataIdxNum < maxDataCount; dataIdxNum++) {
             unsigned short dataIdx = dataItemIdxsSequence[dataIdxNum];
@@ -112,6 +122,9 @@ namespace lessonplans {
                                                lessonplanDataItem, &assignedLessonAndDaysToRooms);
             this->reformLessonplanClassSubjectDataItem(lessonplanIndividualDescriptor, schedulingProblemProperties,
                                                        lessonplanDataItem, &assignedLessonAndDaysToClasses);
+            this->reformLessonplanClassSubjectTeacher(lessonplanIndividualDescriptor, schedulingProblemProperties,
+                                                      lessonplanDataItem, &assignedTeachersToClassesSubjects,
+                                                      &classesSubjectsTeachersToAssign);
 
             lessonplanIndividual->setLessonplan(lessonplan);
             schedulingProblem->evaluateLessonplan(lessonplanIndividual);
@@ -209,7 +222,8 @@ namespace lessonplans {
             classLessonsCountDifferenceBetweenDaysAverage > 1 ||
             classFreePeriodsExistenceBetweenLessonsCount > 0) {
             for (unsigned short lessonIdxToChange = 0; lessonIdxToChange < lessonsCount; lessonIdxToChange++) {
-                vector<unsigned short> weekDaysIdxsSequence = RandomNumberGenerator::getRandomIdxsSequence(weekDaysCount);
+                vector<unsigned short> weekDaysIdxsSequence = RandomNumberGenerator::getRandomIdxsSequence(
+                        weekDaysCount);
                 for (unsigned short weekDayIdxNum = 0; weekDayIdxNum < weekDaysCount; weekDayIdxNum++) {
                     unsigned short weekDayIdxToChange = weekDaysIdxsSequence[weekDayIdxNum];
                     unsigned short anotherAssignedLessonAndDayToClass = lessonplanIndividualDescriptor->getAssignedLessonAndDayToClass(
@@ -236,6 +250,55 @@ namespace lessonplans {
         /*
          * TODO: add additional reform based on score evaluated for individual
          */
+    }
+
+    void SchedulingGreedyAlgorithm::reformLessonplanClassSubjectTeacher(
+            LessonplanIndividualDescriptor *lessonplanIndividualDescriptor,
+            SchedulingProblemProperties *schedulingProblemProperties, vector<unsigned short> *lessonplanDataItem,
+            vector<vector<unsigned short>> *assignedTeachersToClassesSubjects,
+            vector<vector<unsigned short>> *classesSubjectsTeachersToAssign) {
+        unsigned short classIdx = (*lessonplanDataItem)[2] - 1;
+        unsigned short subjectIdx = (*lessonplanDataItem)[3] - 1;
+
+        unsigned short assignedTeachersToClassSubjectWrong = lessonplanIndividualDescriptor->getAssignedTeachersToClassSubjectWrong(
+                classIdx, subjectIdx);
+
+        if (assignedTeachersToClassSubjectWrong > 0) {
+            unsigned short teacherIdToAssign = (*classesSubjectsTeachersToAssign)[classIdx][subjectIdx];
+
+            if (teacherIdToAssign == 0) {
+                (*classesSubjectsTeachersToAssign)[classIdx][subjectIdx] = teacherIdToAssign = SchedulingGreedyAlgorithm::findTeacherForClassSubject(
+                        schedulingProblemProperties, subjectIdx + 1);
+            }
+
+            (*lessonplanDataItem)[4] = teacherIdToAssign;
+        }
+
+    }
+
+    unsigned short
+    SchedulingGreedyAlgorithm::findTeacherForClassSubject(SchedulingProblemProperties *schedulingProblemProperties,
+                                                          unsigned short subjectId) {
+        unsigned short teachersCount = schedulingProblemProperties->getTeachersCount();
+
+        vector<unsigned short> teachersIdsSequence = RandomNumberGenerator::getRandomIdsSequence(teachersCount);
+
+        // Iterate through list of teachers
+        for (unsigned short teacherIdx = 0; teacherIdx < teachersCount; teacherIdx++) {
+            unsigned short teacherId = teachersIdsSequence[teacherIdx];
+            vector<unsigned short> teacherSubjects = schedulingProblemProperties->getTeacherSubjects(
+                    teacherId - 1);
+            auto teacherSubjectsCount = static_cast<unsigned short>(teacherSubjects.size());
+
+            // Iterate through list of teachers subjects
+            for (unsigned short subjectIdx2 = 0; subjectIdx2 < teacherSubjectsCount; subjectIdx2++) {
+                unsigned short subjectId2 = teacherSubjects[subjectIdx2];
+
+                if (subjectId == subjectId2) {
+                    return teacherId;
+                }
+            }
+        }
     }
 
     int SchedulingGreedyAlgorithm::getSummaryScore(

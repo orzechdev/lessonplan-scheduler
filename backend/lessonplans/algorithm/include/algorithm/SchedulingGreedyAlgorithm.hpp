@@ -25,9 +25,9 @@ namespace lessonplans {
         reformLessonplan(LessonplanIndividual *lessonplanIndividual, SchedulingProblem *schedulingProblem);
 
         void reformLessonplanTeacherDataItem(LessonplanIndividualDescriptor *lessonplanIndividualDescriptor,
-                                                               SchedulingProblemProperties *schedulingProblemProperties,
-                                                               vector<unsigned short> *lessonplanDataItem,
-                                                               vector<vector<vector<unsigned short>>> *assignedLessonAndDaysToTeachers);
+                                             SchedulingProblemProperties *schedulingProblemProperties,
+                                             vector<unsigned short> *lessonplanDataItem,
+                                             vector<vector<vector<unsigned short>>> *assignedLessonAndDaysToTeachers);
 
         void
         reformLessonplanRoomDataItem(LessonplanIndividualDescriptor *lessonplanIndividualDescriptor,
@@ -36,9 +36,18 @@ namespace lessonplans {
                                      vector<vector<vector<unsigned short>>> *assignedLessonAndDaysToRooms);
 
         void reformLessonplanClassSubjectDataItem(LessonplanIndividualDescriptor *lessonplanIndividualDescriptor,
-                                                   SchedulingProblemProperties *schedulingProblemProperties,
-                                                   vector<unsigned short> *lessonplanDataItem,
-                                                   vector<vector<vector<unsigned short>>> *assignedLessonAndDaysToClasses);
+                                                  SchedulingProblemProperties *schedulingProblemProperties,
+                                                  vector<unsigned short> *lessonplanDataItem,
+                                                  vector<vector<vector<unsigned short>>> *assignedLessonAndDaysToClasses);
+
+        void reformLessonplanClassSubjectTeacher(LessonplanIndividualDescriptor *lessonplanIndividualDescriptor,
+                                                 SchedulingProblemProperties *schedulingProblemProperties,
+                                                 vector<unsigned short> *lessonplanDataItem,
+                                                 vector<vector<unsigned short>> *assignedTeachersToClassesSubjects,
+                                                 vector<vector<unsigned short>> *classesSubjectsTeachersToAssign);
+
+        static unsigned short
+        findTeacherForClassSubject(SchedulingProblemProperties *schedulingProblemProperties, unsigned short subjectId);
 
         static int getSummaryScore(vector<int> obtainedScores);
     };

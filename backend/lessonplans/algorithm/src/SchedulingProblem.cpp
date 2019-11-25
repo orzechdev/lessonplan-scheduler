@@ -150,7 +150,60 @@ namespace lessonplans {
     unsigned short SchedulingProblem::checkTeacherChangesForClassesSubjects(
             LessonplanIndividual *lessonplanIndividual
     ) {
-        return 0;
+        LessonplanIndividualDescriptor* lessonplanIndividualDescriptor = lessonplanIndividual->getLessonplanIndividualDescriptor();
+
+        unsigned int maxDataCount = lessonplanIndividual->getMaxDataCount();
+        unsigned short classesCount = this->schedulingProblemProperties->getClassesCount();
+        unsigned short subjectsCount = this->schedulingProblemProperties->getSubjectsCount();
+        unsigned short teachersCount = this->schedulingProblemProperties->getTeachersCount();
+
+        vector<vector<unsigned short>> lessonplan = lessonplanIndividual->getLessonplan();
+
+        vector<vector<unsigned short>> assignedTeachersToClassesSubjects = *new vector<vector<unsigned short>>(
+                classesCount, vector<unsigned short>(
+                        subjectsCount, 0
+                )
+        );
+        lessonplanIndividualDescriptor->setAssignedTeachersToClassesSubjectsWrong(assignedTeachersToClassesSubjects);
+
+        vector<vector<unsigned short>> lastAssignedTeachersIdsToClassesSubjects = *new vector<vector<unsigned short>>(
+                classesCount, vector<unsigned short>(
+                        subjectsCount, 0
+                )
+        );
+
+        for(unsigned int dataIdx = 0; dataIdx < maxDataCount; dataIdx++) {
+            unsigned short classIdx = lessonplan[dataIdx][2] - 1;
+            unsigned short subjectIdx = lessonplan[dataIdx][3] - 1;
+
+            unsigned short teacherId = lessonplan[dataIdx][4];
+
+            unsigned short lastAssignedTeacherId = lastAssignedTeachersIdsToClassesSubjects[classIdx][subjectIdx];
+            if (lastAssignedTeacherId == 0) {
+                lastAssignedTeachersIdsToClassesSubjects[classIdx][subjectIdx] = teacherId;
+            } else if (lastAssignedTeacherId != teacherId) {
+                lessonplanIndividualDescriptor->setAssignedTeachersToClassSubjectWrong(classIdx, subjectIdx, 1);
+            }
+        }
+
+        unsigned short teachersChangesForClassesSubjectsCount = 0;
+
+        // Iterate through list of week days
+        for (unsigned short classIdx = 0; classIdx < classesCount; classIdx++) {
+
+            // Iterate through list of lessons
+            for (unsigned short subjectIdx = 0; subjectIdx < subjectsCount; subjectIdx++) {
+
+                unsigned short assignedTeachersToClassSubjectWrong = lessonplanIndividualDescriptor->getAssignedTeachersToClassSubjectWrong(
+                        classIdx, subjectIdx);
+
+                if (assignedTeachersToClassSubjectWrong > 0) {
+                    teachersChangesForClassesSubjectsCount += 1;
+                }
+            }
+        }
+
+        return teachersChangesForClassesSubjectsCount;
     }
 
     unsigned short SchedulingProblem::checkStartLessonsDifferenceBetweenDays(

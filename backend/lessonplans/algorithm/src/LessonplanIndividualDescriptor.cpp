@@ -15,8 +15,8 @@ namespace lessonplans {
     }
 
     unsigned short LessonplanIndividualDescriptor::getAssignedLessonAndDayToClass(unsigned short currentWeekDayIdx,
-                                                                        unsigned short currentLessonIdx,
-                                                                        unsigned short classIdx) const {
+                                                                                  unsigned short currentLessonIdx,
+                                                                                  unsigned short classIdx) const {
         return this->assignedLessonAndDaysToClasses[currentWeekDayIdx][currentLessonIdx][classIdx];
     }
 
@@ -26,19 +26,20 @@ namespace lessonplans {
     }
 
     void LessonplanIndividualDescriptor::increaseAssignedLessonAndDayToClass(unsigned short currentWeekDayIdx,
-                                                                   unsigned short currentLessonIdx,
-                                                                   unsigned short classIdx) {
+                                                                             unsigned short currentLessonIdx,
+                                                                             unsigned short classIdx) {
         this->assignedLessonAndDaysToClasses[currentWeekDayIdx][currentLessonIdx][classIdx]++;
     }
+
     void LessonplanIndividualDescriptor::decreaseAssignedLessonAndDayToClass(unsigned short currentWeekDayIdx,
-                                                                   unsigned short currentLessonIdx,
-                                                                   unsigned short classIdx) {
+                                                                             unsigned short currentLessonIdx,
+                                                                             unsigned short classIdx) {
         this->assignedLessonAndDaysToClasses[currentWeekDayIdx][currentLessonIdx][classIdx]--;
     }
 
     unsigned short LessonplanIndividualDescriptor::getAssignedLessonAndDayToTeacher(unsigned short currentWeekDayIdx,
-                                                                          unsigned short currentLessonIdx,
-                                                                          unsigned short teacherIdx) const {
+                                                                                    unsigned short currentLessonIdx,
+                                                                                    unsigned short teacherIdx) const {
         return this->assignedLessonAndDaysToTeachers[currentWeekDayIdx][currentLessonIdx][teacherIdx];
     }
 
@@ -48,19 +49,20 @@ namespace lessonplans {
     }
 
     void LessonplanIndividualDescriptor::increaseAssignedLessonAndDayToTeacher(unsigned short currentWeekDayIdx,
-                                                                     unsigned short currentLessonIdx,
-                                                                     unsigned short teacherIdx) {
+                                                                               unsigned short currentLessonIdx,
+                                                                               unsigned short teacherIdx) {
         this->assignedLessonAndDaysToTeachers[currentWeekDayIdx][currentLessonIdx][teacherIdx]++;
     }
+
     void LessonplanIndividualDescriptor::decreaseAssignedLessonAndDayToTeacher(unsigned short currentWeekDayIdx,
-                                                                     unsigned short currentLessonIdx,
-                                                                     unsigned short teacherIdx) {
+                                                                               unsigned short currentLessonIdx,
+                                                                               unsigned short teacherIdx) {
         this->assignedLessonAndDaysToTeachers[currentWeekDayIdx][currentLessonIdx][teacherIdx]--;
     }
 
     unsigned short LessonplanIndividualDescriptor::getAssignedLessonAndDayToRoom(unsigned short currentWeekDayIdx,
-                                                                       unsigned short currentLessonIdx,
-                                                                       unsigned short roomIdx) const {
+                                                                                 unsigned short currentLessonIdx,
+                                                                                 unsigned short roomIdx) const {
         return this->assignedLessonAndDaysToRooms[currentWeekDayIdx][currentLessonIdx][roomIdx];
     }
 
@@ -70,11 +72,14 @@ namespace lessonplans {
     }
 
     void LessonplanIndividualDescriptor::increaseAssignedLessonAndDayToRoom(unsigned short currentWeekDayIdx,
-                                                                  unsigned short currentLessonIdx, unsigned short roomIdx) {
+                                                                            unsigned short currentLessonIdx,
+                                                                            unsigned short roomIdx) {
         this->assignedLessonAndDaysToRooms[currentWeekDayIdx][currentLessonIdx][roomIdx]++;
     }
+
     void LessonplanIndividualDescriptor::decreaseAssignedLessonAndDayToRoom(unsigned short currentWeekDayIdx,
-                                                                  unsigned short currentLessonIdx, unsigned short roomIdx) {
+                                                                            unsigned short currentLessonIdx,
+                                                                            unsigned short roomIdx) {
         this->assignedLessonAndDaysToRooms[currentWeekDayIdx][currentLessonIdx][roomIdx]--;
     }
 
@@ -103,6 +108,27 @@ namespace lessonplans {
     void LessonplanIndividualDescriptor::setClassesFreePeriodsExistenceBetweenLessonsCount(
             vector<unsigned short> classesFreePeriodsExistenceBetweenLessonsCount) {
         this->classesFreePeriodsExistenceBetweenLessonsCount = classesFreePeriodsExistenceBetweenLessonsCount;
+    }
+
+    vector<vector<unsigned short>>
+    LessonplanIndividualDescriptor::getAssignedTeachersToClassesSubjectsWrong() const {
+        return this->assignedTeachersToClassesSubjectsWrong;
+    }
+
+    unsigned short LessonplanIndividualDescriptor::getAssignedTeachersToClassSubjectWrong(unsigned short classIdx,
+                                                                                          unsigned short subjectIdx) const {
+        return this->assignedTeachersToClassesSubjectsWrong[classIdx][subjectIdx];
+    }
+
+    void LessonplanIndividualDescriptor::setAssignedTeachersToClassesSubjectsWrong(
+            vector<vector<unsigned short>> assignedTeachersToClassesSubjectsWrong){
+        this->assignedTeachersToClassesSubjectsWrong = assignedTeachersToClassesSubjectsWrong;
+    }
+
+    void LessonplanIndividualDescriptor::setAssignedTeachersToClassSubjectWrong(unsigned short classIdx,
+                                                                                unsigned short subjectIdx,
+                                                                                unsigned short isWrong) {
+        this->assignedTeachersToClassesSubjectsWrong[classIdx][subjectIdx] = isWrong;
     }
 
 }
