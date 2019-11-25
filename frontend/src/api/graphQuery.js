@@ -1,40 +1,47 @@
-export const gql_query = {
+const gqlQuery = {
   classes: `
     query {
-      lessonplans_class {
+      allClasses {
         id
         name
       }
     }
   `,
-  lessonplan_items: `
-    query {
-      lessonplans_lessonplanitem {
+  class: `
+    query Class($id: Int) {
+      classModel(id: $id) {
+        name
         id
-        lessonplan_id
-        class_model: lessonplans_class {
-          name
-          id
-        }
-        lesson: lessonplans_lesson {
-          end_time
-          id
-          name
-          start_time
-        }
-        room: lessonplans_room {
+      }
+    }
+  `,
+  lessonplansItems: `
+    query {
+      allLessonplansItems {
+        id
+        weekday {
           id
           name
         }
-        teacher: lessonplans_teacher {
+        lesson {
+          id
+          name
+          startTime
+          endTime
+        }
+        classModel {
           id
           name
         }
-        subject: lessonplans_subject {
+        subject {
           id
           name
         }
-        weekday: lessonplans_weekday {
+        teacher {
+          id
+          name
+        }
+        room {
           id
           name
         }
@@ -42,3 +49,5 @@ export const gql_query = {
     }
   `
 };
+
+export default gqlQuery;

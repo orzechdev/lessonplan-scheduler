@@ -19,27 +19,27 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState } from 'vuex';
 
 export default {
-  name: "timetable",
+  name: 'timetable',
   props: {
     classId: String
   },
   computed: {
-    ...mapState(["classes", "lessonplans"]),
+    ...mapState(['classes', 'lessonplans']),
     currentClass() {
       return this.classes.find(elem => elem.id == this.classId);
     },
     items() {
       const classItem = this.currentClass;
-      const className = classItem ? classItem.name : "";
+      const className = classItem ? classItem.name : '';
 
       return [
         {
-          text: "Lessonplans",
+          text: 'Lessonplans',
           disabled: false,
-          to: "/example-school/lessonplans",
+          to: '/example-school/lessonplans',
           exact: true
         },
         {
@@ -91,12 +91,12 @@ export default {
         }
 
         const eventsList = this.lessonplans
-          .filter(({ class_model }) => class_model.id === classItem.id)
+          .filter(({ classModel }) => classModel.id === classItem.id)
           .map(({ weekday, lesson, subject }) => {
             const lessonWeekDay = Number(weekday.name) - 1;
 
-            const startTimes = lesson.start_time.split(":");
-            const endTimes = lesson.end_time.split(":");
+            const startTimes = lesson.startTime.split(':');
+            const endTimes = lesson.endTime.split(':');
 
             const lessonCurrentDate = new Date(mondayDate.getTime());
             lessonCurrentDate.setDate(mondayDate.getDate() + lessonWeekDay);

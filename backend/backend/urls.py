@@ -15,9 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from graphene_django.views import GraphQLView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('auth.urls')),
+    path("graphql-playground", GraphQLView.as_view(graphiql=True)),
+    path("graphql", GraphQLView.as_view(graphiql=False)),
     path('lessonplans/', include('lessonplans.urls')),
 ]

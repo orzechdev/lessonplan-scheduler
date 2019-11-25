@@ -1,12 +1,11 @@
-import { gql_query } from './graphQuery';
+import gqlQuery from './graphQuery';
 
 const getResponseValue = async response => {
   const contentType = response.headers.get('content-type');
   if (contentType && contentType.indexOf('application/json') !== -1) {
     return response.json();
-  } else {
-    return response.text();
   }
+  return response.text();
 };
 
 const fetchFromApi = async ({ path, method = 'GET', body }) => {
@@ -50,7 +49,7 @@ const fetchFromRestApi = async ({ path, method = 'GET', body }) => {
 
 const fetchFromGraphApi = async ({ method = 'POST', body }) => {
   return await fetchFromApi({
-    path: `http://localhost:7000/v1/graphql`,
+    path: `http://localhost:8000/graphql`,
     method,
     body
   });
@@ -60,13 +59,22 @@ export default {
   getLessonplans: async () =>
     await fetchFromGraphApi({
       body: {
-        query: gql_query.lessonplan_items
+        query: gqlQuery.lessonplansItems
       }
     }),
   getClasses: async () =>
     await fetchFromGraphApi({
       body: {
-        query: gql_query.classes
+        query: gqlQuery.classes
       }
-    })
+    }),
+  getClass: async () => {
+    const response = await fetchFromGraphApi({
+      body: {
+        query: gqlQuery.class,
+        variables: { id: 141 }
+      }
+    });
+    return response;
+  }
 };
