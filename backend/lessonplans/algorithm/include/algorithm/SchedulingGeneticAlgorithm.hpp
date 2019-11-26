@@ -27,9 +27,14 @@ namespace lessonplans {
         float crossoverProbability, mutationProbability;
         SchedulingProblem *schedulingProblem;
         vector<LessonplanIndividual *> individuals;
-        vector<vector<int>> individualsScoresImportant;
-        vector<vector<int>> individualsScoresOptimal;
-        vector<int> individualsSummaryScores;
+//        vector<vector<int>> individualsScoresImportant;
+//        vector<vector<int>> individualsScoresOptimal;
+//        vector<int> individualsSummaryScores;
+//        vector<int> individualsSummaryScores2;
+        vector<vector<int>> individualsHardScores;
+        vector<vector<int>> individualsSoftScores;
+        vector<int> individualsSummaryHardScores;
+        vector<int> individualsSummarySoftScores;
 
         void initializePopulation();
 

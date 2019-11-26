@@ -9,12 +9,12 @@ namespace lessonplans {
 
         this->individualsHardScores = *new vector<vector<int>>(
                 this->iterationsCount, vector<int>(
-                        SchedulingProblem::scoresTypesImportant
+                        SchedulingProblem::hardScoresTypes
                 )
         );
         this->individualsSoftScores = *new vector<vector<int>>(
                 this->iterationsCount, vector<int>(
-                        SchedulingProblem::scoresTypesOptimal
+                        SchedulingProblem::softScoresTypes
                 )
         );
         this->individualsSummaryHardScores = *new vector<int>(
@@ -32,8 +32,8 @@ namespace lessonplans {
         this->individualsHardScores[0] = obtainedScores[0];
         this->individualsSoftScores[0] = obtainedScores[1];
 
-        this->individualsSummaryHardScores[0] = SchedulingGreedyAlgorithm::getSummaryScore(obtainedScores[0]);
-        this->individualsSummarySoftScores[0] = SchedulingGreedyAlgorithm::getSummaryScore(obtainedScores[1]);
+        this->individualsSummaryHardScores[0] = SchedulingProblem::calculateSummaryScore(obtainedScores[0]);
+        this->individualsSummarySoftScores[0] = SchedulingProblem::calculateSummaryScore(obtainedScores[1]);
 
         int bestIndividualIdx = 0;
 
@@ -44,8 +44,8 @@ namespace lessonplans {
             this->individualsHardScores[i] = obtainedScores[0];
             this->individualsSoftScores[i] = obtainedScores[1];
 
-            this->individualsSummaryHardScores[i] = SchedulingGreedyAlgorithm::getSummaryScore(obtainedScores[0]);
-            this->individualsSummarySoftScores[i] = SchedulingGreedyAlgorithm::getSummaryScore(obtainedScores[1]);
+            this->individualsSummaryHardScores[i] = SchedulingProblem::calculateSummaryScore(obtainedScores[0]);
+            this->individualsSummarySoftScores[i] = SchedulingProblem::calculateSummaryScore(obtainedScores[1]);
 
             bestIndividualIdx = i;
             this->bestIndividual = currentIndividual;
@@ -70,7 +70,9 @@ namespace lessonplans {
                 this->bestIndividual,
                 this->individualsHardScores,
                 this->individualsSoftScores,
-                this->individualsSummaryHardScores
+                this->individualsSummaryHardScores,
+                this->individualsSummarySoftScores,
+                bestIndividualIdx
         );
 
         return lessonplanSchedulingSoultion;
@@ -299,16 +301,6 @@ namespace lessonplans {
                 }
             }
         }
-    }
-
-    int SchedulingGreedyAlgorithm::getSummaryScore(
-            vector<int> obtainedScores
-    ) {
-        int summaryGrade = 0;
-        std::for_each(obtainedScores.begin(), obtainedScores.end(), [&](int grade) {
-            summaryGrade += grade;
-        });
-        return summaryGrade;
     }
 
 }

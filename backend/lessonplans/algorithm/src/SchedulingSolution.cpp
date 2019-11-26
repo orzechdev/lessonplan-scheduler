@@ -18,8 +18,16 @@ namespace lessonplans {
         return this->individualsSoftScores;
     }
 
-    vector<int> SchedulingSolution::getAllLessonplansSummaryScores() {
-        return this->individualsSummaryScores;
+    vector<int> SchedulingSolution::getAllLessonplansSummaryHardScores() {
+        return this->individualsSummaryHardScores;
+    }
+
+    vector<int> SchedulingSolution::getAllLessonplansSummarySoftScores() {
+        return this->individualsSummarySoftScores;
+    }
+
+    int SchedulingSolution::getBestLessonplanScoreIndex() {
+        return this->bestIndividualScoreIdx;
     }
 
 }

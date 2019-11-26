@@ -1,5 +1,7 @@
 # distutils: language = c++
 
+from enum import Enum
+
 from SchedulingProblemProperties cimport SchedulingProblemProperties
 from SchedulingProblem cimport SchedulingProblem
 from SchedulingGeneticAlgorithm cimport SchedulingGeneticAlgorithm
@@ -7,7 +9,14 @@ from SchedulingGreedyAlgorithm cimport SchedulingGreedyAlgorithm
 from SchedulingRandomSearchAlgorithm cimport SchedulingRandomSearchAlgorithm
 
 
+class AlgorithmTypes(Enum):
+    RANDOM_SEARCH = 1
+    GREEDY = 2
+    GENETIC = 3
+
+
 def run_algorithm(
+        algorithm_type,
         population_count,
         generations_count,
         crossover_probability,
@@ -43,35 +52,46 @@ def run_algorithm(
         scheduling_problem_properties
     )
 
-    # scheduling_random_search_algorithm = new SchedulingRandomSearchAlgorithm(
-    #     population_count
-    # )
-    scheduling_greedy_algorithm = new SchedulingGreedyAlgorithm(
-        population_count
-    )
-    # scheduling_algorithm = new SchedulingGeneticAlgorithm(
-    #     population_count,
-    #     generations_count,
-    #     crossover_probability,
-    #     mutation_probability
-    # )
-
-    scheduling_solution = scheduling_greedy_algorithm.findBestLessonplan(
-        scheduling_problem
-    )
+    if algorithm_type == AlgorithmTypes.RANDOM_SEARCH:
+        scheduling_random_search_algorithm = new SchedulingRandomSearchAlgorithm(
+            population_count
+        )
+        scheduling_solution = scheduling_random_search_algorithm.findBestLessonplan(
+            scheduling_problem
+        )
+        del scheduling_random_search_algorithm
+    elif algorithm_type == AlgorithmTypes.GREEDY:
+        scheduling_greedy_algorithm = new SchedulingGreedyAlgorithm(
+            population_count
+        )
+        scheduling_solution = scheduling_greedy_algorithm.findBestLessonplan(
+            scheduling_problem
+        )
+        del scheduling_greedy_algorithm
+    else:
+        scheduling_genetic_algorithm = new SchedulingGeneticAlgorithm(
+            population_count,
+            generations_count,
+            crossover_probability,
+            mutation_probability
+        )
+        scheduling_solution = scheduling_genetic_algorithm.findBestLessonplan(
+            scheduling_problem
+        )
+        del scheduling_genetic_algorithm
 
     best_lessonplan = scheduling_solution.getBestLessonplan()
-    all_lessonplans = 0 # scheduling_solution.getAllLessonplans()
     all_lessonplans_hard_scores = scheduling_solution.getAllLessonplansHardScores()
     all_lessonplans_soft_scores = scheduling_solution.getAllLessonplansSoftScores()
-    all_lessonplans_summary_scores = scheduling_solution.getAllLessonplansSummaryScores()
+    all_lessonplans_summary_hard_scores = scheduling_solution.getAllLessonplansSummaryHardScores()
+    all_lessonplans_summary_soft_scores = scheduling_solution.getAllLessonplansSummarySoftScores()
+    best_lessonplan_score_index = scheduling_solution.getBestLessonplanScoreIndex()
 
     """
     Delete heap allocated objects
     """
-    del scheduling_greedy_algorithm
     del scheduling_problem
     del scheduling_problem_properties
     del scheduling_solution
 
-    return best_lessonplan, all_lessonplans, all_lessonplans_hard_scores, all_lessonplans_soft_scores, all_lessonplans_summary_scores
+    return best_lessonplan, all_lessonplans_hard_scores, all_lessonplans_soft_scores, all_lessonplans_summary_hard_scores, all_lessonplans_summary_soft_scores, best_lessonplan_score_index

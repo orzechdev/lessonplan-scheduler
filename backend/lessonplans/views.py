@@ -9,7 +9,7 @@ import os
 from datetime import datetime
 from rest_framework import viewsets
 
-from lessonplans.algorithm.algorithm import run_algorithm
+from lessonplans.algorithm.algorithm import AlgorithmTypes, run_algorithm
 from lessonplans.data_validity.data_validity import is_data_valid
 from lessonplans.models import Lessonplan, WeekDay, Lesson, Subject, Teacher, TeacherSubject, Class, ClassSubject, Room, \
     RoomSubjectRestricted, LessonplanItem
@@ -272,12 +272,15 @@ def generate(request):
     validity, message = is_data_valid(classes_subjects, teachers_subjects, rooms_subjects)
 
     if validity:
-        population_count = 20
+        population_count = 30
         generations_count = 10
         crossover_probability = 0.2
         mutation_probability = 0.1
 
-        best_lessonplan, all_lessonplans, all_lessonplans_hard_scores, all_lessonplans_soft_scores, all_lessonplans_summary_scores = run_algorithm(
+        print('lessonplan generation started...')
+
+        best_lessonplan, all_lessonplans_hard_scores, all_lessonplans_soft_scores, all_lessonplans_summary_hard_scores, all_lessonplans_summary_soft_scores, best_lessonplan_score_index = run_algorithm(
+            AlgorithmTypes.GREEDY,
             population_count,
             generations_count,
             crossover_probability,
@@ -294,17 +297,28 @@ def generate(request):
             classes_subjects_instances_number
         )
 
+        print('lessonplan generation finished')
+
         print('best lessonplan')
         print(best_lessonplan)
 
+        print('best lessonplan hard scores')
+        print(all_lessonplans_hard_scores[best_lessonplan_score_index])
+        print('best lessonplan soft scores')
+        print(all_lessonplans_soft_scores[best_lessonplan_score_index])
+        print('best lessonplan summary hard scores')
+        print(all_lessonplans_summary_hard_scores[best_lessonplan_score_index])
+        print('best lessonplan summary soft scores')
+        print(all_lessonplans_summary_soft_scores[best_lessonplan_score_index])
+
         print('all lessonplans hard scores')
         print_scores(all_lessonplans_hard_scores)
-
         print('all lessonplans soft scores')
         print_scores(all_lessonplans_soft_scores)
-
-        print('all lessonplans summary scores')
-        print_scores(all_lessonplans_summary_scores)
+        print('all lessonplans summary hard scores')
+        print_scores(all_lessonplans_summary_hard_scores)
+        print('all lessonplans summary soft scores')
+        print_scores(all_lessonplans_summary_soft_scores)
 
         lessonplan = Lessonplan(name='Noname')
         lessonplan.save()

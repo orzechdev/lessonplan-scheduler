@@ -48,8 +48,6 @@ namespace lessonplans {
 
         static unsigned short
         findTeacherForClassSubject(SchedulingProblemProperties *schedulingProblemProperties, unsigned short subjectId);
-
-        static int getSummaryScore(vector<int> obtainedScores);
     };
 }
 

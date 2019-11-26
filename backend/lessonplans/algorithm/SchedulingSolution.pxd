@@ -8,7 +8,8 @@ cdef extern from "./src/SchedulingSolution.cpp":
 cdef extern from "./include/algorithm/SchedulingSolution.hpp" namespace "lessonplans":
     cdef cppclass SchedulingSolution:
         vector[vector[ushort]] getBestLessonplan()
-        vector[vector[vector[ushort]]] getAllLessonplans()
         vector[vector[int]] getAllLessonplansHardScores()
         vector[vector[int]] getAllLessonplansSoftScores()
-        vector[int] getAllLessonplansSummaryScores()
+        vector[int] getAllLessonplansSummaryHardScores()
+        vector[int] getAllLessonplansSummarySoftScores()
+        int getBestLessonplanScoreIndex()

@@ -20,9 +20,11 @@ namespace lessonplans {
 
         auto* lessonplanSchedulingSoultion = new SchedulingSolution(
                 this->individuals[0],
-                this->individualsScoresImportant,
-                this->individualsScoresOptimal,
-                this->individualsSummaryScores
+                this->individualsHardScores,
+                this->individualsSoftScores,
+                this->individualsSummaryHardScores,
+                this->individualsSummarySoftScores,
+                0
         );
 
         return lessonplanSchedulingSoultion;
@@ -32,17 +34,21 @@ namespace lessonplans {
         this->individuals = *new vector<LessonplanIndividual*>(
                 this->individualsCount
         );
-        this->individualsScoresImportant = *new vector<vector<int>>(
+
+        this->individualsHardScores = *new vector<vector<int>>(
                 this->individualsCount, vector<int>(
-                        SchedulingProblem::scoresTypesImportant
-                    )
-        );
-        this->individualsScoresOptimal = *new vector<vector<int>>(
-                this->individualsCount, vector<int>(
-                        SchedulingProblem::scoresTypesOptimal
+                        SchedulingProblem::hardScoresTypes
                 )
         );
-        this->individualsSummaryScores = *new vector<int>(
+        this->individualsSoftScores = *new vector<vector<int>>(
+                this->individualsCount, vector<int>(
+                        SchedulingProblem::softScoresTypes
+                )
+        );
+        this->individualsSummaryHardScores = *new vector<int>(
+                this->individualsCount
+        );
+        this->individualsSummarySoftScores = *new vector<int>(
                 this->individualsCount
         );
 
@@ -68,19 +74,19 @@ namespace lessonplans {
     void SchedulingGeneticAlgorithm::evaluateIndividual(unsigned int individualIdx) {
         // Get scores for different aspects of problem
         vector<vector<int>> obtainedScores = this->schedulingProblem->evaluateLessonplan(this->individuals[individualIdx]);
-        this->individualsScoresImportant[individualIdx] = obtainedScores[0];
-        this->individualsScoresOptimal[individualIdx] = obtainedScores[1];
+        this->individualsHardScores[individualIdx] = obtainedScores[0];
+        this->individualsSoftScores[individualIdx] = obtainedScores[1];
 
         // Sum all obtained scores together
-        auto populationGradesCountImportant = static_cast<unsigned short>(this->individualsScoresImportant[individualIdx].size());
-        this->individualsSummaryScores[individualIdx] = 0;
-        for (unsigned short populationGradeIdx = 0; populationGradeIdx < populationGradesCountImportant; populationGradeIdx++) {
-            this->individualsSummaryScores[individualIdx] += this->individualsScoresImportant[individualIdx][populationGradeIdx];
+        auto populationHardScoresCount = static_cast<unsigned short>(this->individualsHardScores[individualIdx].size());
+        this->individualsSummaryHardScores[individualIdx] = 0;
+        for (unsigned short populationScoreIdx = 0; populationScoreIdx < populationHardScoresCount; populationScoreIdx++) {
+            this->individualsSummaryHardScores[individualIdx] += this->individualsHardScores[individualIdx][populationScoreIdx];
         }
-        auto populationGradesCountOptimal = static_cast<unsigned short>(this->individualsScoresOptimal[individualIdx].size());
-        this->individualsSummaryScores[individualIdx] = 0;
-        for (unsigned short populationGradeIdx = 0; populationGradeIdx < populationGradesCountOptimal; populationGradeIdx++) {
-            this->individualsSummaryScores[individualIdx] += this->individualsScoresOptimal[individualIdx][populationGradeIdx];
+        auto populationSoftScoresCount = static_cast<unsigned short>(this->individualsSoftScores[individualIdx].size());
+        this->individualsSummarySoftScores[individualIdx] = 0;
+        for (unsigned short populationScoreIdx = 0; populationScoreIdx < populationSoftScoresCount; populationScoreIdx++) {
+            this->individualsSummarySoftScores[individualIdx] += this->individualsSoftScores[individualIdx][populationScoreIdx];
         }
     }
 
