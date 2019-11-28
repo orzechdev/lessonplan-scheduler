@@ -26,24 +26,20 @@ namespace lessonplans {
 
         void reformLessonplanTeacherDataItem(LessonplanIndividualDescriptor *lessonplanIndividualDescriptor,
                                              SchedulingProblemProperties *schedulingProblemProperties,
-                                             vector<unsigned short> *lessonplanDataItem,
-                                             vector<vector<vector<unsigned short>>> *assignedLessonAndDaysToTeachers);
+                                             vector<unsigned short> *lessonplanDataItem);
 
         void
         reformLessonplanRoomDataItem(LessonplanIndividualDescriptor *lessonplanIndividualDescriptor,
                                      SchedulingProblemProperties *schedulingProblemProperties,
-                                     vector<unsigned short> *lessonplanDataItem,
-                                     vector<vector<vector<unsigned short>>> *assignedLessonAndDaysToRooms);
+                                     vector<unsigned short> *lessonplanDataItem);
 
         void reformLessonplanClassSubjectDataItem(LessonplanIndividualDescriptor *lessonplanIndividualDescriptor,
                                                   SchedulingProblemProperties *schedulingProblemProperties,
-                                                  vector<unsigned short> *lessonplanDataItem,
-                                                  vector<vector<vector<unsigned short>>> *assignedLessonAndDaysToClasses);
+                                                  vector<unsigned short> *lessonplanDataItem);
 
         void reformLessonplanClassSubjectTeacher(LessonplanIndividualDescriptor *lessonplanIndividualDescriptor,
                                                  SchedulingProblemProperties *schedulingProblemProperties,
                                                  vector<unsigned short> *lessonplanDataItem,
-                                                 vector<vector<unsigned short>> *assignedTeachersToClassesSubjects,
                                                  vector<vector<unsigned short>> *classesSubjectsTeachersToAssign);
 
         static unsigned short

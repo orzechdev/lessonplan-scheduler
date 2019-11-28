@@ -272,7 +272,7 @@ def generate(request):
     validity, message = is_data_valid(classes_subjects, teachers_subjects, rooms_subjects)
 
     if validity:
-        population_count = 30
+        population_count = 100  # Greedy: 100, Random search: 30000
         generations_count = 10
         crossover_probability = 0.2
         mutation_probability = 0.1
