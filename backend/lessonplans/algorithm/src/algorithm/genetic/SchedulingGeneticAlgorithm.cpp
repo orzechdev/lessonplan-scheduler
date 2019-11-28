@@ -1,5 +1,5 @@
 #include <algorithm>
-#include "../include/algorithm/SchedulingGeneticAlgorithm.hpp"
+#include "../../../include/algorithm/genetic/SchedulingGeneticAlgorithm.hpp"
 
 namespace lessonplans {
 

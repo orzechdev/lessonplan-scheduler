@@ -1,4 +1,4 @@
-#include "../include/algorithm/SchedulingProblemProperties.hpp"
+#include "../../include/algorithm/SchedulingProblemProperties.hpp"
 
 #include <utility>
 

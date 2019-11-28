@@ -1,4 +1,4 @@
-#include "LessonplanIndividualDescriptor.hpp"
+#include "../../include/lessonplan/LessonplanIndividualDescriptor.hpp"
 
 namespace lessonplans {
 

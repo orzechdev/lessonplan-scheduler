@@ -1,7 +1,7 @@
 #include <cstdlib>
 #include <algorithm>
-#include "../include/algorithm/SchedulingProblem.hpp"
-#include "LessonplanIndividualFactory.hpp"
+#include "../../include/algorithm/SchedulingProblem.hpp"
+#include "../../include/lessonplan/LessonplanIndividualFactory.hpp"
 
 namespace lessonplans {
 
@@ -44,7 +44,6 @@ namespace lessonplans {
         grades[0][1] = 0 - invalidTeacherSameLessonsTimes;
         grades[0][2] = 0 - invalidRoomSameLessonTimes;
         grades[0][3] = 0 - invalidTeacherChangesForClassesSubjects;
-
         grades[1][0] = 0 - invalidDifferenceBetweenStartLessons;
         grades[1][1] = 0 - invalidDifferenceBetweenLessonsCount;
         grades[1][2] = 0 - invalidFreePeriodsCountBetweenLessons;

@@ -1,4 +1,4 @@
-#include "LessonplanIndividual.hpp"
+#include "../../include/lessonplan/LessonplanIndividual.hpp"
 
 #include <utility>
 #include <random>

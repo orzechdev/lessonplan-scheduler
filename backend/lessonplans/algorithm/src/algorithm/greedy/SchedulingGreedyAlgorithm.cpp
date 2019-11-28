@@ -1,6 +1,6 @@
 #include <algorithm>
-#include "../include/algorithm/SchedulingGreedyAlgorithm.hpp"
-#include "RandomNumberGenerator.hpp"
+#include "../../../include/algorithm/greedy/SchedulingGreedyAlgorithm.hpp"
+#include "../../../include/utils/RandomNumberGenerator.hpp"
 
 namespace lessonplans {
 

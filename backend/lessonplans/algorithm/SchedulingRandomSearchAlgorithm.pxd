@@ -5,10 +5,10 @@ from numpy import ushort
 from SchedulingProblem cimport SchedulingProblem
 from SchedulingSolution cimport SchedulingSolution
 
-cdef extern from "./src/SchedulingRandomSearchAlgorithm.cpp":
+cdef extern from "./src/algorithm/random-search/SchedulingRandomSearchAlgorithm.cpp":
     pass
 
-cdef extern from "./include/algorithm/SchedulingRandomSearchAlgorithm.hpp" namespace "lessonplans":
+cdef extern from "./include/algorithm/random-search/SchedulingRandomSearchAlgorithm.hpp" namespace "lessonplans":
     cdef cppclass SchedulingRandomSearchAlgorithm:
         SchedulingRandomSearchAlgorithm(
                 int iterations_count

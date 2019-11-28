@@ -2,8 +2,8 @@
 #include <chrono>
 #include <random>
 #include <algorithm>
-#include "LessonplanIndividualFactory.hpp"
-#include "RandomNumberGenerator.hpp"
+#include "../../include/lessonplan/LessonplanIndividualFactory.hpp"
+#include "../../include/utils/RandomNumberGenerator.hpp"
 
 namespace lessonplans {
 

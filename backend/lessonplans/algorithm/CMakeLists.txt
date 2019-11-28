@@ -21,26 +21,26 @@ set(CMAKE_CXX_STANDARD 11)
 #add_executable(algorithm main.cpp include/algorithm/LessonplanScheduler.hpp src/LessonplanScheduler.cpp src/SchedulingGeneticAlgorithm.hpp src/SchedulingGeneticAlgorithm.cpp src/LessonplanGenAlgorithm.hpp src/LessonplanGenAlgorithm.cpp)
 add_executable(
         algorithm
-        include/algorithm/SchedulingGeneticAlgorithm.hpp
-        src/SchedulingGeneticAlgorithm.cpp
-        src/LessonplanIndividual.hpp
-        src/LessonplanIndividual.cpp
-        src/LessonplanIndividualFactory.hpp
-        src/LessonplanIndividualFactory.cpp
+        include/algorithm/genetic/SchedulingGeneticAlgorithm.hpp
+        src/algorithm/genetic/SchedulingGeneticAlgorithm.cpp
+        include/lessonplan/LessonplanIndividual.hpp
+        src/lessonplan/LessonplanIndividual.cpp
+        include/lessonplan/LessonplanIndividualFactory.hpp
+        src/lessonplan/LessonplanIndividualFactory.cpp
         include/algorithm/SchedulingProblemProperties.hpp
-        src/SchedulingProblemProperties.cpp
+        src/algorithm/SchedulingProblemProperties.cpp
         include/algorithm/SchedulingProblem.hpp
-        src/SchedulingProblem.cpp
+        src/algorithm/SchedulingProblem.cpp
         include/algorithm/SchedulingSolution.hpp
-        src/SchedulingSolution.cpp
-        include/algorithm/SchedulingGreedyAlgorithm.hpp
-        src/SchedulingGreedyAlgorithm.cpp
-        include/algorithm/SchedulingRandomSearchAlgorithm.hpp
-        src/SchedulingRandomSearchAlgorithm.cpp
-        src/RandomNumberGenerator.hpp
-        src/RandomNumberGenerator.cpp
-        src/LessonplanIndividualDescriptor.hpp
-        src/LessonplanIndividualDescriptor.cpp
+        src/algorithm/SchedulingSolution.cpp
+        include/algorithm/greedy/SchedulingGreedyAlgorithm.hpp
+        src/algorithm/greedy/SchedulingGreedyAlgorithm.cpp
+        include/algorithm/random-search/SchedulingRandomSearchAlgorithm.hpp
+        src/algorithm/random-search/SchedulingRandomSearchAlgorithm.cpp
+        include/utils/RandomNumberGenerator.hpp
+        src/utils/RandomNumberGenerator.cpp
+        include/lessonplan/LessonplanIndividualDescriptor.hpp
+        src/lessonplan/LessonplanIndividualDescriptor.cpp
 )
 #target_link_libraries(algorithm cython)
 

@@ -21,10 +21,10 @@ setup(
                       # "./src/LessonplanSchedulingProblem.cpp",
                       # "./src/LessonplanSchedulingProblemProperties.cpp",
                       # "./src/LessonplanSchedulingSolution.cpp",
-                      "./src/LessonplanIndividualDescriptor.cpp",
-                      "./src/LessonplanIndividual.cpp",
-                      "./src/LessonplanIndividualFactory.cpp",
-                      "./src/RandomNumberGenerator.cpp",
+                      "./src/lessonplan/LessonplanIndividualDescriptor.cpp",
+                      "./src/lessonplan/LessonplanIndividual.cpp",
+                      "./src/lessonplan/LessonplanIndividualFactory.cpp",
+                      "./src/utils/RandomNumberGenerator.cpp",
                   ],  # "algorithm.pyx" and also all ".cpp" files must be listed here !!!!
               )
           ],

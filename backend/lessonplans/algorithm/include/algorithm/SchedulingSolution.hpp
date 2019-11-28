@@ -4,7 +4,7 @@
 #include <utility>
 #include <vector>
 
-#include "../../src/LessonplanIndividual.hpp"
+#include "../lessonplan/LessonplanIndividual.hpp"
 
 using std::vector;
 

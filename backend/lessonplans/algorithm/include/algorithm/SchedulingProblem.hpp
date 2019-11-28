@@ -1,7 +1,7 @@
 #ifndef ALGORITHM_SCHEDULINGPROBLEM_HPP
 #define ALGORITHM_SCHEDULINGPROBLEM_HPP
 
-#include "../../src/LessonplanIndividual.hpp"
+#include "../lessonplan/LessonplanIndividual.hpp"
 
 namespace lessonplans {
     class SchedulingProblem {

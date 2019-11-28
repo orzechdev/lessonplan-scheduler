@@ -1,5 +1,5 @@
 #include <algorithm>
-#include "../include/algorithm/SchedulingRandomSearchAlgorithm.hpp"
+#include "../../../include/algorithm/random-search/SchedulingRandomSearchAlgorithm.hpp"
 
 namespace lessonplans {
 

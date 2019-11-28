@@ -5,10 +5,10 @@ from numpy import ushort
 from SchedulingProblem cimport SchedulingProblem
 from SchedulingSolution cimport SchedulingSolution
 
-cdef extern from "./src/SchedulingGeneticAlgorithm.cpp":
+cdef extern from "./src/algorithm/genetic/SchedulingGeneticAlgorithm.cpp":
     pass
 
-cdef extern from "./include/algorithm/SchedulingGeneticAlgorithm.hpp" namespace "lessonplans":
+cdef extern from "./include/algorithm/genetic/SchedulingGeneticAlgorithm.hpp" namespace "lessonplans":
     cdef cppclass SchedulingGeneticAlgorithm:
         SchedulingGeneticAlgorithm(
                 int population_count,

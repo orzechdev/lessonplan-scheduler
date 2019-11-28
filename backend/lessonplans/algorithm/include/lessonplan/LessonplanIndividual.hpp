@@ -3,7 +3,7 @@
 
 #include <vector>
 
-#include "../include/algorithm/SchedulingProblemProperties.hpp"
+#include "../algorithm/SchedulingProblemProperties.hpp"
 #include "LessonplanIndividualDescriptor.hpp"
 
 using std::vector;
@@ -12,7 +12,6 @@ namespace lessonplans {
     class LessonplanIndividual {
     public:
         unsigned int getMaxDataCount() const;
-
         void setMaxDataCount(unsigned int maxDataCount);
 
         vector<vector<unsigned short>> getLessonplan();

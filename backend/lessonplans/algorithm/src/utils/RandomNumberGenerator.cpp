@@ -3,7 +3,7 @@
 #include <random>
 #include <algorithm>
 
-#include "RandomNumberGenerator.hpp"
+#include "../../include/utils/RandomNumberGenerator.hpp"
 
 namespace lessonplans {
 

@@ -2,7 +2,7 @@ from libcpp.vector cimport vector
 from libcpp cimport bool
 from numpy import ushort
 
-cdef extern from "./src/SchedulingProblemProperties.cpp":
+cdef extern from "./src/algorithm/SchedulingProblemProperties.cpp":
     pass
 
 cdef extern from "./include/algorithm/SchedulingProblemProperties.hpp" namespace "lessonplans":

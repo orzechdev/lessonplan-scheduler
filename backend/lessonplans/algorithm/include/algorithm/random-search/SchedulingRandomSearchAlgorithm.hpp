@@ -1,10 +1,10 @@
 #ifndef ALGORITHM_SCHEDULINGRANDOMSEARCHALGORITHM_HPP
 #define ALGORITHM_SCHEDULINGRANDOMSEARCHALGORITHM_HPP
 
-#include "SchedulingProblem.hpp"
-#include "SchedulingProblemProperties.hpp"
-#include "../../src/LessonplanIndividual.hpp"
-#include "SchedulingSolution.hpp"
+#include "../SchedulingProblem.hpp"
+#include "../SchedulingProblemProperties.hpp"
+#include "../../lessonplan/LessonplanIndividual.hpp"
+#include "../SchedulingSolution.hpp"
 
 namespace lessonplans {
     class SchedulingRandomSearchAlgorithm {

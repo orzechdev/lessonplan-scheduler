@@ -1,5 +1,5 @@
 #include <algorithm>
-#include "../include/algorithm/SchedulingSolution.hpp"
+#include "../../include/algorithm/SchedulingSolution.hpp"
 
 using std::max_element;
 using std::distance;
