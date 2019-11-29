@@ -68,6 +68,18 @@ export default {
         query: gqlQuery.classes
       }
     }),
+  getTeachers: async () =>
+    await fetchFromGraphApi({
+      body: {
+        query: gqlQuery.teachers
+      }
+    }),
+  getRooms: async () =>
+    await fetchFromGraphApi({
+      body: {
+        query: gqlQuery.rooms
+      }
+    }),
   getClass: async () => {
     const response = await fetchFromGraphApi({
       body: {

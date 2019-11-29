@@ -20,6 +20,7 @@ namespace lessonplans {
         vector<vector<int>> individualsSoftScores;
         vector<int> individualsSummaryHardScores;
         vector<int> individualsSummarySoftScores;
+//        vector<unsigned short> iterationsCountWithSameHardScores;
 
         LessonplanIndividual *
         reformLessonplan(LessonplanIndividual *lessonplanIndividual, SchedulingProblem *schedulingProblem);

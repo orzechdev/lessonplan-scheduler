@@ -6,24 +6,35 @@
         v-for="classItem in classes"
         :key="classItem.name"
         :to="`/example-school/lessonplans/` + classItem.id"
-        >{{ classItem.name }}</v-list-item
-      >
+      >{{ classItem.name }}</v-list-item>
+      <v-list-item
+        v-for="classItem in rooms"
+        :key="classItem.name"
+        :to="`/example-school/lessonplansRoom/` + classItem.id"
+      >{{ classItem.name }}</v-list-item>
+      <v-list-item
+        v-for="classItem in teachers"
+        :key="classItem.name"
+        :to="`/example-school/lessonplansTeacher/` + classItem.id"
+      >{{ classItem.name }}</v-list-item>
     </v-list>
   </div>
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState } from 'vuex';
 
 export default {
-  name: "lessonplans",
+  name: 'lessonplans',
   computed: {
-    ...mapState(["classes"])
+    ...mapState(['classes']),
+    ...mapState(['teachers']),
+    ...mapState(['rooms'])
   },
   data: () => ({
     items: [
       {
-        text: "Lessonplans"
+        text: 'Lessonplans'
       }
     ]
     // classes: [

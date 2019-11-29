@@ -21,10 +21,12 @@ import { mapActions } from 'vuex';
 export default {
   name: 'app',
   methods: {
-    ...mapActions(['getClasses', 'getLessonplans'])
+    ...mapActions(['getClasses', 'getTeachers', 'getRooms', 'getLessonplans'])
   },
   created() {
     this.getClasses();
+    this.getTeachers();
+    this.getRooms();
     this.getLessonplans();
   }
 };

@@ -4,6 +4,7 @@ from django.http import HttpResponse, JsonResponse
 from setuptools import sandbox
 
 import numpy as np
+from matplotlib import pyplot as plt
 import json
 import os
 from datetime import datetime
@@ -26,6 +27,10 @@ rooms_file_path = os.path.join(module_dir, 'predefined_data/rooms.json')
 
 algorithm_setup_file_path = os.path.join(module_dir, 'algorithm/setup.py')
 
+all_lessonplans_hard_scores_file_path = os.path.join(module_dir, 'algorithm_tests/all_lessonplans_hard_scores.png')
+all_lessonplans_soft_scores_file_path = os.path.join(module_dir, 'algorithm_tests/all_lessonplans_soft_scores.png')
+all_lessonplans_summary_hard_scores_file_path = os.path.join(module_dir, 'algorithm_tests/all_lessonplans_summary_hard_scores.png')
+all_lessonplans_summary_soft_scores_file_path = os.path.join(module_dir, 'algorithm_tests/all_lessonplans_summary_soft_scores.png')
 
 def print_scores(scores):
     print(scores[0])
@@ -38,6 +43,21 @@ def print_scores(scores):
     print(scores[scores_len - 3])
     print(scores[scores_len - 2])
     print(scores[scores_len - 1])
+
+
+def save_scores_to_image(all_lessonplans_hard_scores, all_lessonplans_soft_scores, all_lessonplans_summary_hard_scores, all_lessonplans_summary_soft_scores):
+    plt.figure()
+    plt.plot(all_lessonplans_hard_scores)
+    plt.savefig(all_lessonplans_hard_scores_file_path)
+    plt.figure()
+    plt.plot(all_lessonplans_soft_scores)
+    plt.savefig(all_lessonplans_soft_scores_file_path)
+    plt.figure()
+    plt.plot(all_lessonplans_summary_hard_scores)
+    plt.savefig(all_lessonplans_summary_hard_scores_file_path)
+    plt.figure()
+    plt.plot(all_lessonplans_summary_soft_scores)
+    plt.savefig(all_lessonplans_summary_soft_scores_file_path)
 
 
 def index(request):
@@ -319,6 +339,8 @@ def generate(request):
         print_scores(all_lessonplans_summary_hard_scores)
         print('all lessonplans summary soft scores')
         print_scores(all_lessonplans_summary_soft_scores)
+
+        save_scores_to_image(all_lessonplans_hard_scores, all_lessonplans_soft_scores, all_lessonplans_summary_hard_scores, all_lessonplans_summary_soft_scores)
 
         lessonplan = Lessonplan(name='Noname')
         lessonplan.save()

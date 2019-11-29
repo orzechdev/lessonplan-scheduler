@@ -7,6 +7,22 @@ const gqlQuery = {
       }
     }
   `,
+  teachers: `
+    query {
+      allTeachers {
+        id
+        name
+      }
+    }
+  `,
+  rooms: `
+    query {
+      allRooms {
+        id
+        name
+      }
+    }
+  `,
   class: `
     query Class($id: Int) {
       classModel(id: $id) {
