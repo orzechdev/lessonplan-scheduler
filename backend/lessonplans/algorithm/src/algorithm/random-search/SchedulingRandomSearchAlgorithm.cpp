@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <chrono>
 #include "../../../include/algorithm/random-search/SchedulingRandomSearchAlgorithm.hpp"
 
 namespace lessonplans {
@@ -27,6 +28,8 @@ namespace lessonplans {
     SchedulingSolution *SchedulingRandomSearchAlgorithm::findBestLessonplan(
             SchedulingProblem *schedulingProblem
     ) {
+        auto start = std::chrono::steady_clock::now();
+
         this->bestIndividual = schedulingProblem->getSampleLessonplan();
         vector<vector<int>> obtainedScores = schedulingProblem->evaluateLessonplan(this->bestIndividual);
 
@@ -37,6 +40,7 @@ namespace lessonplans {
         this->individualsSummarySoftScores[0] = SchedulingProblem::calculateSummaryScore(obtainedScores[1]);
 
         int bestIndividualIdx = 0;
+        int lastIdx = 0;
 
         for (int i = 1; i < this->iterationsCount; i++) {
             LessonplanIndividual *currentIndividual = schedulingProblem->getSampleLessonplan();
@@ -54,14 +58,26 @@ namespace lessonplans {
                 bestIndividualIdx = i;
                 this->bestIndividual = currentIndividual;
             }
+
+            lastIdx = i;
+            auto end = std::chrono::steady_clock::now();
+
+            if (end - start > std::chrono::minutes(1) || (this->individualsSummaryHardScores[i] == 0 && this->individualsSummarySoftScores[i] == 0)) {
+                break;
+            }
         }
+
+        std::vector<std::vector<int>> subIndividualsHardScores(individualsHardScores.begin(), individualsHardScores.begin() + lastIdx);
+        std::vector<std::vector<int>> subIndividualsSoftScores(individualsSoftScores.begin(), individualsSoftScores.begin() + lastIdx);
+        std::vector<int> subIndividualsSummaryHardScores(individualsSummaryHardScores.begin(), individualsSummaryHardScores.begin() + lastIdx);
+        std::vector<int> subIndividualsSummarySoftScores(individualsSummarySoftScores.begin(), individualsSummarySoftScores.begin() + lastIdx);
 
         auto *lessonplanSchedulingSoultion = new SchedulingSolution(
                 this->bestIndividual,
-                this->individualsHardScores,
-                this->individualsSoftScores,
-                this->individualsSummaryHardScores,
-                this->individualsSummarySoftScores,
+                subIndividualsHardScores,
+                subIndividualsSoftScores,
+                subIndividualsSummaryHardScores,
+                subIndividualsSummarySoftScores,
                 bestIndividualIdx
         );
 

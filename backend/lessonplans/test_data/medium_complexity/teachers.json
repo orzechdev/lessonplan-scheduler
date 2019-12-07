@@ -1,0 +1,259 @@
+[
+  {
+    "id": 1,
+    "name": "John Kowalski",
+    "subjects": [
+      6,
+      7,
+      18
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Steve Nowak",
+    "subjects": [
+      2
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Adam Potocki",
+    "subjects": [
+      2,
+      9
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Sylwia Wybicka",
+    "subjects": [
+      13
+    ]
+  },
+  {
+    "id": 5,
+    "name": "Zygmunt Wiśniewski",
+    "subjects": [
+      13
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Tadeusz Mazur",
+    "subjects": [
+      20
+    ]
+  },
+  {
+    "id": 7,
+    "name": "Wiktor Korzeniowski",
+    "subjects": [
+      4
+    ]
+  },
+  {
+    "id": 8,
+    "name": "Adam Wójcik",
+    "subjects": [
+      3,
+      18
+    ]
+  },
+  {
+    "id": 9,
+    "name": "Krzysztof Kowalczyk",
+    "subjects": [
+      13,
+      18
+    ]
+  },
+  {
+    "id": 10,
+    "name": "Aleksandra Kamińska",
+    "subjects": [
+      5
+    ]
+  },
+  {
+    "id": 11,
+    "name": "Zygmunt Piotrowski",
+    "subjects": [
+      3,
+      15
+    ]
+  },
+  {
+    "id": 12,
+    "name": "Maciej Jankowski",
+    "subjects": [
+      16,
+      18
+    ]
+  },
+  {
+    "id": 13,
+    "name": "Ewa Zając",
+    "subjects": [
+      10,
+      18
+    ]
+  },
+  {
+    "id": 14,
+    "name": "Mirosław Kaczmarek",
+    "subjects": [
+      20
+    ]
+  },
+  {
+    "id": 15,
+    "name": "Adam Woźniak",
+    "subjects": [
+      9,
+      18
+    ]
+  },
+  {
+    "id": 16,
+    "name": "Zygmunt Piotrowski",
+    "subjects": [
+      16
+    ]
+  },
+  {
+    "id": 17,
+    "name": "Aleksandra Zielińska",
+    "subjects": [
+      1,
+      19
+    ]
+  },
+  {
+    "id": 18,
+    "name": "Grzegorz Grabowski",
+    "subjects": [
+      19,
+      16
+    ]
+  },
+  {
+    "id": 19,
+    "name": "Bogusław Wójcik",
+    "subjects": [
+      2
+    ]
+  },
+  {
+    "id": 20,
+    "name": "Kamil Grzebień",
+    "subjects": [
+      1,
+      18
+    ]
+  },
+  {
+    "id": 21,
+    "name": "Ireneusz Dąbrowski",
+    "subjects": [
+      3,
+      18
+    ]
+  },
+  {
+    "id": 22,
+    "name": "Grażyna Nowak",
+    "subjects": [
+      6,
+      7,
+      18
+    ]
+  },
+  {
+    "id": 23,
+    "name": "Alicja Kowalska",
+    "subjects": [
+      16
+    ]
+  },
+  {
+    "id": 24,
+    "name": "Krystyna Wiśniewska",
+    "subjects": [
+      2,
+      7,
+      18
+    ]
+  },
+  {
+    "id": 25,
+    "name": "Edyta Zdebiak",
+    "subjects": [
+      19
+    ]
+  },
+  {
+    "id": 26,
+    "name": "Martyna Krzysztofiak",
+    "subjects": [
+      19
+    ]
+  },
+  {
+    "id": 27,
+    "name": "Krzysztof Stefanko",
+    "subjects": [
+      8
+    ]
+  },
+  {
+    "id": 25,
+    "name": "Eugeniusz Kwiatkowski",
+    "subjects": [
+      1,
+      18
+    ]
+  },
+  {
+    "id": 26,
+    "name": "Zbigniew Gruźlik",
+    "subjects": [
+      19
+    ]
+  },
+  {
+    "id": 27,
+    "name": "Krzysztof Wesołowski",
+    "subjects": [
+      11
+    ]
+  },
+  {
+    "id": 25,
+    "name": "Monika Wróblewska",
+    "subjects": [
+      17
+    ]
+  },
+  {
+    "id": 26,
+    "name": "Tadeusz Michalski",
+    "subjects": [
+      16
+    ]
+  },
+  {
+    "id": 27,
+    "name": "Mirosław Wróbel",
+    "subjects": [
+      14,
+      18
+    ]
+  },
+  {
+    "id": 25,
+    "name": "Wiktor Próchnicki",
+    "subjects": [
+      12
+    ]
+  }
+]

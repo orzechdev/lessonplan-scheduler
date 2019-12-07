@@ -18,12 +18,12 @@ from lessonplans.serializers import ClassSerializer, LessonplanSerializer, Subje
     RoomSerializer, LessonplanItemSerializer
 
 module_dir = os.path.dirname(__file__)  # get current directory
-weekdays_file_path = os.path.join(module_dir, 'predefined_data/weekdays.json')
-lessons_file_path = os.path.join(module_dir, 'predefined_data/lessons.json')
-subjects_file_path = os.path.join(module_dir, 'predefined_data/subjects.json')
-teachers_file_path = os.path.join(module_dir, 'predefined_data/teachers.json')
-classes_file_path = os.path.join(module_dir, 'predefined_data/classes.json')
-rooms_file_path = os.path.join(module_dir, 'predefined_data/rooms.json')
+# weekdays_file_path = os.path.join(module_dir, 'predefined_data/weekdays.json')
+# lessons_file_path = os.path.join(module_dir, 'predefined_data/lessons.json')
+# subjects_file_path = os.path.join(module_dir, 'predefined_data/subjects.json')
+# teachers_file_path = os.path.join(module_dir, 'predefined_data/teachers.json')
+# classes_file_path = os.path.join(module_dir, 'predefined_data/classes.json')
+# rooms_file_path = os.path.join(module_dir, 'predefined_data/rooms.json')
 
 algorithm_setup_file_path = os.path.join(module_dir, 'algorithm/setup.py')
 
@@ -65,6 +65,22 @@ def index(request):
 
 
 def save_data(request):
+    data_complexity = request.GET.get('data-complexity')
+
+    if data_complexity == 'high':
+        data_complexity_dir = 'high_complexity'
+    elif data_complexity == 'medium':
+        data_complexity_dir = 'medium_complexity'
+    else:
+        data_complexity_dir = 'low_complexity'
+
+    weekdays_file_path = os.path.join(module_dir, 'test_data/' + data_complexity_dir + '/weekdays.json')
+    lessons_file_path = os.path.join(module_dir, 'test_data/' + data_complexity_dir + '/lessons.json')
+    subjects_file_path = os.path.join(module_dir, 'test_data/' + data_complexity_dir + '/subjects.json')
+    teachers_file_path = os.path.join(module_dir, 'test_data/' + data_complexity_dir + '/teachers.json')
+    classes_file_path = os.path.join(module_dir, 'test_data/' + data_complexity_dir + '/classes.json')
+    rooms_file_path = os.path.join(module_dir, 'test_data/' + data_complexity_dir + '/rooms.json')
+
     LessonplanItem.objects.all().delete()
     Lessonplan.objects.all().delete()
 
@@ -212,10 +228,7 @@ def get_lessonplans(request):
     return JsonResponse({})
 
 
-def generate(request):
-    LessonplanItem.objects.all().delete()
-    Lessonplan.objects.all().delete()
-
+def get_data():
     week_days = WeekDay.objects.all()
     lessons = Lesson.objects.all()
     classes = Class.objects.all()
@@ -289,10 +302,62 @@ def generate(request):
     print(rooms_subjects)
     rooms_subjects = np.array(rooms_subjects, dtype=object)
 
+    return (
+        week_days,
+        lessons,
+        classes,
+        subjects,
+        teachers,
+        rooms,
+        week_days_count,
+        lessons_count,
+        classes_count,
+        subjects_count,
+        teachers_count,
+        rooms_count,
+        classes_subjects,
+        teachers_subjects,
+        rooms_subjects,
+        classes_subjects_instances_number
+    )
+
+
+def generate(request):
+    algorithm_type = request.GET.get('algorithm-type')
+
+    if algorithm_type == 'random-search':
+        algorithm_type_number = AlgorithmTypes.RANDOM_SEARCH
+    elif algorithm_type == 'greedy':
+        algorithm_type_number = AlgorithmTypes.GREEDY
+    else:
+        algorithm_type_number = AlgorithmTypes.GENETIC
+
+    LessonplanItem.objects.all().delete()
+    Lessonplan.objects.all().delete()
+
+    (
+        week_days,
+        lessons,
+        classes,
+        subjects,
+        teachers,
+        rooms,
+        week_days_count,
+        lessons_count,
+        classes_count,
+        subjects_count,
+        teachers_count,
+        rooms_count,
+        classes_subjects,
+        teachers_subjects,
+        rooms_subjects,
+        classes_subjects_instances_number
+    ) = get_data()
+
     validity, message = is_data_valid(classes_subjects, teachers_subjects, rooms_subjects)
 
     if validity:
-        population_count = 100  # Greedy: 100, Random search: 30000
+        population_count = 100000  # Greedy: 100, Random search: 30000
         generations_count = 10
         crossover_probability = 0.2
         mutation_probability = 0.1
@@ -300,7 +365,7 @@ def generate(request):
         print('lessonplan generation started...')
 
         best_lessonplan, all_lessonplans_hard_scores, all_lessonplans_soft_scores, all_lessonplans_summary_hard_scores, all_lessonplans_summary_soft_scores, best_lessonplan_score_index = run_algorithm(
-            AlgorithmTypes.GREEDY,
+            algorithm_type_number,
             population_count,
             generations_count,
             crossover_probability,
@@ -321,6 +386,9 @@ def generate(request):
 
         print('best lessonplan')
         print(best_lessonplan)
+
+        print('iterations number')
+        print(len(all_lessonplans_hard_scores))
 
         print('best lessonplan hard scores')
         print(all_lessonplans_hard_scores[best_lessonplan_score_index])

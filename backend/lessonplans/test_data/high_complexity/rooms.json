@@ -1,0 +1,196 @@
+[
+  {
+    "id": 1,
+    "name": "100",
+    "restricted_subjects": []
+  },
+  {
+    "id": 2,
+    "name": "101",
+    "restricted_subjects": []
+  },
+  {
+    "id": 3,
+    "name": "102",
+    "restricted_subjects": []
+  },
+  {
+    "id": 4,
+    "name": "103",
+    "restricted_subjects": []
+  },
+  {
+    "id": 5,
+    "name": "104",
+    "restricted_subjects": []
+  },
+  {
+    "id": 6,
+    "name": "105",
+    "restricted_subjects": []
+  },
+  {
+    "id": 7,
+    "name": "106",
+    "restricted_subjects": []
+  },
+  {
+    "id": 8,
+    "name": "107",
+    "restricted_subjects": []
+  },
+  {
+    "id": 9,
+    "name": "108",
+    "restricted_subjects": []
+  },
+  {
+    "id": 10,
+    "name": "200",
+    "restricted_subjects": []
+  },
+  {
+    "id": 11,
+    "name": "201",
+    "restricted_subjects": []
+  },
+  {
+    "id": 12,
+    "name": "202",
+    "restricted_subjects": []
+  },
+  {
+    "id": 13,
+    "name": "203",
+    "restricted_subjects": []
+  },
+  {
+    "id": 14,
+    "name": "204",
+    "restricted_subjects": []
+  },
+  {
+    "id": 15,
+    "name": "205",
+    "restricted_subjects": []
+  },
+  {
+    "id": 16,
+    "name": "206",
+    "restricted_subjects": []
+  },
+  {
+    "id": 17,
+    "name": "207",
+    "restricted_subjects": []
+  },
+  {
+    "id": 18,
+    "name": "208",
+    "restricted_subjects": []
+  },
+  {
+    "id": 19,
+    "name": "300",
+    "restricted_subjects": []
+  },
+  {
+    "id": 20,
+    "name": "301",
+    "restricted_subjects": []
+  },
+  {
+    "id": 21,
+    "name": "302",
+    "restricted_subjects": []
+  },
+  {
+    "id": 22,
+    "name": "303",
+    "restricted_subjects": []
+  },
+  {
+    "id": 23,
+    "name": "304",
+    "restricted_subjects": []
+  },
+  {
+    "id": 24,
+    "name": "305",
+    "restricted_subjects": []
+  },
+  {
+    "id": 25,
+    "name": "306",
+    "restricted_subjects": []
+  },
+  {
+    "id": 26,
+    "name": "307",
+    "restricted_subjects": []
+  },
+  {
+    "id": 27,
+    "name": "308",
+    "restricted_subjects": []
+  },
+  {
+    "id": 28,
+    "name": "400",
+    "restricted_subjects": []
+  },
+  {
+    "id": 29,
+    "name": "401",
+    "restricted_subjects": []
+  },
+  {
+    "id": 30,
+    "name": "402",
+    "restricted_subjects": []
+  },
+  {
+    "id": 31,
+    "name": "403",
+    "restricted_subjects": []
+  },
+  {
+    "id": 32,
+    "name": "404",
+    "restricted_subjects": []
+  },
+  {
+    "id": 33,
+    "name": "405",
+    "restricted_subjects": []
+  },
+  {
+    "id": 34,
+    "name": "406",
+    "restricted_subjects": []
+  },
+  {
+    "id": 35,
+    "name": "407",
+    "restricted_subjects": []
+  },
+  {
+    "id": 36,
+    "name": "408",
+    "restricted_subjects": []
+  },
+  {
+    "id": 37,
+    "name": "1",
+    "restricted_subjects": [
+      16
+    ]
+  },
+  {
+    "id": 38,
+    "name": "2",
+    "restricted_subjects": [
+      16
+    ]
+  }
+]

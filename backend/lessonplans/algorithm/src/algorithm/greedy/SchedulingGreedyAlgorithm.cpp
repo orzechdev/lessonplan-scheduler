@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <iostream>
+#include <chrono>
 #include "../../../include/algorithm/greedy/SchedulingGreedyAlgorithm.hpp"
 #include "../../../include/utils/RandomNumberGenerator.hpp"
 
@@ -27,6 +28,8 @@ namespace lessonplans {
     }
 
     SchedulingSolution *SchedulingGreedyAlgorithm::findBestLessonplan(SchedulingProblem *schedulingProblem) {
+        auto start = std::chrono::steady_clock::now();
+
         this->bestIndividual = schedulingProblem->getSampleLessonplan();
         vector<vector<int>> obtainedScores = schedulingProblem->evaluateLessonplan(this->bestIndividual);
 
@@ -41,6 +44,7 @@ namespace lessonplans {
 //        );
 
         int bestIndividualIdx = 0;
+        int lastIdx = 0;
 
         for (int i = 1; i < this->iterationsCount; i++) {
             LessonplanIndividual *currentIndividual = this->reformLessonplan(this->bestIndividual, schedulingProblem);
@@ -75,14 +79,26 @@ namespace lessonplans {
 //                }
 ////                std::cout << "a" << std::endl;
 //            }
+
+            lastIdx = i;
+            auto end = std::chrono::steady_clock::now();
+
+            if (end - start > std::chrono::minutes(1) || (this->individualsSummaryHardScores[i] == 0 && this->individualsSummarySoftScores[i] == 0)) {
+                break;
+            }
         }
+
+        std::vector<std::vector<int>> subIndividualsHardScores(individualsHardScores.begin(), individualsHardScores.begin() + lastIdx);
+        std::vector<std::vector<int>> subIndividualsSoftScores(individualsSoftScores.begin(), individualsSoftScores.begin() + lastIdx);
+        std::vector<int> subIndividualsSummaryHardScores(individualsSummaryHardScores.begin(), individualsSummaryHardScores.begin() + lastIdx);
+        std::vector<int> subIndividualsSummarySoftScores(individualsSummarySoftScores.begin(), individualsSummarySoftScores.begin() + lastIdx);
 
         auto *lessonplanSchedulingSoultion = new SchedulingSolution(
                 this->bestIndividual,
-                this->individualsHardScores,
-                this->individualsSoftScores,
-                this->individualsSummaryHardScores,
-                this->individualsSummarySoftScores,
+                subIndividualsHardScores,
+                subIndividualsSoftScores,
+                subIndividualsSummaryHardScores,
+                subIndividualsSummarySoftScores,
                 bestIndividualIdx
         );
 
