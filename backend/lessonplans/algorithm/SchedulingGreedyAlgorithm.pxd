@@ -11,7 +11,7 @@ cdef extern from "./src/algorithm/greedy/SchedulingGreedyAlgorithm.cpp":
 cdef extern from "./include/algorithm/greedy/SchedulingGreedyAlgorithm.hpp" namespace "lessonplans":
     cdef cppclass SchedulingGreedyAlgorithm:
         SchedulingGreedyAlgorithm(
-                int iterations_count
+                int calculations_time_limit_in_seconds
         ) except +
         SchedulingSolution* findBestLessonplan(
                 SchedulingProblem* scheduling_problem

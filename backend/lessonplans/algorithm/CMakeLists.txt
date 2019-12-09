@@ -41,6 +41,8 @@ add_executable(
         src/utils/RandomNumberGenerator.cpp
         include/lessonplan/LessonplanIndividualDescriptor.hpp
         src/lessonplan/LessonplanIndividualDescriptor.cpp
+        include/lessonplan/LessonplanScoreList.hpp
+        src/lessonplan/LessonplanScoreList.cpp
 )
 #target_link_libraries(algorithm cython)
 

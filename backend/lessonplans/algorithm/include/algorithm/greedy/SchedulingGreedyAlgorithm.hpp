@@ -5,6 +5,7 @@
 #include "../SchedulingProblemProperties.hpp"
 #include "../../lessonplan/LessonplanIndividual.hpp"
 #include "../SchedulingSolution.hpp"
+#include "../../lessonplan/LessonplanScoreList.hpp"
 
 namespace lessonplans {
     class SchedulingGreedyAlgorithm {
@@ -14,13 +15,9 @@ namespace lessonplans {
         SchedulingSolution *findBestLessonplan(SchedulingProblem *schedulingProblem);
 
     private:
-        int iterationsCount;
+        int calculationsTimeLimitInSeconds;
         LessonplanIndividual *bestIndividual;
-        vector<vector<int>> individualsHardScores;
-        vector<vector<int>> individualsSoftScores;
-        vector<int> individualsSummaryHardScores;
-        vector<int> individualsSummarySoftScores;
-//        vector<unsigned short> iterationsCountWithSameHardScores;
+        LessonplanScoreList *lessonplanScoreList;
 
         LessonplanIndividual *
         reformLessonplan(LessonplanIndividual *lessonplanIndividual, SchedulingProblem *schedulingProblem);

@@ -9,9 +9,6 @@ namespace lessonplans {
         SchedulingProblem(SchedulingProblemProperties* schedulingProblemProperties) : schedulingProblemProperties(schedulingProblemProperties) {}
         LessonplanIndividual* getSampleLessonplan();
         vector<vector<int>> evaluateLessonplan(LessonplanIndividual* lessonplanIndividual);
-        static const short hardScoresTypes = 4;
-        static const short softScoresTypes = 3;
-        static int calculateSummaryScore(vector<int> obtainedScores);
         SchedulingProblemProperties *getSchedulingProblemProperties() const;
 
     private:

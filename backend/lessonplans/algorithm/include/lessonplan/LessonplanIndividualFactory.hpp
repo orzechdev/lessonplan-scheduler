@@ -7,6 +7,7 @@ namespace lessonplans {
     class LessonplanIndividualFactory {
     public:
         static LessonplanIndividual* createLessonplanIndividual(SchedulingProblemProperties* schedulingProblemProperties);
+//        static LessonplanIndividual* createLessonplanIndividual(SchedulingProblemProperties* schedulingProblemProperties);
 
     private:
         static unsigned int calculateMaxDataCount(SchedulingProblemProperties* lessonplanData);

@@ -11,7 +11,7 @@ cdef extern from "./src/algorithm/random-search/SchedulingRandomSearchAlgorithm.
 cdef extern from "./include/algorithm/random-search/SchedulingRandomSearchAlgorithm.hpp" namespace "lessonplans":
     cdef cppclass SchedulingRandomSearchAlgorithm:
         SchedulingRandomSearchAlgorithm(
-                int iterations_count
+                int calculations_time_limit_in_seconds
         ) except +
         SchedulingSolution* findBestLessonplan(
                 SchedulingProblem* scheduling_problem

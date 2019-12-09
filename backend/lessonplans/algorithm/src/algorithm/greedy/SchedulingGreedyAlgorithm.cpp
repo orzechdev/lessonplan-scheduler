@@ -3,103 +3,38 @@
 #include <chrono>
 #include "../../../include/algorithm/greedy/SchedulingGreedyAlgorithm.hpp"
 #include "../../../include/utils/RandomNumberGenerator.hpp"
+#include "../../../include/lessonplan/LessonplanScoreList.hpp"
 
 namespace lessonplans {
 
-    SchedulingGreedyAlgorithm::SchedulingGreedyAlgorithm(int iterationsCount) {
-        this->iterationsCount = iterationsCount;
+    SchedulingGreedyAlgorithm::SchedulingGreedyAlgorithm(int calculationsTimeLimitInSeconds) {
+        this->calculationsTimeLimitInSeconds = calculationsTimeLimitInSeconds;
 
-        this->individualsHardScores = *new vector<vector<int>>(
-                this->iterationsCount, vector<int>(
-                        SchedulingProblem::hardScoresTypes
-                )
-        );
-        this->individualsSoftScores = *new vector<vector<int>>(
-                this->iterationsCount, vector<int>(
-                        SchedulingProblem::softScoresTypes
-                )
-        );
-        this->individualsSummaryHardScores = *new vector<int>(
-                this->iterationsCount
-        );
-        this->individualsSummarySoftScores = *new vector<int>(
-                this->iterationsCount
-        );
+        this->lessonplanScoreList = new LessonplanScoreList();
     }
 
     SchedulingSolution *SchedulingGreedyAlgorithm::findBestLessonplan(SchedulingProblem *schedulingProblem) {
         auto start = std::chrono::steady_clock::now();
+        auto end = start;
+        auto timeToWait = std::chrono::seconds(calculationsTimeLimitInSeconds);
 
-        this->bestIndividual = schedulingProblem->getSampleLessonplan();
-        vector<vector<int>> obtainedScores = schedulingProblem->evaluateLessonplan(this->bestIndividual);
+        bestIndividual = schedulingProblem->getSampleLessonplan();
+        vector<vector<int>> obtainedScores = schedulingProblem->evaluateLessonplan(bestIndividual);
+        lessonplanScoreList->add(obtainedScores);
 
-        this->individualsHardScores[0] = obtainedScores[0];
-        this->individualsSoftScores[0] = obtainedScores[1];
+        while (end - start < timeToWait && (lessonplanScoreList->getLastSummaryHardScore() != 0 || lessonplanScoreList->getLastSummarySoftScore() != 0)) {
+            reformLessonplan(bestIndividual, schedulingProblem);
 
-        this->individualsSummaryHardScores[0] = SchedulingProblem::calculateSummaryScore(obtainedScores[0]);
-        this->individualsSummarySoftScores[0] = SchedulingProblem::calculateSummaryScore(obtainedScores[1]);
-
-//        this->iterationsCountWithSameHardScores = *new vector<unsigned short>(
-//                SchedulingProblem::hardScoresTypes, 0
-//        );
-
-        int bestIndividualIdx = 0;
-        int lastIdx = 0;
-
-        for (int i = 1; i < this->iterationsCount; i++) {
-            LessonplanIndividual *currentIndividual = this->reformLessonplan(this->bestIndividual, schedulingProblem);
-            obtainedScores = schedulingProblem->evaluateLessonplan(currentIndividual);
-
-            this->individualsHardScores[i] = obtainedScores[0];
-            this->individualsSoftScores[i] = obtainedScores[1];
-
-            this->individualsSummaryHardScores[i] = SchedulingProblem::calculateSummaryScore(obtainedScores[0]);
-            this->individualsSummarySoftScores[i] = SchedulingProblem::calculateSummaryScore(obtainedScores[1]);
-
-//            bestIndividualIdx = i;
-//            this->bestIndividual = currentIndividual;
-
-            if (this->individualsSummaryHardScores[i]  >
-                this->individualsSummaryHardScores[bestIndividualIdx]) {
-                bestIndividualIdx = i;
-                this->bestIndividual = currentIndividual;
-            }
-
-//            const short hardScoresTypes = SchedulingProblem::hardScoresTypes;
-//            for (short scoreType = 0; scoreType < hardScoresTypes; scoreType++) {
-////                std::cout << "a" << std::endl;
-//                if (this->iterationsCountWithSameHardScores[scoreType] > 3) {
-////                    std::cout << "a1" << std::endl;
-////                    std::cout << this->iterationsCountWithSameHardScores[scoreType] << std::endl;
-//                    this->iterationsCountWithSameHardScores[scoreType] = 0;
-//                } else if (this->individualsHardScores[i][1] == this->individualsHardScores[i - 1][1]) {
-////                    std::cout << "a2" << std::endl;
-////                    std::cout << this->individualsHardScores[i][1] << std::endl;
-//                    this->iterationsCountWithSameHardScores[scoreType]++;
-//                }
-////                std::cout << "a" << std::endl;
-//            }
-
-            lastIdx = i;
-            auto end = std::chrono::steady_clock::now();
-
-            if (end - start > std::chrono::minutes(1) || (this->individualsSummaryHardScores[i] == 0 && this->individualsSummarySoftScores[i] == 0)) {
-                break;
-            }
+            end = std::chrono::steady_clock::now();
         }
 
-        std::vector<std::vector<int>> subIndividualsHardScores(individualsHardScores.begin(), individualsHardScores.begin() + lastIdx);
-        std::vector<std::vector<int>> subIndividualsSoftScores(individualsSoftScores.begin(), individualsSoftScores.begin() + lastIdx);
-        std::vector<int> subIndividualsSummaryHardScores(individualsSummaryHardScores.begin(), individualsSummaryHardScores.begin() + lastIdx);
-        std::vector<int> subIndividualsSummarySoftScores(individualsSummarySoftScores.begin(), individualsSummarySoftScores.begin() + lastIdx);
-
         auto *lessonplanSchedulingSoultion = new SchedulingSolution(
-                this->bestIndividual,
-                subIndividualsHardScores,
-                subIndividualsSoftScores,
-                subIndividualsSummaryHardScores,
-                subIndividualsSummarySoftScores,
-                bestIndividualIdx
+                bestIndividual,
+                lessonplanScoreList->getHardScores(),
+                lessonplanScoreList->getSoftScores(),
+                lessonplanScoreList->getSummaryHardScores(),
+                lessonplanScoreList->getSummarySoftScores(),
+                lessonplanScoreList->getLastScoreIndex()
         );
 
         return lessonplanSchedulingSoultion;
@@ -144,35 +79,67 @@ namespace lessonplans {
 //        std::cout << changeRoomLessonAndDay << std::endl;
 //        std::cout << "b" << std::endl;
 
+        vector<vector<int>> obtainedScores = schedulingProblem->evaluateLessonplan(this->bestIndividual);
+
         for (unsigned int dataIdxNum = 0; dataIdxNum < maxDataCount; dataIdxNum++) {
             unsigned short dataIdx = dataItemIdxsSequence[dataIdxNum];
 
             vector<unsigned short> *lessonplanDataItem = &lessonplan[dataIdx];
 
+//            *idx += 1;
             this->reformLessonplanClassSubjectDataItem(lessonplanIndividualDescriptor, schedulingProblemProperties,
                                                        lessonplanDataItem);
-
             lessonplanIndividual->setLessonplan(lessonplan);
-            schedulingProblem->evaluateLessonplan(lessonplanIndividual);
+            obtainedScores = schedulingProblem->evaluateLessonplan(lessonplanIndividual);
 
+//            this->hardScores.push_back(obtainedScores[0]);
+//            this->softScores.push_back(obtainedScores[1]);
+//            this->summaryHardScores.push_back(SchedulingProblem::calculateSummaryScore(obtainedScores[0]));
+//            this->summarySoftScores.push_back(SchedulingProblem::calculateSummaryScore(obtainedScores[1]));
+
+//            if (this->summaryHardScores[*idx]  >
+//                this->summaryHardScores[*bestIndividualIdx]) {
+//                *bestIndividualIdx = *idx;
+//                this->bestIndividual = currentIndividual;
+//            }
+
+//            *idx += 1;
             this->reformLessonplanTeacherDataItem(lessonplanIndividualDescriptor, schedulingProblemProperties,
                                                   lessonplanDataItem);
             lessonplanIndividual->setLessonplan(lessonplan);
-            schedulingProblem->evaluateLessonplan(lessonplanIndividual);
+            obtainedScores = schedulingProblem->evaluateLessonplan(lessonplanIndividual);
 
+//            this->hardScores.push_back(obtainedScores[0]);
+//            this->softScores.push_back(obtainedScores[1]);
+//            this->summaryHardScores.push_back(SchedulingProblem::calculateSummaryScore(obtainedScores[0]));
+//            this->summarySoftScores.push_back(SchedulingProblem::calculateSummaryScore(obtainedScores[1]));
+
+//            *idx += 1;
             this->reformLessonplanRoomDataItem(lessonplanIndividualDescriptor, schedulingProblemProperties,
                                                lessonplanDataItem);
             lessonplanIndividual->setLessonplan(lessonplan);
-            schedulingProblem->evaluateLessonplan(lessonplanIndividual);
+            obtainedScores = schedulingProblem->evaluateLessonplan(lessonplanIndividual);
 
+//            this->hardScores.push_back(obtainedScores[0]);
+//            this->softScores.push_back(obtainedScores[1]);
+//            this->summaryHardScores.push_back(SchedulingProblem::calculateSummaryScore(obtainedScores[0]));
+//            this->summarySoftScores.push_back(SchedulingProblem::calculateSummaryScore(obtainedScores[1]));
+
+//            *idx += 1;
             this->reformLessonplanClassSubjectTeacher(lessonplanIndividualDescriptor, schedulingProblemProperties,
                                                       lessonplanDataItem,
                                                       &classesSubjectsTeachersToAssign);
             lessonplanIndividual->setLessonplan(lessonplan);
-            schedulingProblem->evaluateLessonplan(lessonplanIndividual);
+            obtainedScores = schedulingProblem->evaluateLessonplan(lessonplanIndividual);
+
+            lessonplanScoreList->add(obtainedScores);
+//            this->individualsHardScores.push_back(obtainedScores[0]);
+//            this->individualsSoftScores.push_back(obtainedScores[1]);
+//            this->individualsSummaryHardScores.push_back(SchedulingProblem::calculateSummaryScore(obtainedScores[0]));
+//            this->individualsSummarySoftScores.push_back(SchedulingProblem::calculateSummaryScore(obtainedScores[1]));
         }
 
-        lessonplanIndividual->setLessonplan(lessonplan);
+//        lessonplanIndividual->setLessonplan(lessonplan);
 
         return lessonplanIndividual;
     }

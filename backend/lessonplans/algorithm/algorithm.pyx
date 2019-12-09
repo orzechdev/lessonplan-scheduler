@@ -17,8 +17,8 @@ class AlgorithmTypes(Enum):
 
 def run_algorithm(
         algorithm_type,
+        calculations_time_limit_in_seconds,
         population_count,
-        generations_count,
         crossover_probability,
         mutation_probability,
         week_days_count,
@@ -54,7 +54,7 @@ def run_algorithm(
 
     if algorithm_type == AlgorithmTypes.RANDOM_SEARCH:
         scheduling_random_search_algorithm = new SchedulingRandomSearchAlgorithm(
-            population_count
+            calculations_time_limit_in_seconds
         )
         scheduling_solution = scheduling_random_search_algorithm.findBestLessonplan(
             scheduling_problem
@@ -62,7 +62,7 @@ def run_algorithm(
         del scheduling_random_search_algorithm
     elif algorithm_type == AlgorithmTypes.GREEDY:
         scheduling_greedy_algorithm = new SchedulingGreedyAlgorithm(
-            population_count
+            calculations_time_limit_in_seconds
         )
         scheduling_solution = scheduling_greedy_algorithm.findBestLessonplan(
             scheduling_problem
@@ -70,8 +70,8 @@ def run_algorithm(
         del scheduling_greedy_algorithm
     else:
         scheduling_genetic_algorithm = new SchedulingGeneticAlgorithm(
+            calculations_time_limit_in_seconds,
             population_count,
-            generations_count,
             crossover_probability,
             mutation_probability
         )

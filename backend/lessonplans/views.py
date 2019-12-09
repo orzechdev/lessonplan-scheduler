@@ -27,10 +27,17 @@ module_dir = os.path.dirname(__file__)  # get current directory
 
 algorithm_setup_file_path = os.path.join(module_dir, 'algorithm/setup.py')
 
-all_lessonplans_hard_scores_file_path = os.path.join(module_dir, 'algorithm_tests/all_lessonplans_hard_scores.png')
-all_lessonplans_soft_scores_file_path = os.path.join(module_dir, 'algorithm_tests/all_lessonplans_soft_scores.png')
-all_lessonplans_summary_hard_scores_file_path = os.path.join(module_dir, 'algorithm_tests/all_lessonplans_summary_hard_scores.png')
-all_lessonplans_summary_soft_scores_file_path = os.path.join(module_dir, 'algorithm_tests/all_lessonplans_summary_soft_scores.png')
+all_lessonplans_hard_scores_image_path = os.path.join(module_dir, 'algorithm_tests/all_lessonplans_hard_scores.png')
+all_lessonplans_soft_scores_image_path = os.path.join(module_dir, 'algorithm_tests/all_lessonplans_soft_scores.png')
+all_lessonplans_summary_hard_scores_image_path = os.path.join(module_dir, 'algorithm_tests/all_lessonplans_summary_hard_scores.png')
+all_lessonplans_summary_soft_scores_image_path = os.path.join(module_dir, 'algorithm_tests/all_lessonplans_summary_soft_scores.png')
+
+all_lessonplans_scores_file_path = os.path.join(module_dir, 'algorithm_tests')
+all_lessonplans_soft_scores_file_path = os.path.join(module_dir, 'algorithm_tests/all_lessonplans_soft_scores.npy')
+all_lessonplans_summary_hard_scores_file_path = os.path.join(module_dir, 'algorithm_tests/all_lessonplans_summary_hard_scores.npy')
+all_lessonplans_summary_soft_scores_file_path = os.path.join(module_dir, 'algorithm_tests/all_lessonplans_summary_soft_scores.npy')
+
+last_saved_data_complexity_file_path = os.path.join(all_lessonplans_scores_file_path, 'last_saved_data_complexity.txt')
 
 def print_scores(scores):
     print(scores[0])
@@ -45,19 +52,72 @@ def print_scores(scores):
     print(scores[scores_len - 1])
 
 
-def save_scores_to_image(all_lessonplans_hard_scores, all_lessonplans_soft_scores, all_lessonplans_summary_hard_scores, all_lessonplans_summary_soft_scores):
-    plt.figure()
-    plt.plot(all_lessonplans_hard_scores)
-    plt.savefig(all_lessonplans_hard_scores_file_path)
-    plt.figure()
-    plt.plot(all_lessonplans_soft_scores)
-    plt.savefig(all_lessonplans_soft_scores_file_path)
-    plt.figure()
-    plt.plot(all_lessonplans_summary_hard_scores)
-    plt.savefig(all_lessonplans_summary_hard_scores_file_path)
-    plt.figure()
-    plt.plot(all_lessonplans_summary_soft_scores)
-    plt.savefig(all_lessonplans_summary_soft_scores_file_path)
+def save_scores(
+        all_lessonplans_hard_scores,
+        all_lessonplans_soft_scores,
+        all_lessonplans_summary_hard_scores,
+        all_lessonplans_summary_soft_scores,
+        algorithm_type
+):
+    with open(last_saved_data_complexity_file_path) as f:
+        last_data_complexity = f.read()
+
+    np.savetxt(
+        os.path.join(all_lessonplans_scores_file_path, 'all_lessonplans_hard_scores_' + algorithm_type + '_' + last_data_complexity + '.csv'),
+        np.absolute(all_lessonplans_hard_scores),
+        delimiter=',',
+        fmt='%d'
+    )
+    np.savetxt(
+        os.path.join(all_lessonplans_scores_file_path, 'all_lessonplans_soft_scores_' + algorithm_type + '_' + last_data_complexity + '.csv'),
+        np.absolute(all_lessonplans_soft_scores),
+        delimiter=',',
+        fmt='%d'
+    )
+    np.savetxt(
+        os.path.join(all_lessonplans_scores_file_path, 'all_lessonplans_summary_hard_scores_' + algorithm_type + '_' + last_data_complexity + '.csv'),
+        np.absolute(all_lessonplans_summary_hard_scores),
+        delimiter=',',
+        fmt='%d'
+    )
+    np.savetxt(
+        os.path.join(all_lessonplans_scores_file_path, 'all_lessonplans_summary_soft_scores_' + algorithm_type + '_' + last_data_complexity + '.csv'),
+        np.absolute(all_lessonplans_summary_soft_scores),
+        delimiter=',',
+        fmt='%d'
+    )
+
+    # plt.figure()
+    # final_score_idx = np.argmax(all_lessonplans_hard_scores == 0)
+    # if final_score_idx == 0:
+    #     final_score_idx = len(all_lessonplans_hard_scores) - 1
+    # plt.xlim(0, final_score_idx)
+    # plt.plot(np.absolute(all_lessonplans_hard_scores))
+    # plt.savefig(all_lessonplans_hard_scores_image_path)
+    #
+    # plt.figure()
+    # final_score_idx = np.argmax(all_lessonplans_soft_scores == 0)
+    # if final_score_idx == 0:
+    #     final_score_idx = len(all_lessonplans_soft_scores) - 1
+    # plt.xlim(0, final_score_idx)
+    # plt.plot(np.absolute(all_lessonplans_soft_scores))
+    # plt.savefig(all_lessonplans_soft_scores_image_path)
+    #
+    # plt.figure()
+    # final_score_idx = np.argmax(all_lessonplans_summary_hard_scores == 0)
+    # if final_score_idx == 0:
+    #     final_score_idx = len(all_lessonplans_summary_hard_scores) - 1
+    # plt.xlim(0, final_score_idx)
+    # plt.plot(np.absolute(all_lessonplans_summary_hard_scores))
+    # plt.savefig(all_lessonplans_summary_hard_scores_image_path)
+    #
+    # plt.figure()
+    # final_score_idx = np.argmax(all_lessonplans_summary_soft_scores == 0)
+    # if final_score_idx == 0:
+    #     final_score_idx = len(all_lessonplans_summary_soft_scores) - 1
+    # plt.xlim(0, final_score_idx)
+    # plt.plot(np.absolute(all_lessonplans_summary_soft_scores))
+    # plt.savefig(all_lessonplans_summary_soft_scores_image_path)
 
 
 def index(request):
@@ -73,6 +133,9 @@ def save_data(request):
         data_complexity_dir = 'medium_complexity'
     else:
         data_complexity_dir = 'low_complexity'
+
+    with open(last_saved_data_complexity_file_path, "w") as text_file:
+        text_file.write(data_complexity)
 
     weekdays_file_path = os.path.join(module_dir, 'test_data/' + data_complexity_dir + '/weekdays.json')
     lessons_file_path = os.path.join(module_dir, 'test_data/' + data_complexity_dir + '/lessons.json')
@@ -322,6 +385,39 @@ def get_data():
     )
 
 
+def print_generation_results(
+        best_lessonplan,
+        all_lessonplans_hard_scores,
+        all_lessonplans_soft_scores,
+        all_lessonplans_summary_hard_scores,
+        all_lessonplans_summary_soft_scores,
+        best_lessonplan_score_index
+):
+    print('best lessonplan')
+    print(best_lessonplan)
+
+    print('iterations number')
+    print(len(all_lessonplans_hard_scores))
+
+    print('best lessonplan hard scores')
+    print(all_lessonplans_hard_scores[best_lessonplan_score_index])
+    print('best lessonplan soft scores')
+    print(all_lessonplans_soft_scores[best_lessonplan_score_index])
+    print('best lessonplan summary hard scores')
+    print(all_lessonplans_summary_hard_scores[best_lessonplan_score_index])
+    print('best lessonplan summary soft scores')
+    print(all_lessonplans_summary_soft_scores[best_lessonplan_score_index])
+
+    print('all lessonplans hard scores')
+    print_scores(all_lessonplans_hard_scores)
+    print('all lessonplans soft scores')
+    print_scores(all_lessonplans_soft_scores)
+    print('all lessonplans summary hard scores')
+    print_scores(all_lessonplans_summary_hard_scores)
+    print('all lessonplans summary soft scores')
+    print_scores(all_lessonplans_summary_soft_scores)
+
+
 def generate(request):
     algorithm_type = request.GET.get('algorithm-type')
 
@@ -357,8 +453,8 @@ def generate(request):
     validity, message = is_data_valid(classes_subjects, teachers_subjects, rooms_subjects)
 
     if validity:
+        calculations_time_limit_in_seconds = 10
         population_count = 100000  # Greedy: 100, Random search: 30000
-        generations_count = 10
         crossover_probability = 0.2
         mutation_probability = 0.1
 
@@ -366,8 +462,8 @@ def generate(request):
 
         best_lessonplan, all_lessonplans_hard_scores, all_lessonplans_soft_scores, all_lessonplans_summary_hard_scores, all_lessonplans_summary_soft_scores, best_lessonplan_score_index = run_algorithm(
             algorithm_type_number,
+            calculations_time_limit_in_seconds,
             population_count,
-            generations_count,
             crossover_probability,
             mutation_probability,
             week_days_count,
@@ -384,31 +480,22 @@ def generate(request):
 
         print('lessonplan generation finished')
 
-        print('best lessonplan')
-        print(best_lessonplan)
+        print_generation_results(
+            best_lessonplan,
+            all_lessonplans_hard_scores,
+            all_lessonplans_soft_scores,
+            all_lessonplans_summary_hard_scores,
+            all_lessonplans_summary_soft_scores,
+            best_lessonplan_score_index
+        )
 
-        print('iterations number')
-        print(len(all_lessonplans_hard_scores))
-
-        print('best lessonplan hard scores')
-        print(all_lessonplans_hard_scores[best_lessonplan_score_index])
-        print('best lessonplan soft scores')
-        print(all_lessonplans_soft_scores[best_lessonplan_score_index])
-        print('best lessonplan summary hard scores')
-        print(all_lessonplans_summary_hard_scores[best_lessonplan_score_index])
-        print('best lessonplan summary soft scores')
-        print(all_lessonplans_summary_soft_scores[best_lessonplan_score_index])
-
-        print('all lessonplans hard scores')
-        print_scores(all_lessonplans_hard_scores)
-        print('all lessonplans soft scores')
-        print_scores(all_lessonplans_soft_scores)
-        print('all lessonplans summary hard scores')
-        print_scores(all_lessonplans_summary_hard_scores)
-        print('all lessonplans summary soft scores')
-        print_scores(all_lessonplans_summary_soft_scores)
-
-        save_scores_to_image(all_lessonplans_hard_scores, all_lessonplans_soft_scores, all_lessonplans_summary_hard_scores, all_lessonplans_summary_soft_scores)
+        save_scores(
+            all_lessonplans_hard_scores,
+            all_lessonplans_soft_scores,
+            all_lessonplans_summary_hard_scores,
+            all_lessonplans_summary_soft_scores,
+            algorithm_type
+        )
 
         lessonplan = Lessonplan(name='Noname')
         lessonplan.save()

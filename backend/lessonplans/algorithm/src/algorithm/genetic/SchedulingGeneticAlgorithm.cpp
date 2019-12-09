@@ -1,5 +1,6 @@
 #include <algorithm>
 #include "../../../include/algorithm/genetic/SchedulingGeneticAlgorithm.hpp"
+#include "../../../include/lessonplan/LessonplanScoreList.hpp"
 
 namespace lessonplans {
 
@@ -11,7 +12,7 @@ namespace lessonplans {
         this->initializePopulation();
         this->evaluatePopulation();
         this->select();
-        for (int i = 0; i < this->generationsCount; i++) {
+        for (int i = 0; i < this->calculationsTimeLimitInSeconds; i++) {
             this->crossover();
             this->mutate();
             this->evaluatePopulation();
@@ -37,12 +38,12 @@ namespace lessonplans {
 
         this->individualsHardScores = *new vector<vector<int>>(
                 this->individualsCount, vector<int>(
-                        SchedulingProblem::hardScoresTypes
+                        LessonplanScoreList::hardScoresTypes
                 )
         );
         this->individualsSoftScores = *new vector<vector<int>>(
                 this->individualsCount, vector<int>(
-                        SchedulingProblem::softScoresTypes
+                        LessonplanScoreList::softScoresTypes
                 )
         );
         this->individualsSummaryHardScores = *new vector<int>(

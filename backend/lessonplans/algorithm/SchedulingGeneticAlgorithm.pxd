@@ -11,8 +11,8 @@ cdef extern from "./src/algorithm/genetic/SchedulingGeneticAlgorithm.cpp":
 cdef extern from "./include/algorithm/genetic/SchedulingGeneticAlgorithm.hpp" namespace "lessonplans":
     cdef cppclass SchedulingGeneticAlgorithm:
         SchedulingGeneticAlgorithm(
+                int calculations_time_limit_in_seconds,
                 int population_count,
-                int generations_count,
                 float crossover_probability,
                 float mutation_probability
         ) except +

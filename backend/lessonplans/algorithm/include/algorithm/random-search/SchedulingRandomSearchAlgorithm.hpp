@@ -5,21 +5,19 @@
 #include "../SchedulingProblemProperties.hpp"
 #include "../../lessonplan/LessonplanIndividual.hpp"
 #include "../SchedulingSolution.hpp"
+#include "../../lessonplan/LessonplanScoreList.hpp"
 
 namespace lessonplans {
     class SchedulingRandomSearchAlgorithm {
     public:
-        SchedulingRandomSearchAlgorithm(int iterationsCount);
+        SchedulingRandomSearchAlgorithm(int calculationsTimeLimitInSeconds);
 
         SchedulingSolution *findBestLessonplan(SchedulingProblem *schedulingProblem);
 
     private:
-        int iterationsCount;
+        int calculationsTimeLimitInSeconds;
         LessonplanIndividual *bestIndividual;
-        vector<vector<int>> individualsHardScores;
-        vector<vector<int>> individualsSoftScores;
-        vector<int> individualsSummaryHardScores;
-        vector<int> individualsSummarySoftScores;
+        LessonplanScoreList *lessonplanScoreList;
     };
 }
 

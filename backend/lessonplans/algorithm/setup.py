@@ -24,6 +24,7 @@ setup(
                       "./src/lessonplan/LessonplanIndividualDescriptor.cpp",
                       "./src/lessonplan/LessonplanIndividual.cpp",
                       "./src/lessonplan/LessonplanIndividualFactory.cpp",
+                      "./src/lessonplan/LessonplanScoreList.cpp",
                       "./src/utils/RandomNumberGenerator.cpp",
                   ],  # "algorithm.pyx" and also all ".cpp" files must be listed here !!!!
               )

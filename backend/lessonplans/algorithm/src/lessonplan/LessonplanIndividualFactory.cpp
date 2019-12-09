@@ -7,6 +7,12 @@
 
 namespace lessonplans {
 
+//    LessonplanIndividual *LessonplanIndividualFactory::createLessonplanIndividual(
+//            SchedulingProblemProperties *schedulingProblemProperties
+//    ) {
+//
+//    }
+
     LessonplanIndividual *LessonplanIndividualFactory::createLessonplanIndividual(
             SchedulingProblemProperties *schedulingProblemProperties
     ) {

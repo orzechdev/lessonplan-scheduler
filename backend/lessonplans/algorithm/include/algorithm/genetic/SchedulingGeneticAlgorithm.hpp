@@ -10,20 +10,20 @@ namespace lessonplans {
     class SchedulingGeneticAlgorithm {
     public:
         SchedulingGeneticAlgorithm(
+                int calculationsTimeLimitInSeconds,
                 int populationCount,
-                int generationsCount,
                 float crossoverProbability,
                 float mutationProbability
         ) :
+                calculationsTimeLimitInSeconds(calculationsTimeLimitInSeconds),
                 individualsCount(populationCount),
-                generationsCount(generationsCount),
                 crossoverProbability(crossoverProbability),
                 mutationProbability(mutationProbability) {}
 
         SchedulingSolution *findBestLessonplan(SchedulingProblem *schedulingProblem);
 
     private:
-        int individualsCount, generationsCount;
+        int calculationsTimeLimitInSeconds, individualsCount;
         float crossoverProbability, mutationProbability;
         SchedulingProblem *schedulingProblem;
         vector<LessonplanIndividual *> individuals;

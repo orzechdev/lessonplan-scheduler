@@ -2,6 +2,7 @@
 #include <algorithm>
 #include "../../include/algorithm/SchedulingProblem.hpp"
 #include "../../include/lessonplan/LessonplanIndividualFactory.hpp"
+#include "../../include/lessonplan/LessonplanScoreList.hpp"
 
 namespace lessonplans {
 
@@ -34,10 +35,10 @@ namespace lessonplans {
         );
 
         grades[0] = *new vector<int>(
-                SchedulingProblem::hardScoresTypes
+                LessonplanScoreList::hardScoresTypes
         );
         grades[1] = *new vector<int>(
-                SchedulingProblem::softScoresTypes
+                LessonplanScoreList::softScoresTypes
         );
 
         grades[0][0] = 0 - invalidClassSubjectSameLessonsTimes;
@@ -410,16 +411,6 @@ namespace lessonplans {
 
     SchedulingProblemProperties *SchedulingProblem::getSchedulingProblemProperties() const {
         return schedulingProblemProperties;
-    }
-
-    int SchedulingProblem::calculateSummaryScore(
-            vector<int> obtainedScores
-    ) {
-        int summaryGrade = 0;
-        std::for_each(obtainedScores.begin(), obtainedScores.end(), [&](int grade) {
-            summaryGrade += grade;
-        });
-        return summaryGrade;
     }
 
 }
