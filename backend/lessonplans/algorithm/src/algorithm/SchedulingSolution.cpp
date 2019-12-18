@@ -7,27 +7,27 @@ using std::distance;
 namespace lessonplans {
 
     vector<vector<unsigned short>> SchedulingSolution::getBestLessonplan() {
-        return this->bestIndividual->getLessonplan();
+        return bestIndividual->getLessonplan();
     }
 
     vector<vector<int>> SchedulingSolution::getAllLessonplansHardScores() {
-        return this->individualsHardScores;
+        return individualsHardScores;
     }
 
     vector<vector<int>> SchedulingSolution::getAllLessonplansSoftScores() {
-        return this->individualsSoftScores;
+        return individualsSoftScores;
     }
 
     vector<int> SchedulingSolution::getAllLessonplansSummaryHardScores() {
-        return this->individualsSummaryHardScores;
+        return individualsSummaryHardScores;
     }
 
     vector<int> SchedulingSolution::getAllLessonplansSummarySoftScores() {
-        return this->individualsSummarySoftScores;
+        return individualsSummarySoftScores;
     }
 
     int SchedulingSolution::getBestLessonplanScoreIndex() {
-        return this->bestIndividualScoreIdx;
+        return bestIndividualScoreIdx;
     }
 
 }

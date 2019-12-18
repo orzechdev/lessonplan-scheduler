@@ -1,94 +1,109 @@
 #include <algorithm>
+#include <chrono>
 #include "../../../include/algorithm/genetic/SchedulingGeneticAlgorithm.hpp"
 #include "../../../include/lessonplan/LessonplanScoreList.hpp"
 
 namespace lessonplans {
 
-    SchedulingSolution *SchedulingGeneticAlgorithm::findBestLessonplan(
-            SchedulingProblem *schedulingProblem
-    ) {
-        this->schedulingProblem = schedulingProblem;
+    SchedulingGeneticAlgorithm::SchedulingGeneticAlgorithm(int calculationsTimeLimitInSeconds, int populationCount,
+                                                           float crossoverProbability, float mutationProbability) {
+        this->calculationsTimeLimitInSeconds = calculationsTimeLimitInSeconds;
+        this->populationCount = populationCount;
+        this->crossoverProbability = crossoverProbability;
+        this->mutationProbability = mutationProbability;
 
-        this->initializePopulation();
-        this->evaluatePopulation();
-        this->select();
-        for (int i = 0; i < this->calculationsTimeLimitInSeconds; i++) {
-            this->crossover();
-            this->mutate();
-            this->evaluatePopulation();
-            this->select();
+        this->lessonplanScoreListPopulation = *new vector<LessonplanScoreList*>(
+                this->populationCount
+        );
+    }
+
+    SchedulingEvolutionalSolution *SchedulingGeneticAlgorithm::findBestLessonplan(SchedulingProblem *schedulingProblem) {
+        auto start = std::chrono::steady_clock::now();
+        auto end = start;
+        auto timeToWait = std::chrono::seconds(calculationsTimeLimitInSeconds);
+
+        vector<LessonplanIndividual *> currentPopulation = initializePopulation(schedulingProblem);
+        evaluatePopulation(currentPopulation, schedulingProblem);
+
+//        this->select();
+
+        int generationIndex = 0;
+
+        while (end - start < timeToWait && (lessonplanScoreListPopulation[generationIndex]->getScoreIndexWithZeroSummaryHardAndSoftScore() >= 0)) {
+            crossoverPopulation();
+            mutatePopulation();
+
+            evaluatePopulation(currentPopulation, schedulingProblem);
+
+            generationIndex++;
+
+            end = std::chrono::steady_clock::now();
         }
 
-        auto* lessonplanSchedulingSoultion = new SchedulingSolution(
-                this->individuals[0],
-                this->individualsHardScores,
-                this->individualsSoftScores,
-                this->individualsSummaryHardScores,
-                this->individualsSummarySoftScores,
+
+
+//        for (int i = 0; i < this->calculationsTimeLimitInSeconds; i++) {
+//            this->crossover();
+//            this->mutate();
+//            this->evaluatePopulation(schedulingProblem);
+//            this->select();
+//        }
+
+        vector<SchedulingSolution *> schedulingSolutions;
+        std::transform(
+                lessonplanScoreListPopulation.begin(),
+                lessonplanScoreListPopulation.end(),
+                std::back_inserter(schedulingSolutions),
+                [](LessonplanScoreList* lessonplanScoreList
+        ) {
+            return new SchedulingSolution(
+                    nullptr,
+                    lessonplanScoreList->getHardScores(),
+                    lessonplanScoreList->getSoftScores(),
+                    lessonplanScoreList->getSummaryHardScores(),
+                    lessonplanScoreList->getSummarySoftScores(),
+                    lessonplanScoreList->getLastScoreIndex()
+            );
+        });
+
+        auto* lessonplanSchedulingEvolutionalSoultion = new SchedulingEvolutionalSolution(
+                bestIndividual,
+                schedulingSolutions,
                 0
         );
 
-        return lessonplanSchedulingSoultion;
+        return lessonplanSchedulingEvolutionalSoultion;
     }
 
-    void SchedulingGeneticAlgorithm::initializePopulation() {
-        this->individuals = *new vector<LessonplanIndividual*>(
-                this->individualsCount
+    vector<LessonplanIndividual *> SchedulingGeneticAlgorithm::initializePopulation(SchedulingProblem *schedulingProblem) {
+        vector<LessonplanIndividual *> population = *new vector<LessonplanIndividual*>(
+                this->populationCount
         );
 
-        this->individualsHardScores = *new vector<vector<int>>(
-                this->individualsCount, vector<int>(
-                        LessonplanScoreList::hardScoresTypes
-                )
-        );
-        this->individualsSoftScores = *new vector<vector<int>>(
-                this->individualsCount, vector<int>(
-                        LessonplanScoreList::softScoresTypes
-                )
-        );
-        this->individualsSummaryHardScores = *new vector<int>(
-                this->individualsCount
-        );
-        this->individualsSummarySoftScores = *new vector<int>(
-                this->individualsCount
-        );
-
-        for (int i = 0; i < this->individualsCount; i++) {
-            this->individuals[i] = this->schedulingProblem->getSampleLessonplan();
+        for (int i = 0; i < this->populationCount; i++) {
+            population[i] = schedulingProblem->getSampleLessonplan();
         }
+
+        return population;
     }
 
-    void SchedulingGeneticAlgorithm::crossover() {
+    void SchedulingGeneticAlgorithm::crossoverPopulation(){
 
     }
 
-    void SchedulingGeneticAlgorithm::mutate() {
+    void SchedulingGeneticAlgorithm::mutatePopulation(){
 
     }
 
-    void SchedulingGeneticAlgorithm::evaluatePopulation(){
-        for (int i = 0; i < this->individualsCount; i++) {
-            this->evaluateIndividual(i);
+    void SchedulingGeneticAlgorithm::evaluatePopulation(vector<LessonplanIndividual *> currentPopulation, SchedulingProblem *schedulingProblem){
+        auto* lessonplanScoreList = new LessonplanScoreList();
+
+        for (int i = 0; i < populationCount; i++) {
+            vector<vector<int>> obtainedScores = schedulingProblem->evaluateLessonplan(currentPopulation[i]);
+            lessonplanScoreList->add(obtainedScores);
         }
-    }
 
-    void SchedulingGeneticAlgorithm::evaluateIndividual(unsigned int individualIdx) {
-        // Get scores for different aspects of problem
-        vector<vector<int>> obtainedScores = this->schedulingProblem->evaluateLessonplan(this->individuals[individualIdx]);
-        this->individualsHardScores[individualIdx] = obtainedScores[0];
-        this->individualsSoftScores[individualIdx] = obtainedScores[1];
-
-        // Sum all obtained scores together
-        auto populationHardScoresCount = static_cast<unsigned short>(this->individualsHardScores[individualIdx].size());
-        this->individualsSummaryHardScores[individualIdx] = 0;
-        for (unsigned short populationScoreIdx = 0; populationScoreIdx < populationHardScoresCount; populationScoreIdx++) {
-            this->individualsSummaryHardScores[individualIdx] += this->individualsHardScores[individualIdx][populationScoreIdx];
-        }
-        auto populationSoftScoresCount = static_cast<unsigned short>(this->individualsSoftScores[individualIdx].size());
-        this->individualsSummarySoftScores[individualIdx] = 0;
-        for (unsigned short populationScoreIdx = 0; populationScoreIdx < populationSoftScoresCount; populationScoreIdx++) {
-            this->individualsSummarySoftScores[individualIdx] += this->individualsSoftScores[individualIdx][populationScoreIdx];
-        }
+        lessonplanScoreListPopulation.push_back(lessonplanScoreList);
     }
 
     void SchedulingGeneticAlgorithm::select() {

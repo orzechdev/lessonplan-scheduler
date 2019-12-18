@@ -10,7 +10,7 @@ import os
 from datetime import datetime
 from rest_framework import viewsets
 
-from lessonplans.algorithm.algorithm import AlgorithmTypes, run_algorithm
+from lessonplans.services.lessonplan_generation_service import AlgorithmTypes, LessonplanGenerationService
 from lessonplans.data_validity.data_validity import is_data_valid
 from lessonplans.models import Lessonplan, WeekDay, Lesson, Subject, Teacher, TeacherSubject, Class, ClassSubject, Room, \
     RoomSubjectRestricted, LessonplanItem
@@ -39,53 +39,6 @@ all_lessonplans_summary_soft_scores_file_path = os.path.join(module_dir, 'algori
 
 last_saved_data_complexity_file_path = os.path.join(all_lessonplans_scores_file_path, 'last_saved_data_complexity.txt')
 
-def print_scores(scores):
-    print(scores[0])
-    print(scores[1])
-    print(scores[2])
-    print(scores[3])
-    print('...')
-    scores_len = len(scores)
-    print(scores[scores_len - 4])
-    print(scores[scores_len - 3])
-    print(scores[scores_len - 2])
-    print(scores[scores_len - 1])
-
-
-def save_scores(
-        all_lessonplans_hard_scores,
-        all_lessonplans_soft_scores,
-        all_lessonplans_summary_hard_scores,
-        all_lessonplans_summary_soft_scores,
-        algorithm_type
-):
-    with open(last_saved_data_complexity_file_path) as f:
-        last_data_complexity = f.read()
-
-    np.savetxt(
-        os.path.join(all_lessonplans_scores_file_path, 'all_lessonplans_hard_scores_' + algorithm_type + '_' + last_data_complexity + '.csv'),
-        np.absolute(all_lessonplans_hard_scores),
-        delimiter=',',
-        fmt='%d'
-    )
-    np.savetxt(
-        os.path.join(all_lessonplans_scores_file_path, 'all_lessonplans_soft_scores_' + algorithm_type + '_' + last_data_complexity + '.csv'),
-        np.absolute(all_lessonplans_soft_scores),
-        delimiter=',',
-        fmt='%d'
-    )
-    np.savetxt(
-        os.path.join(all_lessonplans_scores_file_path, 'all_lessonplans_summary_hard_scores_' + algorithm_type + '_' + last_data_complexity + '.csv'),
-        np.absolute(all_lessonplans_summary_hard_scores),
-        delimiter=',',
-        fmt='%d'
-    )
-    np.savetxt(
-        os.path.join(all_lessonplans_scores_file_path, 'all_lessonplans_summary_soft_scores_' + algorithm_type + '_' + last_data_complexity + '.csv'),
-        np.absolute(all_lessonplans_summary_soft_scores),
-        delimiter=',',
-        fmt='%d'
-    )
 
     # plt.figure()
     # final_score_idx = np.argmax(all_lessonplans_hard_scores == 0)
@@ -385,52 +338,7 @@ def get_data():
     )
 
 
-def print_generation_results(
-        best_lessonplan,
-        all_lessonplans_hard_scores,
-        all_lessonplans_soft_scores,
-        all_lessonplans_summary_hard_scores,
-        all_lessonplans_summary_soft_scores,
-        best_lessonplan_score_index
-):
-    print('best lessonplan')
-    print(best_lessonplan)
-
-    print('iterations number')
-    print(len(all_lessonplans_hard_scores))
-
-    print('best lessonplan hard scores')
-    print(all_lessonplans_hard_scores[best_lessonplan_score_index])
-    print('best lessonplan soft scores')
-    print(all_lessonplans_soft_scores[best_lessonplan_score_index])
-    print('best lessonplan summary hard scores')
-    print(all_lessonplans_summary_hard_scores[best_lessonplan_score_index])
-    print('best lessonplan summary soft scores')
-    print(all_lessonplans_summary_soft_scores[best_lessonplan_score_index])
-
-    print('all lessonplans hard scores')
-    print_scores(all_lessonplans_hard_scores)
-    print('all lessonplans soft scores')
-    print_scores(all_lessonplans_soft_scores)
-    print('all lessonplans summary hard scores')
-    print_scores(all_lessonplans_summary_hard_scores)
-    print('all lessonplans summary soft scores')
-    print_scores(all_lessonplans_summary_soft_scores)
-
-
 def generate(request):
-    algorithm_type = request.GET.get('algorithm-type')
-
-    if algorithm_type == 'random-search':
-        algorithm_type_number = AlgorithmTypes.RANDOM_SEARCH
-    elif algorithm_type == 'greedy':
-        algorithm_type_number = AlgorithmTypes.GREEDY
-    else:
-        algorithm_type_number = AlgorithmTypes.GENETIC
-
-    LessonplanItem.objects.all().delete()
-    Lessonplan.objects.all().delete()
-
     (
         week_days,
         lessons,
@@ -452,20 +360,19 @@ def generate(request):
 
     validity, message = is_data_valid(classes_subjects, teachers_subjects, rooms_subjects)
 
-    if validity:
-        calculations_time_limit_in_seconds = 10
-        population_count = 100000  # Greedy: 100, Random search: 30000
-        crossover_probability = 0.2
-        mutation_probability = 0.1
+    if not validity:
+        return HttpResponse("data is invalid: " + message)
+    else:
+        LessonplanItem.objects.all().delete()
+        Lessonplan.objects.all().delete()
 
-        print('lessonplan generation started...')
-
-        best_lessonplan, all_lessonplans_hard_scores, all_lessonplans_soft_scores, all_lessonplans_summary_hard_scores, all_lessonplans_summary_soft_scores, best_lessonplan_score_index = run_algorithm(
-            algorithm_type_number,
-            calculations_time_limit_in_seconds,
-            population_count,
-            crossover_probability,
-            mutation_probability,
+        lessonplan_generation_service = LessonplanGenerationService.get_instance()
+        lessonplan_generation_service.set_debug_optins(
+            debug_print_enabled=True,
+            debug_save_enabled=True,
+            debug_save_dir=all_lessonplans_scores_file_path
+        )
+        lessonplan_generation_service.set_lessonplan_data(
             week_days_count,
             lessons_count,
             classes_count,
@@ -477,25 +384,29 @@ def generate(request):
             rooms_subjects,
             classes_subjects_instances_number
         )
-
-        print('lessonplan generation finished')
-
-        print_generation_results(
-            best_lessonplan,
-            all_lessonplans_hard_scores,
-            all_lessonplans_soft_scores,
-            all_lessonplans_summary_hard_scores,
-            all_lessonplans_summary_soft_scores,
-            best_lessonplan_score_index
+        lessonplan_generation_service.set_algorithm_calculations_time_limit(
+            calculations_time_limit_in_seconds=10
         )
 
-        save_scores(
-            all_lessonplans_hard_scores,
-            all_lessonplans_soft_scores,
-            all_lessonplans_summary_hard_scores,
-            all_lessonplans_summary_soft_scores,
-            algorithm_type
-        )
+        algorithm_type = request.GET.get('algorithm-type')
+
+        if algorithm_type == 'random-search':
+            best_lessonplan = lessonplan_generation_service.generate_lessonplan(
+                AlgorithmTypes.RANDOM_SEARCH
+            )
+        elif algorithm_type == 'greedy':
+            best_lessonplan = lessonplan_generation_service.generate_lessonplan(
+                AlgorithmTypes.GREEDY
+            )
+        else:
+            lessonplan_generation_service.set_algorithm_evolutionary_params(
+                population_count=100000,
+                crossover_probability=0.2,
+                mutation_probability=0.1
+            )
+            best_lessonplan = lessonplan_generation_service.generate_lessonplan(
+                AlgorithmTypes.GENETIC
+            )
 
         lessonplan = Lessonplan(name='Noname')
         lessonplan.save()
@@ -520,8 +431,6 @@ def generate(request):
             lessonplan_item.save()
 
         return HttpResponse("ok")
-    else:
-        return HttpResponse("data is invalid: " + message)
 
 
 def view(request):

@@ -4,7 +4,8 @@
 #include "../SchedulingProblem.hpp"
 #include "../SchedulingProblemProperties.hpp"
 #include "../../lessonplan/LessonplanIndividual.hpp"
-#include "../SchedulingSolution.hpp"
+#include "../../lessonplan/LessonplanScoreList.hpp"
+#include "../SchedulingEvolutionalSolution.hpp"
 
 namespace lessonplans {
     class SchedulingGeneticAlgorithm {
@@ -14,36 +15,21 @@ namespace lessonplans {
                 int populationCount,
                 float crossoverProbability,
                 float mutationProbability
-        ) :
-                calculationsTimeLimitInSeconds(calculationsTimeLimitInSeconds),
-                individualsCount(populationCount),
-                crossoverProbability(crossoverProbability),
-                mutationProbability(mutationProbability) {}
+        );
 
-        SchedulingSolution *findBestLessonplan(SchedulingProblem *schedulingProblem);
+        SchedulingEvolutionalSolution *findBestLessonplan(SchedulingProblem *schedulingProblem);
 
     private:
-        int calculationsTimeLimitInSeconds, individualsCount;
+        int calculationsTimeLimitInSeconds, populationCount;
         float crossoverProbability, mutationProbability;
-        SchedulingProblem *schedulingProblem;
-        vector<LessonplanIndividual *> individuals;
-//        vector<vector<int>> individualsScoresImportant;
-//        vector<vector<int>> individualsScoresOptimal;
-//        vector<int> individualsSummaryScores;
-//        vector<int> individualsSummaryScores2;
-        vector<vector<int>> individualsHardScores;
-        vector<vector<int>> individualsSoftScores;
-        vector<int> individualsSummaryHardScores;
-        vector<int> individualsSummarySoftScores;
+        LessonplanIndividual *bestIndividual;
+        vector<LessonplanScoreList *> lessonplanScoreListPopulation;
 
-        void initializePopulation();
+        vector<LessonplanIndividual *> initializePopulation(SchedulingProblem *schedulingProblem);
+        void evaluatePopulation(vector<LessonplanIndividual *> currentPopulation, SchedulingProblem *schedulingProblem);
 
-        void crossover();
-
-        void mutate();
-
-        void evaluatePopulation();
-        void evaluateIndividual(unsigned int individualIdx);
+        void mutatePopulation();
+        void crossoverPopulation();
 
         void select();
 

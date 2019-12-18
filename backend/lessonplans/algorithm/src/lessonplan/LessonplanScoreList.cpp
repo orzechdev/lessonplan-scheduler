@@ -49,6 +49,10 @@ namespace lessonplans {
             lastScoreIndex = 0;
             bestScoreIndex = lastScoreIndex;
         }
+
+        if (scoreIndexWithZeroSummaryHardAndSoftScore == -1 && newSummaryHardScore == 0 && newSummarySoftScore == 0) {
+            scoreIndexWithZeroSummaryHardAndSoftScore = lastScoreIndex;
+        }
     }
 
     vector<vector<int>> LessonplanScoreList::getHardScores() {
@@ -73,6 +77,10 @@ namespace lessonplans {
 
     int LessonplanScoreList::getLastScoreIndex() {
         return lastScoreIndex;
+    }
+
+    int LessonplanScoreList::getScoreIndexWithZeroSummaryHardAndSoftScore() {
+        return scoreIndexWithZeroSummaryHardAndSoftScore;
     }
 
     int LessonplanScoreList::calculateSummaryScore(
