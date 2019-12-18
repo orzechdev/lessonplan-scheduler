@@ -3,7 +3,7 @@ from libcpp cimport bool
 from numpy import ushort
 
 from SchedulingProblem cimport SchedulingProblem
-from SchedulingSolution cimport SchedulingSolution
+from SchedulingEvolutionalSolution cimport SchedulingEvolutionalSolution
 
 cdef extern from "./src/algorithm/genetic/SchedulingGeneticAlgorithm.cpp":
     pass
@@ -16,6 +16,6 @@ cdef extern from "./include/algorithm/genetic/SchedulingGeneticAlgorithm.hpp" na
                 float crossover_probability,
                 float mutation_probability
         ) except +
-        SchedulingSolution* findBestLessonplan(
+        SchedulingEvolutionalSolution* findBestLessonplan(
                 SchedulingProblem* scheduling_problem
         )

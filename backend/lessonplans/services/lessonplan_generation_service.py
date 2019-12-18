@@ -144,6 +144,7 @@ class LessonplanGenerationService:
                     all_lessonplans_summary_soft_scores,
                     'random-search'
                 )
+            return best_lessonplan
         elif algorithm_type_number == AlgorithmTypes.GREEDY:
             if self.__debug_print_enabled:
                 print('lessonplan generation started...')
@@ -194,6 +195,7 @@ class LessonplanGenerationService:
                     all_lessonplans_summary_soft_scores,
                     'greedy'
                 )
+            return best_lessonplan
         else:
             if self.__debug_print_enabled:
                 print('lessonplan generation started...')
@@ -249,6 +251,7 @@ class LessonplanGenerationService:
                     all_lessonplans_summary_soft_scores,
                     'genetic'
                 )
+            return best_lessonplan
 
     @staticmethod
     def __print_best_lessonplan(

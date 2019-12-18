@@ -7,7 +7,8 @@ from SchedulingGreedyAlgorithm cimport SchedulingGreedyAlgorithm
 from SchedulingRandomSearchAlgorithm cimport SchedulingRandomSearchAlgorithm
 
 
-def initialize_problem_instance(
+def run_random_search_algorithm(
+        calculations_time_limit_in_seconds,
         week_days_count,
         lessons_count,
         classes_count,
@@ -37,39 +38,10 @@ def initialize_problem_instance(
     scheduling_problem = new SchedulingProblem(
         scheduling_problem_properties
     )
-
-    return scheduling_problem, scheduling_problem_properties
-
-
-def run_random_search_algorithm(
-        calculations_time_limit_in_seconds,
-        week_days_count,
-        lessons_count,
-        classes_count,
-        subjects_count,
-        teachers_count,
-        rooms_count,
-        classes_subjects,
-        teachers_subjects,
-        rooms_subjects,
-        classes_subjects_instances_number
-):
-    scheduling_problem, scheduling_problem_properties = initialize_problem_instance(
-        week_days_count,
-        lessons_count,
-        classes_count,
-        subjects_count,
-        teachers_count,
-        rooms_count,
-        classes_subjects,
-        teachers_subjects,
-        rooms_subjects,
-        classes_subjects_instances_number
-    )
-
     scheduling_random_search_algorithm = new SchedulingRandomSearchAlgorithm(
         calculations_time_limit_in_seconds
     )
+
     scheduling_solution = scheduling_random_search_algorithm.findBestLessonplan(
         scheduling_problem
     )
@@ -105,7 +77,10 @@ def run_greedy_algorithm(
         rooms_subjects,
         classes_subjects_instances_number
 ):
-    scheduling_problem, scheduling_problem_properties = initialize_problem_instance(
+    """
+    Instantiate objects on the heap
+    """
+    scheduling_problem_properties = new SchedulingProblemProperties(
         week_days_count,
         lessons_count,
         classes_count,
@@ -117,10 +92,13 @@ def run_greedy_algorithm(
         rooms_subjects,
         classes_subjects_instances_number
     )
-
+    scheduling_problem = new SchedulingProblem(
+        scheduling_problem_properties
+    )
     scheduling_greedy_algorithm = new SchedulingGreedyAlgorithm(
         calculations_time_limit_in_seconds
     )
+
     scheduling_solution = scheduling_greedy_algorithm.findBestLessonplan(
         scheduling_problem
     )
@@ -159,7 +137,10 @@ def run_genetic_algorithm(
         rooms_subjects,
         classes_subjects_instances_number
 ):
-    scheduling_problem, scheduling_problem_properties = initialize_problem_instance(
+    """
+    Instantiate objects on the heap
+    """
+    scheduling_problem_properties = new SchedulingProblemProperties(
         week_days_count,
         lessons_count,
         classes_count,
@@ -171,13 +152,16 @@ def run_genetic_algorithm(
         rooms_subjects,
         classes_subjects_instances_number
     )
-
+    scheduling_problem = new SchedulingProblem(
+        scheduling_problem_properties
+    )
     scheduling_genetic_algorithm = new SchedulingGeneticAlgorithm(
         calculations_time_limit_in_seconds,
         population_count,
         crossover_probability,
         mutation_probability
     )
+
     scheduling_evolutional_solution = scheduling_genetic_algorithm.findBestLessonplan(
         scheduling_problem
     )
