@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <iostream>
 #include "../../include/lessonplan/LessonplanScoreList.hpp"
 
 
@@ -50,7 +51,7 @@ namespace lessonplans {
             bestScoreIndex = lastScoreIndex;
         }
 
-        if (scoreIndexWithZeroSummaryHardAndSoftScore == -1 && newSummaryHardScore == 0 && newSummarySoftScore == 0) {
+        if (newSummaryHardScore == 0 && newSummarySoftScore == 0) {
             scoreIndexWithZeroSummaryHardAndSoftScore = lastScoreIndex;
         }
     }

@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <chrono>
+#include <iostream>
 #include "../../../include/algorithm/genetic/SchedulingGeneticAlgorithm.hpp"
 #include "../../../include/lessonplan/LessonplanScoreList.hpp"
 
@@ -13,7 +14,7 @@ namespace lessonplans {
         this->mutationProbability = mutationProbability;
 
         this->lessonplanScoreListPopulation = *new vector<LessonplanScoreList*>(
-                this->populationCount
+                0
         );
     }
 
@@ -29,7 +30,7 @@ namespace lessonplans {
 
         int generationIndex = 0;
 
-        while (end - start < timeToWait && (lessonplanScoreListPopulation[generationIndex]->getScoreIndexWithZeroSummaryHardAndSoftScore() >= 0)) {
+        while (end - start < timeToWait && lessonplanScoreListPopulation[generationIndex]->getScoreIndexWithZeroSummaryHardAndSoftScore() < 0) {
             crossoverPopulation();
             mutatePopulation();
 
@@ -40,14 +41,12 @@ namespace lessonplans {
             end = std::chrono::steady_clock::now();
         }
 
-
-
-//        for (int i = 0; i < this->calculationsTimeLimitInSeconds; i++) {
-//            this->crossover();
-//            this->mutate();
-//            this->evaluatePopulation(schedulingProblem);
-//            this->select();
-//        }
+        int scoreIndexWithZeroSummaryHardAndSoftScore = lessonplanScoreListPopulation[generationIndex]->getScoreIndexWithZeroSummaryHardAndSoftScore();
+        if (scoreIndexWithZeroSummaryHardAndSoftScore >= 0) {
+            bestIndividual = currentPopulation[scoreIndexWithZeroSummaryHardAndSoftScore];
+        } else {
+            bestIndividual = currentPopulation.back();
+        }
 
         vector<SchedulingSolution *> schedulingSolutions;
         std::transform(
