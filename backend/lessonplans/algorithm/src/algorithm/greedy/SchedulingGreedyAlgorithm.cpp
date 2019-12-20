@@ -79,6 +79,10 @@ namespace lessonplans {
 //        std::cout << changeRoomLessonAndDay << std::endl;
 //        std::cout << "b" << std::endl;
 
+        /*
+         * TODO: Być może zamienić this->bestIndividual na lessonplanIndividual
+         */
+
         vector<vector<int>> obtainedScores = schedulingProblem->evaluateLessonplan(this->bestIndividual);
 
         for (unsigned int dataIdxNum = 0; dataIdxNum < maxDataCount; dataIdxNum++) {

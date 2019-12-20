@@ -28,15 +28,39 @@ namespace lessonplans {
         vector<LessonplanIndividual *> initializePopulation(SchedulingProblem *schedulingProblem);
         void evaluatePopulation(vector<LessonplanIndividual *> currentPopulation, SchedulingProblem *schedulingProblem);
 
-        void mutatePopulation();
-        void crossoverPopulation();
+        vector<LessonplanIndividual *> crossoverPopulation(vector<LessonplanIndividual *> currentPopulation, SchedulingProblem *schedulingProblem, int generationIndex);
+        void mutatePopulation(vector<LessonplanIndividual *> currentPopulation, SchedulingProblem *schedulingProblem);
 
-        void select();
+        int select(int generationIndex, int populationHardScoreSum, int populationSoftScoreSum, bool includeSoftScore, int excludeIndex);
 
         void mutateWeekDays();
         void mutateLessons();
         void mutateTeachers();
         void mutateRoom();
+
+        LessonplanIndividual *
+        reformLessonplan(LessonplanIndividual *lessonplanIndividual, SchedulingProblem *schedulingProblem);
+
+        void reformLessonplanTeacherDataItem(LessonplanIndividualDescriptor *lessonplanIndividualDescriptor,
+                                             SchedulingProblemProperties *schedulingProblemProperties,
+                                             vector<unsigned short> *lessonplanDataItem);
+
+        void
+        reformLessonplanRoomDataItem(LessonplanIndividualDescriptor *lessonplanIndividualDescriptor,
+                                     SchedulingProblemProperties *schedulingProblemProperties,
+                                     vector<unsigned short> *lessonplanDataItem);
+
+        void reformLessonplanClassSubjectDataItem(LessonplanIndividualDescriptor *lessonplanIndividualDescriptor,
+                                                  SchedulingProblemProperties *schedulingProblemProperties,
+                                                  vector<unsigned short> *lessonplanDataItem);
+
+        void reformLessonplanClassSubjectTeacher(LessonplanIndividualDescriptor *lessonplanIndividualDescriptor,
+                                                 SchedulingProblemProperties *schedulingProblemProperties,
+                                                 vector<unsigned short> *lessonplanDataItem,
+                                                 vector<vector<unsigned short>> *classesSubjectsTeachersToAssign);
+
+        static unsigned short
+        findTeacherForClassSubject(SchedulingProblemProperties *schedulingProblemProperties, unsigned short subjectId);
     };
 }
 

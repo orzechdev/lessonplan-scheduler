@@ -243,7 +243,8 @@ namespace lessonplans {
         for (unsigned short lessonIdx = 0; lessonIdx < lessonsCount; lessonIdx++) {
             unsigned short lessonId = lessonsIdsSequence[lessonIdx];
 
-            unsigned short weekDayId = RandomNumberGenerator::getRandomNumber(1,
+            unsigned short weekDayId = RandomNumberGenerator::
+                    getRandomNumber(1,
                                                                               schedulingProblemProperties->getWeekDaysCount());
 
             unsigned short currentWeekDayIdx = weekDayId - 1;

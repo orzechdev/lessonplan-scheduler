@@ -400,7 +400,7 @@ def generate(request):
             )
         else:
             lessonplan_generation_service.set_algorithm_evolutionary_params(
-                population_count=1000,
+                population_count=100,
                 crossover_probability=0.2,
                 mutation_probability=0.1
             )
