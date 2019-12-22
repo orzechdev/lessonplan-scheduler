@@ -32,14 +32,15 @@ namespace lessonplans {
         int generationIndex = 0;
 
         while (end - start < timeToWait && lessonplanScoreListPopulation[generationIndex]->getScoreIndexWithZeroSummaryHardAndSoftScore() < 0) {
-            std::cout << "log 0 0 1" << std::endl;
+            std::cout << "process generation " << generationIndex << std::endl;
+            std::cout << "crossover..." << std::endl;
             currentPopulation = crossoverPopulation(currentPopulation, schedulingProblem, generationIndex);
-            std::cout << "log 0 0 2" << std::endl;
+            std::cout << "mutate..." << std::endl;
             mutatePopulation(currentPopulation, schedulingProblem);
-            std::cout << "log 0 0 3" << std::endl;
 
+            std::cout << "evaluate..." << std::endl;
             evaluatePopulation(currentPopulation, schedulingProblem);
-            std::cout << "log 0 0 4" << std::endl;
+            std::cout << "process generation done" << std::endl;
 
             generationIndex++;
 
@@ -92,8 +93,7 @@ namespace lessonplans {
     }
 
     vector<LessonplanIndividual *> SchedulingGeneticAlgorithm::crossoverPopulation(vector<LessonplanIndividual *> currentPopulation, SchedulingProblem *schedulingProblem, int generationIndex){
-        std::cout << "log 1 0 1" << std::endl;
-        vector<vector<vector<unsigned short>>> lessonplans = *new vector<vector<vector<unsigned short>>>(
+        vector<vector<vector<unsigned short>>> nextPopulationLessonplans = *new vector<vector<vector<unsigned short>>>(
                 this->populationCount
         );
         vector<int> summaryHardScores = lessonplanScoreListPopulation[generationIndex]->getSummaryHardScores();
@@ -112,10 +112,8 @@ namespace lessonplans {
                     populationSoftScoreSum += score;
                 }
         );
-        std::cout << "log 1 0 2" << std::endl;
 
         for (int currentIndividualIdx = 0; currentIndividualIdx < this->populationCount; currentIndividualIdx++) {
-            std::cout << "log 1 0 3" << std::endl;
             int selectedMaleIndividualIndex = SchedulingGeneticAlgorithm::select(
                     generationIndex, populationHardScoreSum, populationSoftScoreSum, false, -1
             );
@@ -143,7 +141,6 @@ namespace lessonplans {
             );
 
             LessonplanIndividualDescriptor* lessonplanIndividualDescriptor = currentPopulation[currentIndividualIdx]->getLessonplanIndividualDescriptor();
-            std::cout << "log 1 0 4" << std::endl;
             for (unsigned int dataItemIdx = 0; dataItemIdx < maxDataCount; dataItemIdx++) {
                 vector<unsigned short> currentDataItem = currentLessonplan[dataItemIdx];
                 vector<unsigned short> maleDataItem = maleLessonplan[dataItemIdx];
@@ -176,19 +173,19 @@ namespace lessonplans {
                 }
             }
 
-            currentPopulation[currentIndividualIdx]->setLessonplan(childLessonplan);
+            nextPopulationLessonplans[currentIndividualIdx] = childLessonplan;
         }
-        std::cout << "log 1 0 5" << std::endl;
+
+        for (int currentIndividualIdx = 0; currentIndividualIdx < this->populationCount; currentIndividualIdx++) {
+            currentPopulation[currentIndividualIdx]->setLessonplan(nextPopulationLessonplans[currentIndividualIdx]);
+        }
 
         return currentPopulation;
     }
 
     void SchedulingGeneticAlgorithm::mutatePopulation(vector<LessonplanIndividual *> currentPopulation, SchedulingProblem *schedulingProblem){
-        std::cout << "log 0 1" << std::endl;
         for (int i = 0; i < populationCount; i++) {
-            std::cout << "log 0 2" << std::endl;
             reformLessonplan(currentPopulation[i], schedulingProblem);
-            std::cout << "log 0 3" << std::endl;
         }
     }
 
@@ -212,18 +209,24 @@ namespace lessonplans {
         int pick = RandomNumberGenerator::getRandomNumber(0, maxScore);
         int offset = 0;
 
-        for (int index = 0; index < this->populationCount; index++) {
+        vector<int> summaryHardScores = lessonplanScoreListPopulation[generationIndex]->getSummaryHardScores();
+        vector<int> summarySoftScores = lessonplanScoreListPopulation[generationIndex]->getSummarySoftScores();
+
+        int index = 0;
+        for (index = 0; index < this->populationCount; index++) {
             if (index == excludeIndex) {
                 continue;
             }
-            offset -= lessonplanScoreListPopulation[generationIndex]->getSummaryHardScores()[index];
+            offset -= summaryHardScores[index];
             if (includeSoftScore) {
-                offset -= lessonplanScoreListPopulation[generationIndex]->getSummarySoftScores()[index];
+                offset -= summarySoftScores[index];
             }
             if (pick < offset) {
                 return index;
             }
         }
+        index -= 1;
+        return index;
     }
 
     LessonplanIndividual *SchedulingGeneticAlgorithm::reformLessonplan(LessonplanIndividual *lessonplanIndividual,
@@ -237,7 +240,6 @@ namespace lessonplans {
          * Teacher may change (but for each class and subject pair it must be always the same)
          * Room may change
          */
-        std::cout << "log 1" << std::endl;
 
         SchedulingProblemProperties *schedulingProblemProperties = schedulingProblem->getSchedulingProblemProperties();
         LessonplanIndividualDescriptor *lessonplanIndividualDescriptor = lessonplanIndividual->getLessonplanIndividualDescriptor();
@@ -267,7 +269,6 @@ namespace lessonplans {
 //        std::cout << "b" << std::endl;
 
         vector<vector<int>> obtainedScores = schedulingProblem->evaluateLessonplan(lessonplanIndividual);
-        std::cout << "log 2" << std::endl;
         for (unsigned int dataIdxNum = 0; dataIdxNum < maxDataCount; dataIdxNum++) {
             unsigned short dataIdx = dataItemIdxsSequence[dataIdxNum];
 
@@ -331,7 +332,6 @@ namespace lessonplans {
 //            this->individualsSummaryHardScores.push_back(SchedulingProblem::calculateSummaryScore(obtainedScores[0]));
 //            this->individualsSummarySoftScores.push_back(SchedulingProblem::calculateSummaryScore(obtainedScores[1]));
         }
-        std::cout << "log 3" << std::endl;
 //        lessonplanIndividual->setLessonplan(lessonplan);
 
         return lessonplanIndividual;
