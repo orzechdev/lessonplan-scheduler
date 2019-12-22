@@ -385,7 +385,7 @@ def generate(request):
             classes_subjects_instances_number
         )
         lessonplan_generation_service.set_algorithm_calculations_time_limit(
-            calculations_time_limit_in_seconds=10
+            calculations_time_limit_in_seconds=60
         )
 
         algorithm_type = request.GET.get('algorithm-type')

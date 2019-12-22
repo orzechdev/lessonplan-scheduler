@@ -25,34 +25,32 @@ namespace lessonplans {
         auto timeToWait = std::chrono::seconds(calculationsTimeLimitInSeconds);
 
         vector<LessonplanIndividual *> currentPopulation = initializePopulation(schedulingProblem);
-        evaluatePopulation(currentPopulation, schedulingProblem);
+        evaluatePopulation(currentPopulation, schedulingProblem, true);
 
 //        this->select();
 
         int generationIndex = 0;
 
         while (end - start < timeToWait && lessonplanScoreListPopulation[generationIndex]->getScoreIndexWithZeroSummaryHardAndSoftScore() < 0) {
-            std::cout << "process generation " << generationIndex << std::endl;
+            std::cout << "process generation " << generationIndex << " started..." << std::endl;
             std::cout << "crossover..." << std::endl;
             currentPopulation = crossoverPopulation(currentPopulation, schedulingProblem, generationIndex);
+            std::cout << "evaluate..." << std::endl;
+            evaluatePopulation(currentPopulation, schedulingProblem, true);
             std::cout << "mutate..." << std::endl;
             mutatePopulation(currentPopulation, schedulingProblem);
-
-            std::cout << "evaluate..." << std::endl;
-            evaluatePopulation(currentPopulation, schedulingProblem);
-            std::cout << "process generation done" << std::endl;
+//
+//            std::cout << "evaluate..." << std::endl;
+//            evaluatePopulation(currentPopulation, schedulingProblem);
+            std::cout << "process generation " << generationIndex << " finished" << std::endl;
 
             generationIndex++;
 
             end = std::chrono::steady_clock::now();
         }
 
-        int scoreIndexWithZeroSummaryHardAndSoftScore = lessonplanScoreListPopulation[generationIndex]->getScoreIndexWithZeroSummaryHardAndSoftScore();
-        if (scoreIndexWithZeroSummaryHardAndSoftScore >= 0) {
-            bestIndividual = currentPopulation[scoreIndexWithZeroSummaryHardAndSoftScore];
-        } else {
-            bestIndividual = currentPopulation.back();
-        }
+        int bestScoreIndex = lessonplanScoreListPopulation[generationIndex]->getBestScoreIndex();
+        bestIndividual = currentPopulation[bestScoreIndex];
 
         vector<SchedulingSolution *> schedulingSolutions;
         std::transform(
@@ -67,14 +65,14 @@ namespace lessonplans {
                     lessonplanScoreList->getSoftScores(),
                     lessonplanScoreList->getSummaryHardScores(),
                     lessonplanScoreList->getSummarySoftScores(),
-                    lessonplanScoreList->getLastScoreIndex()
+                    lessonplanScoreList->getBestScoreIndex()
             );
         });
 
         auto* lessonplanSchedulingEvolutionalSoultion = new SchedulingEvolutionalSolution(
                 bestIndividual,
                 schedulingSolutions,
-                0
+                generationIndex
         );
 
         return lessonplanSchedulingEvolutionalSoultion;
@@ -113,7 +111,22 @@ namespace lessonplans {
                 }
         );
 
+        // Keep the best individual within next population in place of worst individual
+        int currentBestScoreIndex = lessonplanScoreListPopulation[generationIndex]->getBestScoreIndex();
+        int currentWorstScoreIndex = lessonplanScoreListPopulation[generationIndex]->getWorstScoreIndex();
+        LessonplanIndividualDescriptor* currentBestLessonplanIndividualDescriptor = currentPopulation[currentBestScoreIndex]->getLessonplanIndividualDescriptor();
+        LessonplanIndividualDescriptor* currentWorstLessonplanIndividualDescriptor = currentPopulation[currentWorstScoreIndex]->getLessonplanIndividualDescriptor();
+        nextPopulationLessonplans[currentWorstScoreIndex] = currentPopulation[currentBestScoreIndex]->getLessonplan();
+        currentWorstLessonplanIndividualDescriptor->setAssignedLessonAndDaysToClasses(currentBestLessonplanIndividualDescriptor->getAssignedLessonAndDaysToClasses());
+        currentWorstLessonplanIndividualDescriptor->setAssignedLessonAndDaysToTeachers(currentBestLessonplanIndividualDescriptor->getAssignedLessonAndDaysToTeachers());
+        currentWorstLessonplanIndividualDescriptor->setAssignedLessonAndDaysToRooms(currentBestLessonplanIndividualDescriptor->getAssignedLessonAndDaysToRooms());
+
         for (int currentIndividualIdx = 0; currentIndividualIdx < this->populationCount; currentIndividualIdx++) {
+            // Keep the best individual within next population in place of worst individual
+            if (currentIndividualIdx == currentWorstScoreIndex) {
+                continue;
+            }
+
             int selectedMaleIndividualIndex = SchedulingGeneticAlgorithm::select(
                     generationIndex, populationHardScoreSum, populationSoftScoreSum, false, -1
             );
@@ -140,11 +153,14 @@ namespace lessonplans {
                     )
             );
 
+            vector<bool> femaleDataItemPossibleToUse = *new vector<bool>(
+                    maxDataCount, true
+            );
+
             LessonplanIndividualDescriptor* lessonplanIndividualDescriptor = currentPopulation[currentIndividualIdx]->getLessonplanIndividualDescriptor();
             for (unsigned int dataItemIdx = 0; dataItemIdx < maxDataCount; dataItemIdx++) {
                 vector<unsigned short> currentDataItem = currentLessonplan[dataItemIdx];
                 vector<unsigned short> maleDataItem = maleLessonplan[dataItemIdx];
-                vector<unsigned short> femaleDataItem = femaleLessonplan[dataItemIdx];
 
                 bool dataItemForMale = false;
                 for (unsigned short classToTakeIdx = 0; classToTakeIdx < halfClassesCount; classToTakeIdx++) {
@@ -154,22 +170,40 @@ namespace lessonplans {
                     }
                 }
 
+                lessonplanIndividualDescriptor->decreaseAssignedLessonAndDayToClass(currentDataItem[0] - 1, currentDataItem[1] - 1, currentDataItem[2] - 1);
+                lessonplanIndividualDescriptor->decreaseAssignedLessonAndDayToTeacher(currentDataItem[0] - 1, currentDataItem[1] - 1, currentDataItem[4] - 1);
+                lessonplanIndividualDescriptor->decreaseAssignedLessonAndDayToRoom(currentDataItem[0] - 1, currentDataItem[1] - 1, currentDataItem[5] - 1);
+
                 if (dataItemForMale) {
-                    lessonplanIndividualDescriptor->decreaseAssignedLessonAndDayToClass(currentDataItem[0] - 1, currentDataItem[1] - 1, currentDataItem[2] - 1);
-                    lessonplanIndividualDescriptor->decreaseAssignedLessonAndDayToTeacher(currentDataItem[0] - 1, currentDataItem[1] - 1, currentDataItem[4] - 1);
-                    lessonplanIndividualDescriptor->decreaseAssignedLessonAndDayToRoom(currentDataItem[0] - 1, currentDataItem[1] - 1, currentDataItem[5] - 1);
                     childLessonplan[dataItemIdx] = maleDataItem;
                     lessonplanIndividualDescriptor->increaseAssignedLessonAndDayToClass(maleDataItem[0] - 1, maleDataItem[1] - 1, maleDataItem[2] - 1);
                     lessonplanIndividualDescriptor->increaseAssignedLessonAndDayToTeacher(maleDataItem[0] - 1, maleDataItem[1] - 1, maleDataItem[4] - 1);
                     lessonplanIndividualDescriptor->increaseAssignedLessonAndDayToRoom(maleDataItem[0] - 1, maleDataItem[1] - 1, maleDataItem[5] - 1);
                 } else {
-                    lessonplanIndividualDescriptor->decreaseAssignedLessonAndDayToClass(currentDataItem[0] - 1, currentDataItem[1] - 1, currentDataItem[2] - 1);
-                    lessonplanIndividualDescriptor->decreaseAssignedLessonAndDayToTeacher(currentDataItem[0] - 1, currentDataItem[1] - 1, currentDataItem[4] - 1);
-                    lessonplanIndividualDescriptor->decreaseAssignedLessonAndDayToRoom(currentDataItem[0] - 1, currentDataItem[1] - 1, currentDataItem[5] - 1);
-                    childLessonplan[dataItemIdx] = femaleDataItem;
-                    lessonplanIndividualDescriptor->increaseAssignedLessonAndDayToClass(femaleDataItem[0] - 1, femaleDataItem[1] - 1, femaleDataItem[2] - 1);
-                    lessonplanIndividualDescriptor->increaseAssignedLessonAndDayToTeacher(femaleDataItem[0] - 1, femaleDataItem[1] - 1, femaleDataItem[4] - 1);
-                    lessonplanIndividualDescriptor->increaseAssignedLessonAndDayToRoom(femaleDataItem[0] - 1, femaleDataItem[1] - 1, femaleDataItem[5] - 1);
+                    for (unsigned int femaleDataItemIdx = 0; femaleDataItemIdx < maxDataCount; femaleDataItemIdx++) {
+                        vector<unsigned short> femaleDataItem = femaleLessonplan[femaleDataItemIdx];
+
+                        if (femaleDataItemPossibleToUse[femaleDataItemIdx]) {
+                            bool dataItemNotForFemale = false;
+
+                            for (unsigned short classToTakeIdx = 0; classToTakeIdx < halfClassesCount; classToTakeIdx++) {
+                                if (classesForMaleLessonplan[classToTakeIdx] == femaleDataItem[2] - 1) {
+                                    dataItemNotForFemale = true;
+                                    femaleDataItemPossibleToUse[femaleDataItemIdx] = false;
+                                    break;
+                                }
+                            }
+
+                            if (!dataItemNotForFemale) {
+                                childLessonplan[dataItemIdx] = femaleDataItem;
+                                lessonplanIndividualDescriptor->increaseAssignedLessonAndDayToClass(femaleDataItem[0] - 1, femaleDataItem[1] - 1, femaleDataItem[2] - 1);
+                                lessonplanIndividualDescriptor->increaseAssignedLessonAndDayToTeacher(femaleDataItem[0] - 1, femaleDataItem[1] - 1, femaleDataItem[4] - 1);
+                                lessonplanIndividualDescriptor->increaseAssignedLessonAndDayToRoom(femaleDataItem[0] - 1, femaleDataItem[1] - 1, femaleDataItem[5] - 1);
+                                femaleDataItemPossibleToUse[femaleDataItemIdx] = false;
+                                break;
+                            }
+                        }
+                    }
                 }
             }
 
@@ -184,12 +218,17 @@ namespace lessonplans {
     }
 
     void SchedulingGeneticAlgorithm::mutatePopulation(vector<LessonplanIndividual *> currentPopulation, SchedulingProblem *schedulingProblem){
-        for (int i = 0; i < populationCount; i++) {
-            reformLessonplan(currentPopulation[i], schedulingProblem);
+        for (int j = 0; j < 3; j++) {
+            for (int i = 0; i < populationCount; i++) {
+                reformLessonplan(currentPopulation[i], schedulingProblem);
+            }
+
+            std::cout << "evaluate..." << std::endl;
+            evaluatePopulation(currentPopulation, schedulingProblem, false);
         }
     }
 
-    void SchedulingGeneticAlgorithm::evaluatePopulation(vector<LessonplanIndividual *> currentPopulation, SchedulingProblem *schedulingProblem){
+    void SchedulingGeneticAlgorithm::evaluatePopulation(vector<LessonplanIndividual *> currentPopulation, SchedulingProblem *schedulingProblem, bool addScoreForNewGeneration){
         auto* lessonplanScoreList = new LessonplanScoreList();
 
         for (int i = 0; i < populationCount; i++) {
@@ -197,7 +236,11 @@ namespace lessonplans {
             lessonplanScoreList->add(obtainedScores);
         }
 
-        lessonplanScoreListPopulation.push_back(lessonplanScoreList);
+        if (addScoreForNewGeneration) {
+            lessonplanScoreListPopulation.push_back(lessonplanScoreList);
+        } else {
+            lessonplanScoreListPopulation.back() = lessonplanScoreList;
+        }
     }
 
     int SchedulingGeneticAlgorithm::select(int generationIndex, int populationHardScoreSum, int populationSoftScoreSum, bool includeSoftScore, int excludeIndex) {

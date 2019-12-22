@@ -96,6 +96,7 @@ class LessonplanGenerationService:
     def generate_lessonplan(self, algorithm_type_number):
         if algorithm_type_number == AlgorithmTypes.RANDOM_SEARCH:
             if self.__debug_print_enabled:
+                print('lessonplan generation random search algorithm')
                 print('lessonplan generation started...')
             (
                 best_lessonplan,
@@ -147,6 +148,7 @@ class LessonplanGenerationService:
             return best_lessonplan
         elif algorithm_type_number == AlgorithmTypes.GREEDY:
             if self.__debug_print_enabled:
+                print('lessonplan generation greedy algorithm')
                 print('lessonplan generation started...')
             (
                 best_lessonplan,
@@ -198,6 +200,7 @@ class LessonplanGenerationService:
             return best_lessonplan
         else:
             if self.__debug_print_enabled:
+                print('lessonplan generation genetic algorithm')
                 print('lessonplan generation started...')
             (
                 best_lessonplan,

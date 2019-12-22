@@ -26,7 +26,7 @@ namespace lessonplans {
         vector<LessonplanScoreList *> lessonplanScoreListPopulation;
 
         vector<LessonplanIndividual *> initializePopulation(SchedulingProblem *schedulingProblem);
-        void evaluatePopulation(vector<LessonplanIndividual *> currentPopulation, SchedulingProblem *schedulingProblem);
+        void evaluatePopulation(vector<LessonplanIndividual *> currentPopulation, SchedulingProblem *schedulingProblem, bool addScoreForNewGeneration);
 
         vector<LessonplanIndividual *> crossoverPopulation(vector<LessonplanIndividual *> currentPopulation, SchedulingProblem *schedulingProblem, int generationIndex);
         void mutatePopulation(vector<LessonplanIndividual *> currentPopulation, SchedulingProblem *schedulingProblem);

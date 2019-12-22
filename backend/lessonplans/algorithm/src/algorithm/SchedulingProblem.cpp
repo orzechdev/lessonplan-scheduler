@@ -388,7 +388,9 @@ namespace lessonplans {
                     classesWeekDayFreePeriods[classId - 1][weekDayId - 1] += lessonsDifference - 1;
                 }
             } else {
-                classesWeekDayFreePeriods[classId - 1][weekDayId - 1]--;
+                if (classesWeekDayFreePeriods[classId - 1][weekDayId - 1] > 0) {
+                    classesWeekDayFreePeriods[classId - 1][weekDayId - 1]--;
+                }
             }
 
         }

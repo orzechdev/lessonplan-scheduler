@@ -39,16 +39,28 @@ namespace lessonplans {
             int bestSummaryHardScore = summaryHardScores[bestScoreIndex];
             int bestSummarySoftScore = summarySoftScores[bestScoreIndex];
 
-            bool hardScoreHigher = newSummaryHardScore > bestSummaryHardScore;
-            bool hardScoreHigherOrEqual = newSummaryHardScore >= bestSummaryHardScore;
-            bool softScoreHigher = newSummarySoftScore > bestSummarySoftScore;
+            bool hardScoreHigherThanBest = newSummaryHardScore > bestSummaryHardScore;
+            bool hardScoreHigherOrEqualBest = newSummaryHardScore >= bestSummaryHardScore;
+            bool softScoreHigherThanBest = newSummarySoftScore > bestSummarySoftScore;
 
-            if (hardScoreHigher || (hardScoreHigherOrEqual && softScoreHigher)) {
+            if (hardScoreHigherThanBest || (hardScoreHigherOrEqualBest && softScoreHigherThanBest)) {
                 bestScoreIndex = lastScoreIndex;
+            } else {
+                int worstSummaryHardScore = summaryHardScores[worstScoreIndex];
+                int worstSummarySoftScore = summarySoftScores[worstScoreIndex];
+
+                bool hardScoreLowerThanWorst = newSummaryHardScore < worstSummaryHardScore;
+                bool hardScoreLowerOrEqualWorst = newSummaryHardScore <= worstSummarySoftScore;
+                bool softScoreHigherThanWorst = newSummarySoftScore < bestSummarySoftScore;
+
+                if (hardScoreLowerThanWorst || (hardScoreLowerOrEqualWorst && softScoreHigherThanWorst)) {
+                    worstScoreIndex = lastScoreIndex;
+                }
             }
         } else {
             lastScoreIndex = 0;
             bestScoreIndex = lastScoreIndex;
+            worstScoreIndex = lastScoreIndex;
         }
 
         if (newSummaryHardScore == 0 && newSummarySoftScore == 0) {
@@ -74,6 +86,10 @@ namespace lessonplans {
 
     int LessonplanScoreList::getBestScoreIndex() {
         return bestScoreIndex;
+    }
+
+    int LessonplanScoreList::getWorstScoreIndex() {
+        return worstScoreIndex;
     }
 
     int LessonplanScoreList::getLastScoreIndex() {

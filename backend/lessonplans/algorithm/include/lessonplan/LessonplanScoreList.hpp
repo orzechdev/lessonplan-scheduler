@@ -17,6 +17,7 @@ namespace lessonplans {
         int getLastSummaryHardScore();
         int getLastSummarySoftScore();
         int getBestScoreIndex();
+        int getWorstScoreIndex();
         int getLastScoreIndex();
         int getScoreIndexWithZeroSummaryHardAndSoftScore();
         static const short hardScoresTypes = 4;
@@ -25,6 +26,7 @@ namespace lessonplans {
     private:
         int lastScoreIndex = -1;
         int bestScoreIndex = -1;
+        int worstScoreIndex = -1;
         int scoreIndexWithZeroSummaryHardAndSoftScore = -1;
         vector<vector<int>> hardScores;
         vector<vector<int>> softScores;
