@@ -12,6 +12,12 @@ namespace lessonplans {
         return lessonplanIndividual;
     }
 
+    LessonplanIndividual* SchedulingProblem::getSampleLessonplanGreedly(){
+        LessonplanIndividual* lessonplanIndividual = LessonplanIndividualFactory::createLessonplanIndividualGreedly(this->schedulingProblemProperties);
+
+        return lessonplanIndividual;
+    }
+
     vector<vector<int>> SchedulingProblem::evaluateLessonplan(LessonplanIndividual* lessonplanIndividual) {
         unsigned short invalidClassSubjectSameLessonsTimes = this->checkClassesSubjectsWithSameTimesLessons(lessonplanIndividual);
 

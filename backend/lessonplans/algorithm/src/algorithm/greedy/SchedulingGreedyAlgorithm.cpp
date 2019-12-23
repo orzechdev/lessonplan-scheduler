@@ -18,15 +18,15 @@ namespace lessonplans {
         auto end = start;
         auto timeToWait = std::chrono::seconds(calculationsTimeLimitInSeconds);
 
-        bestIndividual = schedulingProblem->getSampleLessonplan();
+        bestIndividual = schedulingProblem->getSampleLessonplanGreedly();
         vector<vector<int>> obtainedScores = schedulingProblem->evaluateLessonplan(bestIndividual);
         lessonplanScoreList->add(obtainedScores);
 
-        while (end - start < timeToWait && (lessonplanScoreList->getLastSummaryHardScore() != 0 || lessonplanScoreList->getLastSummarySoftScore() != 0)) {
-            reformLessonplan(bestIndividual, schedulingProblem);
-
-            end = std::chrono::steady_clock::now();
-        }
+//        while (end - start < timeToWait && (lessonplanScoreList->getLastSummaryHardScore() != 0 || lessonplanScoreList->getLastSummarySoftScore() != 0)) {
+//            reformLessonplan(bestIndividual, schedulingProblem);
+//
+//            end = std::chrono::steady_clock::now();
+//        }
 
         auto *lessonplanSchedulingSoultion = new SchedulingSolution(
                 bestIndividual,

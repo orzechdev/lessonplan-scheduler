@@ -37,6 +37,35 @@ namespace lessonplans {
                 unsigned short individualDataIdx,
                 unsigned short classId, unsigned short subjectId, unsigned short teacherId, unsigned short roomId
         );
+        static void assignClassesWithSubjectsGreedly(
+                LessonplanIndividual* lessonplanIndividual,
+                LessonplanIndividualDescriptor* lessonplanIndividualDescriptor,
+                SchedulingProblemProperties* schedulingProblemProperties
+        );
+        static bool tryAssignTeacherGreedly(
+                LessonplanIndividual* lessonplanIndividual,
+                LessonplanIndividualDescriptor* lessonplanIndividualDescriptor,
+                SchedulingProblemProperties* schedulingProblemProperties,
+                unsigned short individualDataIdx,
+                unsigned short classId, unsigned short subjectId,
+                bool randomAssign
+        );
+        static bool tryAssignRoomGreedly(
+                LessonplanIndividual* lessonplanIndividual,
+                LessonplanIndividualDescriptor* lessonplanIndividualDescriptor,
+                SchedulingProblemProperties* schedulingProblemProperties,
+                unsigned short individualDataIdx,
+                unsigned short classId, unsigned short subjectId, unsigned short teacherId,
+                bool randomAssign
+        );
+        static bool tryAssignWeekDayAndLessonGreedly(
+                LessonplanIndividual* lessonplanIndividual,
+                LessonplanIndividualDescriptor* lessonplanIndividualDescriptor,
+                SchedulingProblemProperties* schedulingProblemProperties,
+                unsigned short individualDataIdx,
+                unsigned short classId, unsigned short subjectId, unsigned short teacherId, unsigned short roomId,
+                bool randomAssign
+        );
     };
 }
 

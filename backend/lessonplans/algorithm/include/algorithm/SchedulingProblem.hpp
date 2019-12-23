@@ -8,6 +8,7 @@ namespace lessonplans {
     public:
         SchedulingProblem(SchedulingProblemProperties* schedulingProblemProperties) : schedulingProblemProperties(schedulingProblemProperties) {}
         LessonplanIndividual* getSampleLessonplan();
+        LessonplanIndividual* getSampleLessonplanGreedly();
         vector<vector<int>> evaluateLessonplan(LessonplanIndividual* lessonplanIndividual);
         SchedulingProblemProperties *getSchedulingProblemProperties() const;
 
