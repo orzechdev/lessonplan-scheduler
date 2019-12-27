@@ -7,7 +7,11 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     error: null,
+    saveInProgress: false,
+    weekdays: [],
+    lessons: [],
     classes: [],
+    subjects: [],
     teachers: [],
     rooms: [],
     lessonplans: []
@@ -15,6 +19,9 @@ export default new Vuex.Store({
   mutations: {
     SET_ERROR(state, error) {
       state.error = error;
+    },
+    SET_SAVE_IN_PROGRESS(state, saveInProgress) {
+      state.saveInProgress = saveInProgress;
     },
     SET_CLASSES(state, classes) {
       state.classes = classes;
@@ -25,11 +32,47 @@ export default new Vuex.Store({
     SET_ROOMS(state, rooms) {
       state.rooms = rooms;
     },
+    SET_WEEKDAYS(state, weekdays) {
+      state.weekdays = weekdays;
+    },
+    SET_LESSONS(state, lessons) {
+      state.lessons = lessons;
+    },
+    SET_SUBJECTS(state, subjects) {
+      state.subjects = subjects;
+    },
     SET_LESSONPLANS(state, lessonplans) {
       state.lessonplans = lessonplans;
     }
   },
   actions: {
+    async getWeekdays(context) {
+      const { value, error } = await MainApi.getWeekdays();
+
+      if (error || !value || !value.data || !value.data.allWeekdays) {
+        context.commit('SET_ERROR', error);
+      } else {
+        context.commit('SET_WEEKDAYS', value.data.allWeekdays);
+      }
+    },
+    async getLessons(context) {
+      const { value, error } = await MainApi.getLessons();
+
+      if (error || !value || !value.data || !value.data.allLessons) {
+        context.commit('SET_ERROR', error);
+      } else {
+        context.commit('SET_LESSONS', value.data.allLessons);
+      }
+    },
+    async getSubjects(context) {
+      const { value, error } = await MainApi.getSubjects();
+
+      if (error || !value || !value.data || !value.data.allSubjects) {
+        context.commit('SET_ERROR', error);
+      } else {
+        context.commit('SET_SUBJECTS', value.data.allSubjects);
+      }
+    },
     async getClasses(context) {
       const { value, error } = await MainApi.getClasses();
       const { value2, error2 } = await MainApi.getClass();
@@ -66,6 +109,54 @@ export default new Vuex.Store({
       } else {
         context.commit('SET_LESSONPLANS', value.data.allLessonplansItems);
       }
+    },
+    async createLesson(context, payload) {
+      const { lessonNumber, startTime, endTime } = payload;
+      context.commit('SET_SAVE_IN_PROGRESS', true);
+      const { value, error } = await MainApi.createLesson(lessonNumber, startTime, endTime);
+
+      if (error || !value || !value.data || !value.data.createLesson) {
+        context.commit('SET_ERROR', error);
+      } else {
+        context.dispatch('getLessons');
+      }
+      context.commit('SET_SAVE_IN_PROGRESS', false);
+    },
+    async createRoom(context, payload) {
+      const { roomName } = payload;
+      context.commit('SET_SAVE_IN_PROGRESS', true);
+      const { value, error } = await MainApi.createRoom(roomName);
+
+      if (error || !value || !value.data || !value.data.createRoom) {
+        context.commit('SET_ERROR', error);
+      } else {
+        context.dispatch('getRooms');
+      }
+      context.commit('SET_SAVE_IN_PROGRESS', false);
+    },
+    async createSubject(context, payload) {
+      const { subjectName } = payload;
+      context.commit('SET_SAVE_IN_PROGRESS', true);
+      const { value, error } = await MainApi.createSubject(subjectName);
+
+      if (error || !value || !value.data || !value.data.createSubject) {
+        context.commit('SET_ERROR', error);
+      } else {
+        context.dispatch('getSubjects');
+      }
+      context.commit('SET_SAVE_IN_PROGRESS', false);
+    },
+    async createTeacher(context, payload) {
+      const { fullName } = payload;
+      context.commit('SET_SAVE_IN_PROGRESS', true);
+      const { value, error } = await MainApi.createTeacher(fullName);
+
+      if (error || !value || !value.data || !value.data.createTeacher) {
+        context.commit('SET_ERROR', error);
+      } else {
+        context.dispatch('getTeachers');
+      }
+      context.commit('SET_SAVE_IN_PROGRESS', false);
     }
   }
 });

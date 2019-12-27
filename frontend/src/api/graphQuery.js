@@ -1,4 +1,30 @@
 const gqlQuery = {
+  lessons: `
+    query {
+      allLessons {
+        id
+        name
+        startTime
+        endTime
+      }
+    }
+  `,
+  weekdays: `
+    query {
+      allWeekdays {
+        id
+        name
+      }
+    }
+  `,
+  subjects: `
+    query {
+      allSubjects {
+        id
+        name
+      }
+    }
+  `,
   classes: `
     query {
       allClasses {
@@ -58,6 +84,58 @@ const gqlQuery = {
           name
         }
         room {
+          id
+          name
+        }
+      }
+    }
+  `,
+  createLesson: `
+    mutation CreateLesson($name: String!, $startTime: Time!, $endTime: Time!) {
+      createLesson(name: $name, startTime: $startTime, endTime: $endTime) {
+        lesson {
+          id
+          name
+          startTime
+          endTime
+        }
+      }
+    }
+  `,
+  createRoom: `
+    mutation CreateRoom($name: String!) {
+      createRoom(name: $name) {
+        room {
+          id
+          name
+        }
+      }
+    }
+  `,
+  createSubject: `
+    mutation CreateSubject($name: String!) {
+      createSubject(name: $name) {
+        subject {
+          id
+          name
+        }
+      }
+    }
+  `,
+  createTeacher: `
+    mutation CreateTeacher($name: String!) {
+      createTeacher(name: $name) {
+        teacher {
+          id
+          name
+        }
+      }
+    }
+  `,
+  createClass: `
+    mutation CreateClass($name: String!) {
+      createClass(name: $name) {
+        classModel {
           id
           name
         }

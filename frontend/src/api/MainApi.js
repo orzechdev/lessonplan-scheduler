@@ -56,35 +56,112 @@ const fetchFromGraphApi = async ({ method = 'POST', body }) => {
 };
 
 export default {
-  getLessonplans: async () =>
-    await fetchFromGraphApi({
+  getLessonplans: async () => {
+    const response = fetchFromGraphApi({
       body: {
         query: gqlQuery.lessonplansItems
       }
-    }),
-  getClasses: async () =>
-    await fetchFromGraphApi({
+    });
+    return response;
+  },
+  getClasses: async () => {
+    const response = await fetchFromGraphApi({
       body: {
         query: gqlQuery.classes
       }
-    }),
-  getTeachers: async () =>
-    await fetchFromGraphApi({
+    });
+    return response;
+  },
+  getTeachers: async () => {
+    const response = await fetchFromGraphApi({
       body: {
         query: gqlQuery.teachers
       }
-    }),
-  getRooms: async () =>
-    await fetchFromGraphApi({
+    });
+    return response;
+  },
+  getRooms: async () => {
+    const response = await fetchFromGraphApi({
       body: {
         query: gqlQuery.rooms
       }
-    }),
+    });
+    return response;
+  },
+  getWeekdays: async () => {
+    const response = await fetchFromGraphApi({
+      body: {
+        query: gqlQuery.weekdays
+      }
+    });
+    return response;
+  },
+  getLessons: async () => {
+    const response = await fetchFromGraphApi({
+      body: {
+        query: gqlQuery.lessons
+      }
+    });
+    return response;
+  },
+  getSubjects: async () => {
+    const response = await fetchFromGraphApi({
+      body: {
+        query: gqlQuery.subjects
+      }
+    });
+    return response;
+  },
   getClass: async () => {
     const response = await fetchFromGraphApi({
       body: {
         query: gqlQuery.class,
         variables: { id: 141 }
+      }
+    });
+    return response;
+  },
+  createLesson: async (lessonNumber, startTime, endTime) => {
+    const response = await fetchFromGraphApi({
+      body: {
+        query: gqlQuery.createLesson,
+        variables: { name: lessonNumber, startTime, endTime }
+      }
+    });
+    return response;
+  },
+  createRoom: async roomName => {
+    const response = await fetchFromGraphApi({
+      body: {
+        query: gqlQuery.createRoom,
+        variables: { name: roomName }
+      }
+    });
+    return response;
+  },
+  createSubject: async subjectName => {
+    const response = await fetchFromGraphApi({
+      body: {
+        query: gqlQuery.createSubject,
+        variables: { name: subjectName }
+      }
+    });
+    return response;
+  },
+  createTeacher: async fullName => {
+    const response = await fetchFromGraphApi({
+      body: {
+        query: gqlQuery.createRoom,
+        variables: { name: fullName }
+      }
+    });
+    return response;
+  },
+  createClass: async name => {
+    const response = await fetchFromGraphApi({
+      body: {
+        query: gqlQuery.createClass,
+        variables: { name }
       }
     });
     return response;

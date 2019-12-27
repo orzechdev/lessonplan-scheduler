@@ -124,17 +124,79 @@ class Query(object):
         return None
 
 
+class CreateLessonMutation(graphene.Mutation):
+    class Arguments:
+        name = graphene.String(required=True)
+        start_time = graphene.Time(required=True)
+        end_time = graphene.Time(required=True)
+
+    lesson = graphene.Field(LessonType)
+
+    def mutate(self, info, name, start_time, end_time):
+        lesson = Lesson(name=name, start_time=start_time, end_time=end_time)
+        lesson.save()
+        return CreateLessonMutation(lesson=lesson)
+
+
+class CreateRoomMutation(graphene.Mutation):
+    class Arguments:
+        name = graphene.String(required=True)
+
+    room = graphene.Field(RoomType)
+
+    def mutate(self, info, name):
+        room = Room(name=name)
+        room.save()
+        return CreateRoomMutation(room=room)
+
+
+class CreateSubjectMutation(graphene.Mutation):
+    class Arguments:
+        name = graphene.String(required=True)
+
+    subject = graphene.Field(SubjectType)
+
+    def mutate(self, info, name):
+        subject = Subject(name=name)
+        subject.save()
+        return CreateSubjectMutation(subject=subject)
+
+
+class CreateTeacherMutation(graphene.Mutation):
+    class Arguments:
+        name = graphene.String(required=True)
+
+    teacher = graphene.Field(TeacherType)
+
+    def mutate(self, info, name, subjects):
+        teacher = Teacher(name=name)
+        teacher.save()
+        return CreateTeacherMutation(teacher=teacher)
+
+
 class CreateClassMutation(graphene.Mutation):
     class Arguments:
         name = graphene.String(required=True)
 
     class_model = graphene.Field(ClassType)
 
-    @classmethod
-    def mutate(cls, info, name):
+    def mutate(self, info, name):
         class_model = Class(name=name)
         class_model.save()
         return CreateClassMutation(class_model=class_model)
+
+
+class CreateTeacherSubjectMutation(graphene.Mutation):
+    class Arguments:
+        teacher_id = graphene.Int(required=True)
+        subject_id = graphene.Int(required=True)
+
+    teacher_subject = graphene.Field(TeacherSubjectType)
+
+    def mutate(self, info, teacher_id, subject_id):
+        teacher_subject = TeacherSubject(teacher_id=teacher_id, subject_id=subject_id)
+        teacher_subject.save()
+        return CreateTeacherSubjectMutation(teacher_subject=teacher_subject)
 
 
 class DeleteClassMutation(graphene.Mutation):
@@ -143,14 +205,17 @@ class DeleteClassMutation(graphene.Mutation):
 
     ok = graphene.Boolean()
 
-    @classmethod
-    def mutate(cls, info, id):
+    def mutate(self, info, id):
         class_model = Class.objects.get(pk=id)
         class_model.delete()
         return DeleteClassMutation(ok=True)
 
 
 class Mutation(object):
+    create_lesson = CreateLessonMutation.Field()
+    create_room = CreateRoomMutation.Field()
+    create_subject = CreateSubjectMutation.Field()
+    create_teacher = CreateTeacherMutation.Field()
     create_class = CreateClassMutation.Field()
     delete_class = DeleteClassMutation.Field()
 
