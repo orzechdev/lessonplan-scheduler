@@ -385,7 +385,7 @@ def generate(request):
             classes_subjects_instances_number
         )
         lessonplan_generation_service.set_algorithm_calculations_time_limit(
-            calculations_time_limit_in_seconds=120
+            calculations_time_limit_in_seconds=60
         )
 
         algorithm_type = request.GET.get('algorithm-type')
@@ -400,9 +400,9 @@ def generate(request):
             )
         else:
             lessonplan_generation_service.set_algorithm_evolutionary_params(
-                population_count=100,
-                crossover_probability=0.1,
-                mutation_probability=0.1
+                population_count=80,
+                crossover_probability=0.01,
+                mutation_probability=0.8
             )
             best_lessonplan, best_hard_scores, best_soft_scores = lessonplan_generation_service.generate_lessonplan(
                 AlgorithmTypes.GENETIC
@@ -430,7 +430,49 @@ def generate(request):
             )
             lessonplan_item.save()
 
-        return HttpResponse("ok. best hard score sum: " + str(best_hard_scores) + ", best soft score sum: " + str(best_soft_scores))
+        return JsonResponse({
+            'algorithmType': algorithm_type,
+            'result': 'ok',
+            'lessonplanHardScores': [
+                {
+                    'id': 'invalidClassSubjectSameLessonsTimes',
+                    'description': 'More then one activities for class occurring at the same time',
+                    'value': 0 - best_hard_scores[0]
+                },
+                {
+                    'id': 'invalidTeacherSameLessonsTimes',
+                    'description': 'More then one activities for teacher occurring at the same time',
+                    'value': 0 - best_hard_scores[1]
+                },
+                {
+                    'id': 'invalidRoomSameLessonTimes',
+                    'description': 'More then one activities for room occurring at the same time',
+                    'value': 0 - best_hard_scores[2]
+                },
+                {
+                    'id': 'invalidTeacherChangesForClassesSubjects',
+                    'description': 'Different teachers assigned for one class subject',
+                    'value': 0 - best_hard_scores[3]
+                }
+            ],
+            'lessonplanSoftScores': [
+                {
+                    'id': 'invalidDifferenceBetweenStartLessons',
+                    'description': 'Invalid differences between start lessons in each week day',
+                    'value': 0 - best_soft_scores[0]
+                },
+                {
+                    'id': 'invalidDifferenceBetweenLessonsCount',
+                    'description': 'Invalid differences between lessons count in each week day',
+                    'value': 0 - best_soft_scores[1]
+                },
+                {
+                    'id': 'invalidFreePeriodsCountBetweenLessons',
+                    'description': 'Invalid free periods count between lessons',
+                    'value': 0 - best_soft_scores[2]
+                }
+            ]
+        })
 
 
 def view(request):

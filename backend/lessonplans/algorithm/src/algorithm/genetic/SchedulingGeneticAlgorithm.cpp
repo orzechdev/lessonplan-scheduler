@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <chrono>
 #include <iostream>
+#include <cassert>
 #include "../../../include/algorithm/genetic/SchedulingGeneticAlgorithm.hpp"
 #include "../../../include/lessonplan/LessonplanScoreList.hpp"
 #include "../../../include/utils/RandomNumberGenerator.hpp"
@@ -32,19 +33,18 @@ namespace lessonplans {
         int generationIndex = 0;
 
         while (end - start < timeToWait && lessonplanScoreListPopulation[generationIndex]->getScoreIndexWithZeroSummaryHardAndSoftScore() < 0) {
-            std::cout << "process generation " << generationIndex << " started..." << std::endl;
+            std::cout << "process generation " << generationIndex + 1 << " started..." << std::endl;
             std::cout << "crossover..." << std::endl;
             currentPopulation = crossoverPopulation(currentPopulation, schedulingProblem, generationIndex);
+            generationIndex++;
             std::cout << "evaluate..." << std::endl;
             evaluatePopulation(currentPopulation, schedulingProblem, true);
             std::cout << "mutate..." << std::endl;
-            mutatePopulation(currentPopulation, schedulingProblem);
+            mutatePopulation(currentPopulation, schedulingProblem, generationIndex);
 //
 //            std::cout << "evaluate..." << std::endl;
 //            evaluatePopulation(currentPopulation, schedulingProblem);
             std::cout << "process generation " << generationIndex << " finished" << std::endl;
-
-            generationIndex++;
 
             end = std::chrono::steady_clock::now();
         }
@@ -127,16 +127,18 @@ namespace lessonplans {
                 continue;
             }
 
-            unsigned short probabilityOfCrossover = RandomNumberGenerator::getRandomNumber(1, 100);
-            // Happy individual will be individual saved before extinction, so the same as selected, thus the best one
-            int happyIndividualIndex = SchedulingGeneticAlgorithm::select(
-                    generationIndex, populationHardScoreSum, populationSoftScoreSum, false, -1
-            );
+            int populationHardScoreSumAbs = (0 - populationHardScoreSum);
+            int currentHardScoreAbs = (0 - summaryHardScores[currentIndividualIdx]);
+            int minimumHardScoreNormalizedToSurvive = populationHardScoreSumAbs * (int)(crossoverProbability * 100);
+            int currentIndividualHardScoreNormalized = currentHardScoreAbs * 100;
 
-            if (probabilityOfCrossover > (unsigned short) crossoverProbability * 100 || happyIndividualIndex == currentIndividualIdx) {
+            if (minimumHardScoreNormalizedToSurvive > currentIndividualHardScoreNormalized) {
+//            if (probabilityOfCrossover > (unsigned short) crossoverProbability * 100 || happyIndividualIndex == currentIndividualIdx) {
+                std::cout << "individual score hard: " << summaryHardScores[currentIndividualIdx] << ", soft: " << summarySoftScores[currentIndividualIdx] << " survived" << std::endl;
                 nextPopulationLessonplans[currentIndividualIdx] = currentPopulation[currentIndividualIdx]->getLessonplan();
                 continue;
             }
+            std::cout << "individual hard score: " << summaryHardScores[currentIndividualIdx] << ", soft: " << summarySoftScores[currentIndividualIdx] << std::endl;
 
             int selectedMaleIndividualIndex = SchedulingGeneticAlgorithm::select(
                     generationIndex, populationHardScoreSum, populationSoftScoreSum, false, -1
@@ -228,10 +230,10 @@ namespace lessonplans {
         return currentPopulation;
     }
 
-    void SchedulingGeneticAlgorithm::mutatePopulation(vector<LessonplanIndividual *> currentPopulation, SchedulingProblem *schedulingProblem){
+    void SchedulingGeneticAlgorithm::mutatePopulation(vector<LessonplanIndividual *> currentPopulation, SchedulingProblem *schedulingProblem, int generationIndex){
         for (int j = 0; j < 1; j++) {
             for (int i = 0; i < populationCount; i++) {
-                reformLessonplan(currentPopulation[i], schedulingProblem);
+                reformLessonplan(currentPopulation[i], schedulingProblem, generationIndex);
             }
 
             std::cout << "evaluate..." << std::endl;
@@ -255,36 +257,79 @@ namespace lessonplans {
     }
 
     int SchedulingGeneticAlgorithm::select(int generationIndex, int populationHardScoreSum, int populationSoftScoreSum, bool includeSoftScore, int excludeIndex) {
-        int maxScore = 0;
-        maxScore -= populationHardScoreSum;
-        if (includeSoftScore) {
-            maxScore -= populationSoftScoreSum;
-        }
-        int pick = RandomNumberGenerator::getRandomNumber(0, maxScore);
-        int offset = 0;
-
         vector<int> summaryHardScores = lessonplanScoreListPopulation[generationIndex]->getSummaryHardScores();
         vector<int> summarySoftScores = lessonplanScoreListPopulation[generationIndex]->getSummarySoftScores();
 
+        int totalWeight = 0;
+        totalWeight -= populationHardScoreSum;
+        if (includeSoftScore) {
+            totalWeight -= populationSoftScoreSum;
+        }
+        int randomWeight = totalWeight > 1 ? RandomNumberGenerator::getRandomNumber(0, totalWeight - 1) : totalWeight;
+
         int index = 0;
         for (index = 0; index < this->populationCount; index++) {
-            if (index == excludeIndex) {
-                continue;
-            }
-            offset -= summaryHardScores[index];
+            int individualWeight = totalWeight - summaryHardScores[index];
             if (includeSoftScore) {
-                offset -= summarySoftScores[index];
+                individualWeight += totalWeight - summarySoftScores[index];
             }
-            if (pick < offset) {
+
+            if(randomWeight < individualWeight && index != excludeIndex) {
                 return index;
             }
+            randomWeight -= individualWeight;
         }
-        index -= 1;
-        return index;
+        return RandomNumberGenerator::getRandomNumber(0, this->populationCount - 1);
     }
 
+//    def weighted_sample(items, n):
+//        total = float(sum(w for w, v in items))
+//        i = 0
+//        w, v = items[0]
+//        while n:
+//            x = total * (1 - random.random() ** (1.0 / n))
+//            total -= x
+//            while x > w:
+//                x -= w
+//                        i += 1
+//                w, v = items[i]
+//                w -= x
+//                        yield v
+//                        n -= 1
+//
+//
+//    int SchedulingGeneticAlgorithm::select(int generationIndex, int populationHardScoreSum, int populationSoftScoreSum, bool includeSoftScore, int excludeIndex) {
+//        int maxScore = 0;
+//        maxScore -= populationHardScoreSum;
+//        if (includeSoftScore) {
+//            maxScore -= populationSoftScoreSum;
+//        }
+//        int pick = RandomNumberGenerator::getRandomNumber(0, maxScore);
+//        int offset = 0;
+//
+//        vector<int> summaryHardScores = lessonplanScoreListPopulation[generationIndex]->getSummaryHardScores();
+//        vector<int> summarySoftScores = lessonplanScoreListPopulation[generationIndex]->getSummarySoftScores();
+//
+//        int index = 0;
+//        for (index = 0; index < this->populationCount; index++) {
+//            if (index == excludeIndex) {
+//                continue;
+//            }
+//            offset -= summaryHardScores[index];
+//            if (includeSoftScore) {
+//                offset -= summarySoftScores[index];
+//            }
+//            if (pick < offset) {
+//                return index;
+//            }
+//        }
+//        index -= 1;
+//        return index;
+//    }
+
     LessonplanIndividual *SchedulingGeneticAlgorithm::reformLessonplan(LessonplanIndividual *lessonplanIndividual,
-                                                                      SchedulingProblem *schedulingProblem) {
+                                                                      SchedulingProblem *schedulingProblem,
+                                                                      int generationIndex) {
         /*
          * Class is const
          * Subject is const
@@ -531,14 +576,21 @@ namespace lessonplans {
 
         unsigned short prevAssignedLessonAndDayToClass = lessonplanIndividualDescriptor->getAssignedLessonAndDayToClass(
                 weekDayIdx, lessonIdx, classIdx);
+
+        bool softReformShouldOccur = true;
+        if ((unsigned short)(mutationProbability * 100) < RandomNumberGenerator::getRandomNumber(1, 100)) {
+            softReformShouldOccur = false;
+        }
+
         unsigned short classStartLessonsDifferenceCountAverage = lessonplanIndividualDescriptor->getClassesStartLessonsDifferenceCountAverage()[classIdx];
         unsigned short classLessonsCountDifferenceBetweenDaysAverage = lessonplanIndividualDescriptor->getClassesLessonsCountAverageDifferenceBetweenDays()[classIdx];
         unsigned short classFreePeriodsExistenceBetweenLessonsCount = lessonplanIndividualDescriptor->getClassesFreePeriodsExistenceBetweenLessonsCount()[classIdx];
 
         if (prevAssignedLessonAndDayToClass > 1 ||
+            (softReformShouldOccur && (
             classStartLessonsDifferenceCountAverage > 1 ||
             classLessonsCountDifferenceBetweenDaysAverage > 1 ||
-            classFreePeriodsExistenceBetweenLessonsCount > 0) {
+            classFreePeriodsExistenceBetweenLessonsCount > 0))) {
             for (unsigned short lessonIdxToChange = 0; lessonIdxToChange < lessonsCount; lessonIdxToChange++) {
                 vector<unsigned short> weekDaysIdxsSequence = RandomNumberGenerator::getRandomIdxsSequence(
                         weekDaysCount);
