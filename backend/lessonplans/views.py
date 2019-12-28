@@ -385,26 +385,26 @@ def generate(request):
             classes_subjects_instances_number
         )
         lessonplan_generation_service.set_algorithm_calculations_time_limit(
-            calculations_time_limit_in_seconds=60
+            calculations_time_limit_in_seconds=120
         )
 
         algorithm_type = request.GET.get('algorithm-type')
 
         if algorithm_type == 'random-search':
-            best_lessonplan = lessonplan_generation_service.generate_lessonplan(
+            best_lessonplan, best_hard_scores, best_soft_scores = lessonplan_generation_service.generate_lessonplan(
                 AlgorithmTypes.RANDOM_SEARCH
             )
         elif algorithm_type == 'greedy':
-            best_lessonplan = lessonplan_generation_service.generate_lessonplan(
+            best_lessonplan, best_hard_scores, best_soft_scores = lessonplan_generation_service.generate_lessonplan(
                 AlgorithmTypes.GREEDY
             )
         else:
             lessonplan_generation_service.set_algorithm_evolutionary_params(
                 population_count=100,
-                crossover_probability=0.2,
+                crossover_probability=0.1,
                 mutation_probability=0.1
             )
-            best_lessonplan = lessonplan_generation_service.generate_lessonplan(
+            best_lessonplan, best_hard_scores, best_soft_scores = lessonplan_generation_service.generate_lessonplan(
                 AlgorithmTypes.GENETIC
             )
 
@@ -430,7 +430,7 @@ def generate(request):
             )
             lessonplan_item.save()
 
-        return HttpResponse("ok")
+        return HttpResponse("ok. best hard score sum: " + str(best_hard_scores) + ", best soft score sum: " + str(best_soft_scores))
 
 
 def view(request):

@@ -127,6 +127,17 @@ namespace lessonplans {
                 continue;
             }
 
+            unsigned short probabilityOfCrossover = RandomNumberGenerator::getRandomNumber(1, 100);
+            // Happy individual will be individual saved before extinction, so the same as selected, thus the best one
+            int happyIndividualIndex = SchedulingGeneticAlgorithm::select(
+                    generationIndex, populationHardScoreSum, populationSoftScoreSum, false, -1
+            );
+
+            if (probabilityOfCrossover > (unsigned short) crossoverProbability * 100 || happyIndividualIndex == currentIndividualIdx) {
+                nextPopulationLessonplans[currentIndividualIdx] = currentPopulation[currentIndividualIdx]->getLessonplan();
+                continue;
+            }
+
             int selectedMaleIndividualIndex = SchedulingGeneticAlgorithm::select(
                     generationIndex, populationHardScoreSum, populationSoftScoreSum, false, -1
             );
@@ -218,7 +229,7 @@ namespace lessonplans {
     }
 
     void SchedulingGeneticAlgorithm::mutatePopulation(vector<LessonplanIndividual *> currentPopulation, SchedulingProblem *schedulingProblem){
-        for (int j = 0; j < 3; j++) {
+        for (int j = 0; j < 1; j++) {
             for (int i = 0; i < populationCount; i++) {
                 reformLessonplan(currentPopulation[i], schedulingProblem);
             }
@@ -317,11 +328,18 @@ namespace lessonplans {
 
             vector<unsigned short> *lessonplanDataItem = &lessonplan[dataIdx];
 
+//            unsigned short randomReformType = RandomNumberGenerator::getRandomNumber(1, 4);
+
+//            switch (randomReformType) {
+//                case 1:
 //            *idx += 1;
-            this->reformLessonplanClassSubjectDataItem(lessonplanIndividualDescriptor, schedulingProblemProperties,
-                                                       lessonplanDataItem);
-            lessonplanIndividual->setLessonplan(lessonplan);
-            obtainedScores = schedulingProblem->evaluateLessonplan(lessonplanIndividual);
+                    this->reformLessonplanClassSubjectDataItem(lessonplanIndividualDescriptor,
+                                                               schedulingProblemProperties,
+                                                               lessonplanDataItem);
+                    lessonplanIndividual->setLessonplan(lessonplan);
+                    obtainedScores = schedulingProblem->evaluateLessonplan(lessonplanIndividual);
+
+//                    break;
 
 //            this->hardScores.push_back(obtainedScores[0]);
 //            this->softScores.push_back(obtainedScores[1]);
@@ -334,34 +352,45 @@ namespace lessonplans {
 //                this->bestIndividual = currentIndividual;
 //            }
 
+//                case 2:
 //            *idx += 1;
-            this->reformLessonplanTeacherDataItem(lessonplanIndividualDescriptor, schedulingProblemProperties,
-                                                  lessonplanDataItem);
-            lessonplanIndividual->setLessonplan(lessonplan);
-            obtainedScores = schedulingProblem->evaluateLessonplan(lessonplanIndividual);
+                    this->reformLessonplanTeacherDataItem(lessonplanIndividualDescriptor, schedulingProblemProperties,
+                                                          lessonplanDataItem);
+                    lessonplanIndividual->setLessonplan(lessonplan);
+                    obtainedScores = schedulingProblem->evaluateLessonplan(lessonplanIndividual);
+
+//                    break;
 
 //            this->hardScores.push_back(obtainedScores[0]);
 //            this->softScores.push_back(obtainedScores[1]);
 //            this->summaryHardScores.push_back(SchedulingProblem::calculateSummaryScore(obtainedScores[0]));
 //            this->summarySoftScores.push_back(SchedulingProblem::calculateSummaryScore(obtainedScores[1]));
 
+//                case 3:
 //            *idx += 1;
-            this->reformLessonplanRoomDataItem(lessonplanIndividualDescriptor, schedulingProblemProperties,
-                                               lessonplanDataItem);
-            lessonplanIndividual->setLessonplan(lessonplan);
-            obtainedScores = schedulingProblem->evaluateLessonplan(lessonplanIndividual);
+                    this->reformLessonplanRoomDataItem(lessonplanIndividualDescriptor, schedulingProblemProperties,
+                                                       lessonplanDataItem);
+                    lessonplanIndividual->setLessonplan(lessonplan);
+                    obtainedScores = schedulingProblem->evaluateLessonplan(lessonplanIndividual);
+
+//                    break;
 
 //            this->hardScores.push_back(obtainedScores[0]);
 //            this->softScores.push_back(obtainedScores[1]);
 //            this->summaryHardScores.push_back(SchedulingProblem::calculateSummaryScore(obtainedScores[0]));
 //            this->summarySoftScores.push_back(SchedulingProblem::calculateSummaryScore(obtainedScores[1]));
 
+//                case 4:
 //            *idx += 1;
-            this->reformLessonplanClassSubjectTeacher(lessonplanIndividualDescriptor, schedulingProblemProperties,
-                                                      lessonplanDataItem,
-                                                      &classesSubjectsTeachersToAssign);
-            lessonplanIndividual->setLessonplan(lessonplan);
-            obtainedScores = schedulingProblem->evaluateLessonplan(lessonplanIndividual);
+                    this->reformLessonplanClassSubjectTeacher(lessonplanIndividualDescriptor,
+                                                              schedulingProblemProperties,
+                                                              lessonplanDataItem,
+                                                              &classesSubjectsTeachersToAssign);
+                    lessonplanIndividual->setLessonplan(lessonplan);
+                    obtainedScores = schedulingProblem->evaluateLessonplan(lessonplanIndividual);
+
+//                    break;
+//            }
 
             // !!!!!!!!!!!!!!!
             // !!!!!!!!!!!!!!!

@@ -145,7 +145,7 @@ class LessonplanGenerationService:
                     all_lessonplans_summary_soft_scores,
                     'random-search'
                 )
-            return best_lessonplan
+            return best_lessonplan, all_lessonplans_summary_hard_scores[best_lessonplan_score_index], all_lessonplans_summary_soft_scores[best_lessonplan_score_index]
         elif algorithm_type_number == AlgorithmTypes.GREEDY:
             if self.__debug_print_enabled:
                 print('lessonplan generation greedy algorithm')
@@ -197,7 +197,7 @@ class LessonplanGenerationService:
                     all_lessonplans_summary_soft_scores,
                     'greedy'
                 )
-            return best_lessonplan
+            return best_lessonplan, all_lessonplans_summary_hard_scores[best_lessonplan_score_index], all_lessonplans_summary_soft_scores[best_lessonplan_score_index]
         else:
             if self.__debug_print_enabled:
                 print('lessonplan generation genetic algorithm')
@@ -254,7 +254,7 @@ class LessonplanGenerationService:
                     all_lessonplans_summary_soft_scores,
                     'genetic'
                 )
-            return best_lessonplan
+            return best_lessonplan, all_lessonplans_summary_hard_scores[best_lessonplan_generation_index][best_lessonplan_generation_score_index], all_lessonplans_summary_soft_scores[best_lessonplan_generation_index][best_lessonplan_generation_score_index]
 
     @staticmethod
     def __print_best_lessonplan(
@@ -409,10 +409,9 @@ class LessonplanGenerationService:
                 ), 'w'
         ) as outfile:
             for idx, all_lessonplans_hard_scores_slice in enumerate(all_lessonplans_hard_scores):
-                outfile.write('# Generation, ' + str(idx) + '\n')
                 np.savetxt(
                     outfile,
-                    np.absolute(all_lessonplans_hard_scores_slice),
+                    np.absolute(np.insert(all_lessonplans_hard_scores_slice, 0, idx, axis=1)),
                     delimiter=',',
                     fmt='%d'
                 )
@@ -423,10 +422,9 @@ class LessonplanGenerationService:
                 ), 'w'
         ) as outfile:
             for idx, all_lessonplans_soft_scores_slice in enumerate(all_lessonplans_soft_scores):
-                outfile.write('# Generation, ' + str(idx) + '\n')
                 np.savetxt(
                     outfile,
-                    np.absolute(all_lessonplans_soft_scores_slice),
+                    np.absolute(np.insert(all_lessonplans_soft_scores_slice, 0, idx, axis=1)),
                     delimiter=',',
                     fmt='%d'
                 )
@@ -437,10 +435,9 @@ class LessonplanGenerationService:
                 ), 'w'
         ) as outfile:
             for idx, all_lessonplans_summary_hard_scores_slice in enumerate(all_lessonplans_summary_hard_scores):
-                outfile.write('# Generation, ' + str(idx) + '\n')
                 np.savetxt(
                     outfile,
-                    np.absolute(all_lessonplans_summary_hard_scores_slice),
+                    np.absolute(np.insert([all_lessonplans_summary_hard_scores_slice], 0, idx, axis=0).transpose()),
                     delimiter=',',
                     fmt='%d'
                 )
@@ -451,10 +448,9 @@ class LessonplanGenerationService:
                 ), 'w'
         ) as outfile:
             for idx, all_lessonplans_summary_soft_scores_slice in enumerate(all_lessonplans_summary_soft_scores):
-                outfile.write('# Generation, ' + str(idx) + '\n')
                 np.savetxt(
                     outfile,
-                    np.absolute(all_lessonplans_summary_soft_scores_slice),
+                    np.absolute(np.insert([all_lessonplans_summary_soft_scores_slice], 0, idx, axis=0).transpose()),
                     delimiter=',',
                     fmt='%d'
                 )
