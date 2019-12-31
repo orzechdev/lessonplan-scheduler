@@ -148,11 +148,11 @@ export default {
     });
     return response;
   },
-  createTeacher: async fullName => {
+  createTeacher: async (fullName, subjectsIds) => {
     const response = await fetchFromGraphApi({
       body: {
-        query: gqlQuery.createRoom,
-        variables: { name: fullName }
+        query: gqlQuery.createTeacher,
+        variables: { name: fullName, subjectsIds }
       }
     });
     return response;

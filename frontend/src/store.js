@@ -147,9 +147,9 @@ export default new Vuex.Store({
       context.commit('SET_SAVE_IN_PROGRESS', false);
     },
     async createTeacher(context, payload) {
-      const { fullName } = payload;
+      const { fullName, subjectsIds } = payload;
       context.commit('SET_SAVE_IN_PROGRESS', true);
-      const { value, error } = await MainApi.createTeacher(fullName);
+      const { value, error } = await MainApi.createTeacher(fullName, subjectsIds);
 
       if (error || !value || !value.data || !value.data.createTeacher) {
         context.commit('SET_ERROR', error);

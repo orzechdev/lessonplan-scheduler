@@ -165,38 +165,81 @@ class CreateSubjectMutation(graphene.Mutation):
 class CreateTeacherMutation(graphene.Mutation):
     class Arguments:
         name = graphene.String(required=True)
+        subjects_ids = graphene.List(graphene.types.Int, required=True)
 
     teacher = graphene.Field(TeacherType)
+    teacher_subjects = graphene.List(SubjectType)
 
-    def mutate(self, info, name, subjects):
+    def mutate(self, info, name, subjects_ids):
         teacher = Teacher(name=name)
         teacher.save()
-        return CreateTeacherMutation(teacher=teacher)
+        teacher_subjects = []
+        for subject_id in subjects_ids:
+            subject = Subject.objects.get(pk=subject_id)
+            teacher_subject = TeacherSubject(teacher=teacher, subject=subject)
+            teacher_subject.save()
+            teacher_subjects.append(subject)
+        return CreateTeacherMutation(teacher=teacher, teacher_subjects=teacher_subjects)
+
+
+class ClassSubjectInput(graphene.InputObjectType):
+    id = graphene.Int(required=True)
+    count_in_week = graphene.Int()
 
 
 class CreateClassMutation(graphene.Mutation):
     class Arguments:
         name = graphene.String(required=True)
+        subjects = graphene.List(ClassSubjectInput, required=True)
 
     class_model = graphene.Field(ClassType)
+    class_subjects = graphene.List(ClassSubjectType)
 
-    def mutate(self, info, name):
+    def mutate(self, info, name, subjects):
         class_model = Class(name=name)
         class_model.save()
+        class_subjects = []
+        for subject_input in subjects:
+            subject = Subject.objects.get(pk=subject_input.id)
+            class_subject = ClassSubject(class_model=class_model, subject=subject, count_in_week=subject.count_in_week)
+            class_subject.save()
+            class_subjects.append(class_subject)
         return CreateClassMutation(class_model=class_model)
 
+#
+# class CreateTeacherSubjectMutation(graphene.Mutation):
+#     class Arguments:
+#         teacher_id = graphene.Int(required=True)
+#         subject_id = graphene.Int(required=True)
+#
+#     teacher_subject = graphene.Field(TeacherSubjectType)
+#
+#     def mutate(self, info, teacher_id, subject_id):
+#         teacher_subject = TeacherSubject(teacher_id=teacher_id, subject_id=subject_id)
+#         teacher_subject.save()
+#         return CreateTeacherSubjectMutation(teacher_subject=teacher_subject)
 
-class CreateTeacherSubjectMutation(graphene.Mutation):
+
+class TeacherSubjectInput(graphene.InputObjectType):
+    id = graphene.ID(required=True)
+
+
+class CreateTeacherSubjectBulkMutation(graphene.Mutation):
     class Arguments:
         teacher_id = graphene.Int(required=True)
-        subject_id = graphene.Int(required=True)
+        teacher_subjects_ids = graphene.List(graphene.types.Int)
 
-    teacher_subject = graphene.Field(TeacherSubjectType)
+    teacher_subjects = graphene.List(TeacherSubjectType)
 
-    def mutate(self, info, teacher_id, subject_id):
-        teacher_subject = TeacherSubject(teacher_id=teacher_id, subject_id=subject_id)
-        teacher_subject.save()
-        return CreateTeacherSubjectMutation(teacher_subject=teacher_subject)
+    def mutate(self, info, teacher_id, teacher_subjects_ids):
+        teacher_subjects = []
+        for teacher_subject_id in teacher_subjects_ids:
+            teacher = Teacher.objects.get(pk=teacher_id)
+            subject = Subject.objects.get(pk=teacher_subject_id)
+            teacher_subject = TeacherSubject(teacher=teacher, subject=subject)
+            teacher_subject.save()
+            teacher_subjects.append(teacher_subject)
+        return CreateTeacherSubjectBulkMutation(teacher_subjects=teacher_subjects)
 
 
 class DeleteClassMutation(graphene.Mutation):
@@ -218,4 +261,5 @@ class Mutation(object):
     create_teacher = CreateTeacherMutation.Field()
     create_class = CreateClassMutation.Field()
     delete_class = DeleteClassMutation.Field()
+    create_teacher_subject_bulk = CreateTeacherSubjectBulkMutation.Field()
 

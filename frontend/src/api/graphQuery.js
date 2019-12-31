@@ -123,9 +123,13 @@ const gqlQuery = {
     }
   `,
   createTeacher: `
-    mutation CreateTeacher($name: String!) {
-      createTeacher(name: $name) {
+    mutation CreateTeacher($name: String!, $subjectsIds: [Int]!) {
+      createTeacher(name: $name, subjectsIds: $subjectsIds) {
         teacher {
+          id
+          name
+        }
+        teacherSubjects {
           id
           name
         }
@@ -133,11 +137,18 @@ const gqlQuery = {
     }
   `,
   createClass: `
-    mutation CreateClass($name: String!) {
-      createClass(name: $name) {
+    mutation CreateClass($name: String!, $classSubjects: [ClassSubjectInput]!) {
+      createClass(name: $name, subjects: $classSubjects) {
         classModel {
           id
           name
+        }
+        classSubjects {
+          subject {
+            id
+            name
+          }
+          countInWeek
         }
       }
     }

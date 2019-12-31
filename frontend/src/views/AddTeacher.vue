@@ -50,10 +50,11 @@ export default {
     ...mapActions(['createTeacher']),
     onAddClick() {
       console.log('onAddClick TODO: add/mutate also teacher subjects');
-      // this.createTeacher({
-      //   fullName: this.nameAndSurname
-      // });
-      // this.$router.push('/example-school/management/teachers');
+      this.createTeacher({
+        fullName: this.nameAndSurname,
+        subjectsIds: this.teachedSubjects.map(({ id }) => id)
+      });
+      this.$router.push('/example-school/management/teachers');
     },
     onAddNextClick() {
       console.log('onAddNextClick');
