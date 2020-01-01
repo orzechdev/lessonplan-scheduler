@@ -16,6 +16,7 @@ import AddTeacherList from './views/AddTeacherList.vue';
 import AddTeacher from './views/AddTeacher.vue';
 import AddClassList from './views/AddClassList.vue';
 import AddClass from './views/AddClass.vue';
+import Generate from './views/Generate.vue';
 
 Vue.use(Router);
 
@@ -110,6 +111,12 @@ const router = new Router({
           path: 'classes/add',
           name: 'add class',
           component: AddClass,
+          props: { customAppBar: true }
+        },
+        {
+          path: 'generate',
+          name: 'generate',
+          component: Generate,
           props: { customAppBar: true }
         }
       ]

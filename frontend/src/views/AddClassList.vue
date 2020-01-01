@@ -27,7 +27,10 @@
     <div v-else class="btn-container">
       <v-btn color="#6d6d6d" class="btn-add" :to="`/example-school/management/classes/add`">Add</v-btn>
     </div>
-    <back-next-bottom-bar :back-route="`/example-school/management/teachers`"></back-next-bottom-bar>
+    <back-next-bottom-bar
+      :back-route="`/example-school/management/teachers`"
+      :next-route="`/example-school/management/generate`"
+    ></back-next-bottom-bar>
   </div>
 </template>
 
