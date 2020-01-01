@@ -157,11 +157,11 @@ export default {
     });
     return response;
   },
-  createClass: async name => {
+  createClass: async (name, subjectsData) => {
     const response = await fetchFromGraphApi({
       body: {
         query: gqlQuery.createClass,
-        variables: { name }
+        variables: { name, classSubjects: subjectsData }
       }
     });
     return response;

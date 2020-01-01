@@ -200,11 +200,13 @@ class CreateClassMutation(graphene.Mutation):
         class_model.save()
         class_subjects = []
         for subject_input in subjects:
-            subject = Subject.objects.get(pk=subject_input.id)
-            class_subject = ClassSubject(class_model=class_model, subject=subject, count_in_week=subject.count_in_week)
-            class_subject.save()
-            class_subjects.append(class_subject)
-        return CreateClassMutation(class_model=class_model)
+            subject_count_in_week = getattr(subject_input, 'count_in_week', 1)
+            if subject_count_in_week >= 1:
+                subject = Subject.objects.get(pk=subject_input.id)
+                class_subject = ClassSubject(class_model=class_model, subject=subject, count_in_week=subject_count_in_week)
+                class_subject.save()
+                class_subjects.append(class_subject)
+        return CreateClassMutation(class_model=class_model, class_subjects=class_subjects)
 
 #
 # class CreateTeacherSubjectMutation(graphene.Mutation):

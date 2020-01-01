@@ -75,7 +75,6 @@ export default new Vuex.Store({
     },
     async getClasses(context) {
       const { value, error } = await MainApi.getClasses();
-      const { value2, error2 } = await MainApi.getClass();
 
       if (error || !value || !value.data || !value.data.allClasses) {
         context.commit('SET_ERROR', error);
@@ -155,6 +154,18 @@ export default new Vuex.Store({
         context.commit('SET_ERROR', error);
       } else {
         context.dispatch('getTeachers');
+      }
+      context.commit('SET_SAVE_IN_PROGRESS', false);
+    },
+    async createClass(context, payload) {
+      const { className, subjectsData } = payload;
+      context.commit('SET_SAVE_IN_PROGRESS', true);
+      const { value, error } = await MainApi.createClass(className, subjectsData);
+
+      if (error || !value || !value.data || !value.data.createClass) {
+        context.commit('SET_ERROR', error);
+      } else {
+        context.dispatch('getClasses');
       }
       context.commit('SET_SAVE_IN_PROGRESS', false);
     }

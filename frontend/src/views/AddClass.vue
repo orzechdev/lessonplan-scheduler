@@ -47,7 +47,7 @@
               class="headline"
             >{{ classSubjectsWithHoursPerWeek[hoursSelectorDialogDataIndex].subject.name }}</span>
           </v-card-title>
-          <v-card-text class="subject-hours-edit-dialog-content">
+          <v-card-text v-if="showDialogFileds" class="subject-hours-edit-dialog-content">
             <v-text-field
               v-model="hoursPerWeekInDialog"
               label="Hours per week"
@@ -93,7 +93,8 @@ export default {
     classSubjectsWithHoursPerWeekAlreadySet: false,
     hoursPerWeekInDialog: 0,
     hoursSelectorDialog: false,
-    hoursSelectorDialogDataIndex: null
+    hoursSelectorDialogDataIndex: null,
+    showDialogFileds: false
   }),
   watch: {
     subjects: function(newSubjects) {
@@ -107,15 +108,41 @@ export default {
         }));
         this.classSubjectsWithHoursPerWeekAlreadySet = true;
       }
+    },
+    hoursSelectorDialog: function(newHoursSelectorDialog) {
+      setTimeout(() => {
+        this.showDialogFileds = newHoursSelectorDialog;
+      }, 100);
     }
   },
   methods: {
+    ...mapActions(['createClass']),
     onAddClick() {
       console.log('onAddClick');
-      // this.$router.push('/example-school/management/classes');
+      this.createClass({
+        className: this.className,
+        subjectsData: this.classSubjectsWithHoursPerWeek
+          .filter(({ hoursPerWeek }) => hoursPerWeek >= 1)
+          .map(({ subject, hoursPerWeek }) => ({ id: subject.id, countInWeek: hoursPerWeek }))
+      });
+      this.$router.push('/example-school/management/classes');
     },
     onAddNextClick() {
       console.log('onAddNextClick');
+    }
+  },
+  mounted() {
+    if (
+      this.subjects &&
+      this.subjects.length > 0 &&
+      this.classSubjectsWithHoursPerWeek.length <= 0 &&
+      !this.classSubjectsWithHoursPerWeekAlreadySet
+    ) {
+      this.classSubjectsWithHoursPerWeek = this.subjects.map(subject => ({
+        subject,
+        hoursPerWeek: 0
+      }));
+      this.classSubjectsWithHoursPerWeekAlreadySet = true;
     }
   }
 };
