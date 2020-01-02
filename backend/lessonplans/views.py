@@ -1,10 +1,8 @@
-from django.core import serializers
 from django.http import HttpResponse, JsonResponse
 
 from setuptools import sandbox
 
 import numpy as np
-from matplotlib import pyplot as plt
 import json
 import os
 from datetime import datetime
@@ -14,16 +12,9 @@ from lessonplans.services.lessonplan_generation_service import AlgorithmTypes, L
 from lessonplans.data_validity.data_validity import is_data_valid
 from lessonplans.models import Lessonplan, WeekDay, Lesson, Subject, Teacher, TeacherSubject, Class, ClassSubject, Room, \
     RoomSubjectRestricted, LessonplanItem
-from lessonplans.serializers import ClassSerializer, LessonplanSerializer, SubjectSerializer, TeacherSerializer, \
-    RoomSerializer, LessonplanItemSerializer
+from lessonplans.serializers import ClassSerializer, LessonplanItemSerializer
 
 module_dir = os.path.dirname(__file__)  # get current directory
-# weekdays_file_path = os.path.join(module_dir, 'predefined_data/weekdays.json')
-# lessons_file_path = os.path.join(module_dir, 'predefined_data/lessons.json')
-# subjects_file_path = os.path.join(module_dir, 'predefined_data/subjects.json')
-# teachers_file_path = os.path.join(module_dir, 'predefined_data/teachers.json')
-# classes_file_path = os.path.join(module_dir, 'predefined_data/classes.json')
-# rooms_file_path = os.path.join(module_dir, 'predefined_data/rooms.json')
 
 algorithm_setup_file_path = os.path.join(module_dir, 'algorithm/setup.py')
 
@@ -40,57 +31,51 @@ all_lessonplans_summary_soft_scores_file_path = os.path.join(module_dir, 'algori
 last_saved_data_complexity_file_path = os.path.join(all_lessonplans_scores_file_path, 'last_saved_data_complexity.txt')
 
 
-    # plt.figure()
-    # final_score_idx = np.argmax(all_lessonplans_hard_scores == 0)
-    # if final_score_idx == 0:
-    #     final_score_idx = len(all_lessonplans_hard_scores) - 1
-    # plt.xlim(0, final_score_idx)
-    # plt.plot(np.absolute(all_lessonplans_hard_scores))
-    # plt.savefig(all_lessonplans_hard_scores_image_path)
-    #
-    # plt.figure()
-    # final_score_idx = np.argmax(all_lessonplans_soft_scores == 0)
-    # if final_score_idx == 0:
-    #     final_score_idx = len(all_lessonplans_soft_scores) - 1
-    # plt.xlim(0, final_score_idx)
-    # plt.plot(np.absolute(all_lessonplans_soft_scores))
-    # plt.savefig(all_lessonplans_soft_scores_image_path)
-    #
-    # plt.figure()
-    # final_score_idx = np.argmax(all_lessonplans_summary_hard_scores == 0)
-    # if final_score_idx == 0:
-    #     final_score_idx = len(all_lessonplans_summary_hard_scores) - 1
-    # plt.xlim(0, final_score_idx)
-    # plt.plot(np.absolute(all_lessonplans_summary_hard_scores))
-    # plt.savefig(all_lessonplans_summary_hard_scores_image_path)
-    #
-    # plt.figure()
-    # final_score_idx = np.argmax(all_lessonplans_summary_soft_scores == 0)
-    # if final_score_idx == 0:
-    #     final_score_idx = len(all_lessonplans_summary_soft_scores) - 1
-    # plt.xlim(0, final_score_idx)
-    # plt.plot(np.absolute(all_lessonplans_summary_soft_scores))
-    # plt.savefig(all_lessonplans_summary_soft_scores_image_path)
-
-
 def index(request):
     return HttpResponse("Hello, world. You're at the lessonplans index.")
 
 
+def save_week_days(request):
+    week_days = WeekDay.objects.all()
+
+    if len(week_days) <= 0:
+        data_complexity_dir = 'low_complexity'
+        weekdays_file_path = os.path.join(module_dir, 'test_data/' + data_complexity_dir + '/weekdays.json')
+
+        with open(weekdays_file_path, "r") as read_file:
+            weekdays = json.load(read_file)
+
+        weekdays_saved = []
+
+        for weekday in weekdays:
+            weekday_saved = WeekDay(name=weekday['name'])
+            weekday_saved.save()
+
+            weekdays_saved.append(weekday_saved)
+
+        return HttpResponse("save_week_days saved")
+
+    return HttpResponse("save_week_days exist")
+
+
 def save_data(request):
     data_complexity = request.GET.get('data-complexity')
+    just_lessons = False
 
     if data_complexity == 'high':
         data_complexity_dir = 'high_complexity'
     elif data_complexity == 'medium':
         data_complexity_dir = 'medium_complexity'
+    elif data_complexity == 'just_lessons':
+        data_complexity_dir = 'low_complexity'
+        just_lessons = True
     else:
         data_complexity_dir = 'low_complexity'
 
     with open(last_saved_data_complexity_file_path, "w") as text_file:
         text_file.write(data_complexity)
 
-    weekdays_file_path = os.path.join(module_dir, 'test_data/' + data_complexity_dir + '/weekdays.json')
+    # weekdays_file_path = os.path.join(module_dir, 'test_data/' + data_complexity_dir + '/weekdays.json')
     lessons_file_path = os.path.join(module_dir, 'test_data/' + data_complexity_dir + '/lessons.json')
     subjects_file_path = os.path.join(module_dir, 'test_data/' + data_complexity_dir + '/subjects.json')
     teachers_file_path = os.path.join(module_dir, 'test_data/' + data_complexity_dir + '/teachers.json')
@@ -108,21 +93,21 @@ def save_data(request):
     Teacher.objects.all().delete()
     Subject.objects.all().delete()
     Lesson.objects.all().delete()
-    WeekDay.objects.all().delete()
+    # WeekDay.objects.all().delete()
 
+    # #
+    # # Weekdays
+    # #
+    # with open(weekdays_file_path, "r") as read_file:
+    #     weekdays = json.load(read_file)
     #
-    # Weekdays
+    # weekdays_saved = []
     #
-    with open(weekdays_file_path, "r") as read_file:
-        weekdays = json.load(read_file)
-
-    weekdays_saved = []
-
-    for weekday in weekdays:
-        weekday_saved = WeekDay(name=weekday['name'])
-        weekday_saved.save()
-
-        weekdays_saved.append(weekday_saved)
+    # for weekday in weekdays:
+    #     weekday_saved = WeekDay(name=weekday['name'])
+    #     weekday_saved.save()
+    #
+    #     weekdays_saved.append(weekday_saved)
 
     #
     # Lessons
@@ -139,6 +124,9 @@ def save_data(request):
         lesson_saved.save()
 
         lessons_saved.append(lesson_saved)
+
+    if just_lessons:
+        return HttpResponse("save_data endpoint")
 
     #
     # Subjects

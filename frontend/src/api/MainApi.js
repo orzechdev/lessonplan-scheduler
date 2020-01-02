@@ -11,12 +11,13 @@ const getResponseValue = async response => {
 const fetchFromApi = async ({ path, method = 'GET', body }) => {
   try {
     const headers = {
-      method: method,
+      method,
       headers: { 'Content-Type': 'application/json' }
     };
     if (body) {
       headers.body = JSON.stringify(body);
     }
+    // eslint-disable-next-line no-undef
     const response = await fetch(path, headers);
 
     if (!response.ok) {
@@ -26,38 +27,47 @@ const fetchFromApi = async ({ path, method = 'GET', body }) => {
     const value = await getResponseValue(response);
 
     return {
-      value: value,
+      value,
       error: null
     };
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.log(error);
 
     return {
       value: null,
-      error: error
+      error
     };
   }
 };
 
 const fetchFromRestApi = async ({ path, method = 'GET', body }) => {
-  return await fetchFromApi({
+  const response = await fetchFromApi({
     path: `http://localhost:8000/${path}`,
     method,
     body
   });
+  return response;
 };
 
 const fetchFromGraphApi = async ({ method = 'POST', body }) => {
-  return await fetchFromApi({
+  const response = await fetchFromApi({
     path: `http://localhost:8000/graphql`,
     method,
     body
   });
+  return response;
 };
 
 export default {
+  saveWeekDays: async () => {
+    const response = await fetchFromRestApi({
+      path: `lessonplans/saveWeekDays`
+    });
+    return response;
+  },
   getLessonplans: async () => {
-    const response = fetchFromGraphApi({
+    const response = await fetchFromGraphApi({
       body: {
         query: gqlQuery.lessonplansItems
       }
@@ -163,6 +173,12 @@ export default {
         query: gqlQuery.createClass,
         variables: { name, classSubjects: subjectsData }
       }
+    });
+    return response;
+  },
+  generateLessonplans: async () => {
+    const response = await fetchFromRestApi({
+      path: `lessonplans/generate/?algorithm-type=genetic`
     });
     return response;
   }

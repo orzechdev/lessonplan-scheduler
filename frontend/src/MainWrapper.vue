@@ -5,9 +5,6 @@
         <span class="font-weight-medium">Example School</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn icon>
-        <v-icon>mdi-magnify</v-icon>
-      </v-btn>
     </v-app-bar>
     <v-content>
       <router-view></router-view>

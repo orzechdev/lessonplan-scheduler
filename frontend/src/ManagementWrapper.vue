@@ -5,9 +5,6 @@
         <span class="font-weight-medium">Primary School Type</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn icon>
-        <v-icon>mdi-magnify</v-icon>
-      </v-btn>
     </v-app-bar>
     <v-content :class="whiteBackground ? `whiteBackground` : ``">
       <router-view></router-view>
@@ -22,6 +19,7 @@ export default {
   name: 'management-wrapper',
   methods: {
     ...mapActions([
+      'saveWeekDays',
       'getSubjects',
       'getWeekdays',
       'getLessons',
@@ -32,6 +30,7 @@ export default {
     ])
   },
   created() {
+    this.saveWeekDays();
     this.getWeekdays();
     this.getLessons();
     this.getClasses();

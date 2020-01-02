@@ -1,5 +1,7 @@
+/* eslint-disable no-param-reassign */
 import Vue from 'vue';
 import Vuex from 'vuex';
+// eslint-disable-next-line import/no-unresolved
 import MainApi from '@/api/MainApi';
 
 Vue.use(Vuex);
@@ -14,7 +16,11 @@ export default new Vuex.Store({
     subjects: [],
     teachers: [],
     rooms: [],
-    lessonplans: []
+    lessonplans: [],
+    generationData: null,
+    generationInProgress: false,
+    generationFinish: false,
+    generationError: false
   },
   mutations: {
     SET_ERROR(state, error) {
@@ -43,9 +49,22 @@ export default new Vuex.Store({
     },
     SET_LESSONPLANS(state, lessonplans) {
       state.lessonplans = lessonplans;
+    },
+    SET_GENERATION_RESULT(state, generationResult) {
+      state.generationData = generationResult.generationData;
+      state.generationInProgress = generationResult.generationInProgress;
+      state.generationFinish = generationResult.generationFinish;
+      state.generationError = generationResult.generationError;
     }
   },
   actions: {
+    async saveWeekDays(context) {
+      const { value, error } = await MainApi.saveWeekDays();
+
+      if (error || !value) {
+        context.commit('SET_ERROR', error);
+      }
+    },
     async getWeekdays(context) {
       const { value, error } = await MainApi.getWeekdays();
 
@@ -168,6 +187,34 @@ export default new Vuex.Store({
         context.dispatch('getClasses');
       }
       context.commit('SET_SAVE_IN_PROGRESS', false);
+    },
+    async setGenerationResult(context, payload) {
+      context.commit('SET_GENERATION_RESULT', payload);
+    },
+    async generateLessonplans(context) {
+      context.dispatch('setGenerationResult', {
+        generationData: null,
+        generationInProgress: true,
+        generationFinish: false,
+        generationError: false
+      });
+      const { value, error } = await MainApi.generateLessonplans();
+
+      if (error || !value || !value.result || value.result !== 'ok') {
+        context.dispatch('setGenerationResult', {
+          generationData: null,
+          generationInProgress: false,
+          generationFinish: false,
+          generationError: true
+        });
+      } else {
+        context.dispatch('setGenerationResult', {
+          generationData: value,
+          generationInProgress: false,
+          generationFinish: true,
+          generationError: false
+        });
+      }
     }
   }
 });
