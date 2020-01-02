@@ -75,7 +75,7 @@ def save_data(request):
     with open(last_saved_data_complexity_file_path, "w") as text_file:
         text_file.write(data_complexity)
 
-    # weekdays_file_path = os.path.join(module_dir, 'test_data/' + data_complexity_dir + '/weekdays.json')
+    weekdays_file_path = os.path.join(module_dir, 'test_data/' + data_complexity_dir + '/weekdays.json')
     lessons_file_path = os.path.join(module_dir, 'test_data/' + data_complexity_dir + '/lessons.json')
     subjects_file_path = os.path.join(module_dir, 'test_data/' + data_complexity_dir + '/subjects.json')
     teachers_file_path = os.path.join(module_dir, 'test_data/' + data_complexity_dir + '/teachers.json')
@@ -93,21 +93,21 @@ def save_data(request):
     Teacher.objects.all().delete()
     Subject.objects.all().delete()
     Lesson.objects.all().delete()
-    # WeekDay.objects.all().delete()
+    WeekDay.objects.all().delete()
 
-    # #
-    # # Weekdays
-    # #
-    # with open(weekdays_file_path, "r") as read_file:
-    #     weekdays = json.load(read_file)
     #
-    # weekdays_saved = []
+    # Weekdays
     #
-    # for weekday in weekdays:
-    #     weekday_saved = WeekDay(name=weekday['name'])
-    #     weekday_saved.save()
-    #
-    #     weekdays_saved.append(weekday_saved)
+    with open(weekdays_file_path, "r") as read_file:
+        weekdays = json.load(read_file)
+
+    weekdays_saved = []
+
+    for weekday in weekdays:
+        weekday_saved = WeekDay(name=weekday['name'])
+        weekday_saved.save()
+
+        weekdays_saved.append(weekday_saved)
 
     #
     # Lessons

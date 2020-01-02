@@ -1,11 +1,13 @@
 #include <algorithm>
 #include <chrono>
 #include <iostream>
-#include <cassert>
 #include "../../../include/algorithm/genetic/SchedulingGeneticAlgorithm.hpp"
-#include "../../../include/lessonplan/LessonplanScoreList.hpp"
 #include "../../../include/utils/RandomNumberGenerator.hpp"
 
+/*
+ * Note: Some of the methods might be indicated by IDE as unused - it might not be true,
+ * because IDE might not detect usages from Cython context.
+ */
 namespace lessonplans {
 
     SchedulingGeneticAlgorithm::SchedulingGeneticAlgorithm(int calculationsTimeLimitInSeconds, int populationCount,
@@ -28,8 +30,6 @@ namespace lessonplans {
         vector<LessonplanIndividual *> currentPopulation = initializePopulation(schedulingProblem);
         evaluatePopulation(currentPopulation, schedulingProblem, true);
 
-//        this->select();
-
         int generationIndex = 0;
 
         while (end - start < timeToWait && lessonplanScoreListPopulation[generationIndex]->getScoreIndexWithZeroSummaryHardAndSoftScore() < 0) {
@@ -41,9 +41,7 @@ namespace lessonplans {
             evaluatePopulation(currentPopulation, schedulingProblem, true);
             std::cout << "mutate..." << std::endl;
             mutatePopulation(currentPopulation, schedulingProblem, generationIndex);
-//
-//            std::cout << "evaluate..." << std::endl;
-//            evaluatePopulation(currentPopulation, schedulingProblem);
+
             std::cout << "process generation " << generationIndex << " finished" << std::endl;
 
             end = std::chrono::steady_clock::now();
@@ -133,7 +131,6 @@ namespace lessonplans {
             int currentIndividualHardScoreNormalized = currentHardScoreAbs * 100;
 
             if (minimumHardScoreNormalizedToSurvive > currentIndividualHardScoreNormalized) {
-//            if (probabilityOfCrossover > (unsigned short) crossoverProbability * 100 || happyIndividualIndex == currentIndividualIdx) {
                 std::cout << "individual score hard: " << summaryHardScores[currentIndividualIdx] << ", soft: " << summarySoftScores[currentIndividualIdx] << " survived" << std::endl;
                 nextPopulationLessonplans[currentIndividualIdx] = currentPopulation[currentIndividualIdx]->getLessonplan();
                 continue;
@@ -282,51 +279,6 @@ namespace lessonplans {
         return RandomNumberGenerator::getRandomNumber(0, this->populationCount - 1);
     }
 
-//    def weighted_sample(items, n):
-//        total = float(sum(w for w, v in items))
-//        i = 0
-//        w, v = items[0]
-//        while n:
-//            x = total * (1 - random.random() ** (1.0 / n))
-//            total -= x
-//            while x > w:
-//                x -= w
-//                        i += 1
-//                w, v = items[i]
-//                w -= x
-//                        yield v
-//                        n -= 1
-//
-//
-//    int SchedulingGeneticAlgorithm::select(int generationIndex, int populationHardScoreSum, int populationSoftScoreSum, bool includeSoftScore, int excludeIndex) {
-//        int maxScore = 0;
-//        maxScore -= populationHardScoreSum;
-//        if (includeSoftScore) {
-//            maxScore -= populationSoftScoreSum;
-//        }
-//        int pick = RandomNumberGenerator::getRandomNumber(0, maxScore);
-//        int offset = 0;
-//
-//        vector<int> summaryHardScores = lessonplanScoreListPopulation[generationIndex]->getSummaryHardScores();
-//        vector<int> summarySoftScores = lessonplanScoreListPopulation[generationIndex]->getSummarySoftScores();
-//
-//        int index = 0;
-//        for (index = 0; index < this->populationCount; index++) {
-//            if (index == excludeIndex) {
-//                continue;
-//            }
-//            offset -= summaryHardScores[index];
-//            if (includeSoftScore) {
-//                offset -= summarySoftScores[index];
-//            }
-//            if (pick < offset) {
-//                return index;
-//            }
-//        }
-//        index -= 1;
-//        return index;
-//    }
-
     LessonplanIndividual *SchedulingGeneticAlgorithm::reformLessonplan(LessonplanIndividual *lessonplanIndividual,
                                                                       SchedulingProblem *schedulingProblem,
                                                                       int generationIndex) {
@@ -357,99 +309,35 @@ namespace lessonplans {
                 )
         );
 
-//        bool changeTeacherLessonAndDay = false; //this->iterationsCountWithSameHardScores[1] > 3;
-//        bool changeRoomLessonAndDay = false; //this->iterationsCountWithSameHardScores[2] > 3;
-
-//        std::cout << "b" << std::endl;
-//        std::cout << this->iterationsCountWithSameHardScores[1]  << std::endl;
-//        std::cout << this->iterationsCountWithSameHardScores[2] << std::endl;
-//        std::cout << changeTeacherLessonAndDay << std::endl;
-//        std::cout << changeRoomLessonAndDay << std::endl;
-//        std::cout << "b" << std::endl;
-
         vector<vector<int>> obtainedScores = schedulingProblem->evaluateLessonplan(lessonplanIndividual);
         for (unsigned int dataIdxNum = 0; dataIdxNum < maxDataCount; dataIdxNum++) {
             unsigned short dataIdx = dataItemIdxsSequence[dataIdxNum];
 
             vector<unsigned short> *lessonplanDataItem = &lessonplan[dataIdx];
 
-//            unsigned short randomReformType = RandomNumberGenerator::getRandomNumber(1, 4);
-
-//            switch (randomReformType) {
-//                case 1:
-//            *idx += 1;
-                    this->reformLessonplanClassSubjectDataItem(lessonplanIndividualDescriptor,
-                                                               schedulingProblemProperties,
-                                                               lessonplanDataItem);
-                    lessonplanIndividual->setLessonplan(lessonplan);
-                    obtainedScores = schedulingProblem->evaluateLessonplan(lessonplanIndividual);
-
-//                    break;
-
-//            this->hardScores.push_back(obtainedScores[0]);
-//            this->softScores.push_back(obtainedScores[1]);
-//            this->summaryHardScores.push_back(SchedulingProblem::calculateSummaryScore(obtainedScores[0]));
-//            this->summarySoftScores.push_back(SchedulingProblem::calculateSummaryScore(obtainedScores[1]));
-
-//            if (this->summaryHardScores[*idx]  >
-//                this->summaryHardScores[*bestIndividualIdx]) {
-//                *bestIndividualIdx = *idx;
-//                this->bestIndividual = currentIndividual;
-//            }
-
-//                case 2:
-//            *idx += 1;
-                    this->reformLessonplanTeacherDataItem(lessonplanIndividualDescriptor, schedulingProblemProperties,
-                                                          lessonplanDataItem);
-                    lessonplanIndividual->setLessonplan(lessonplan);
-                    obtainedScores = schedulingProblem->evaluateLessonplan(lessonplanIndividual);
-
-//                    break;
-
-//            this->hardScores.push_back(obtainedScores[0]);
-//            this->softScores.push_back(obtainedScores[1]);
-//            this->summaryHardScores.push_back(SchedulingProblem::calculateSummaryScore(obtainedScores[0]));
-//            this->summarySoftScores.push_back(SchedulingProblem::calculateSummaryScore(obtainedScores[1]));
-
-//                case 3:
-//            *idx += 1;
-                    this->reformLessonplanRoomDataItem(lessonplanIndividualDescriptor, schedulingProblemProperties,
+            this->reformLessonplanClassSubjectDataItem(lessonplanIndividualDescriptor,
+                                                       schedulingProblemProperties,
                                                        lessonplanDataItem);
-                    lessonplanIndividual->setLessonplan(lessonplan);
-                    obtainedScores = schedulingProblem->evaluateLessonplan(lessonplanIndividual);
+            lessonplanIndividual->setLessonplan(lessonplan);
+            obtainedScores = schedulingProblem->evaluateLessonplan(lessonplanIndividual);
 
-//                    break;
+            this->reformLessonplanTeacherDataItem(lessonplanIndividualDescriptor, schedulingProblemProperties,
+                                                  lessonplanDataItem);
+            lessonplanIndividual->setLessonplan(lessonplan);
+            obtainedScores = schedulingProblem->evaluateLessonplan(lessonplanIndividual);
 
-//            this->hardScores.push_back(obtainedScores[0]);
-//            this->softScores.push_back(obtainedScores[1]);
-//            this->summaryHardScores.push_back(SchedulingProblem::calculateSummaryScore(obtainedScores[0]));
-//            this->summarySoftScores.push_back(SchedulingProblem::calculateSummaryScore(obtainedScores[1]));
+            this->reformLessonplanRoomDataItem(lessonplanIndividualDescriptor, schedulingProblemProperties,
+                                               lessonplanDataItem);
+            lessonplanIndividual->setLessonplan(lessonplan);
+            obtainedScores = schedulingProblem->evaluateLessonplan(lessonplanIndividual);
 
-//                case 4:
-//            *idx += 1;
-                    this->reformLessonplanClassSubjectTeacher(lessonplanIndividualDescriptor,
-                                                              schedulingProblemProperties,
-                                                              lessonplanDataItem,
-                                                              &classesSubjectsTeachersToAssign);
-                    lessonplanIndividual->setLessonplan(lessonplan);
-                    obtainedScores = schedulingProblem->evaluateLessonplan(lessonplanIndividual);
-
-//                    break;
-//            }
-
-            // !!!!!!!!!!!!!!!
-            // !!!!!!!!!!!!!!!
-            // !!!!!!!!!!!!!!!
-//            lessonplanScoreList->add(obtainedScores);
-            // !!!!!!!!!!!!!!!
-            // !!!!!!!!!!!!!!!
-            // !!!!!!!!!!!!!!!
-//            this->individualsHardScores.push_back(obtainedScores[0]);
-//            this->individualsSoftScores.push_back(obtainedScores[1]);
-//            this->individualsSummaryHardScores.push_back(SchedulingProblem::calculateSummaryScore(obtainedScores[0]));
-//            this->individualsSummarySoftScores.push_back(SchedulingProblem::calculateSummaryScore(obtainedScores[1]));
+            this->reformLessonplanClassSubjectTeacher(lessonplanIndividualDescriptor,
+                                                      schedulingProblemProperties,
+                                                      lessonplanDataItem,
+                                                      &classesSubjectsTeachersToAssign);
+            lessonplanIndividual->setLessonplan(lessonplan);
+            obtainedScores = schedulingProblem->evaluateLessonplan(lessonplanIndividual);
         }
-//        lessonplanIndividual->setLessonplan(lessonplan);
 
         return lessonplanIndividual;
     }
@@ -464,9 +352,7 @@ namespace lessonplans {
 
         unsigned short weekDayIdx = (*lessonplanDataItem)[0] - 1;
         unsigned short lessonIdx = (*lessonplanDataItem)[1] - 1;
-        unsigned short classIdx = (*lessonplanDataItem)[2] - 1;
         unsigned short teacherIdx = (*lessonplanDataItem)[4] - 1;
-        unsigned short roomIdx = (*lessonplanDataItem)[5] - 1;
 
         unsigned short prevAssignedLessonAndDayToTeacher = lessonplanIndividualDescriptor->getAssignedLessonAndDayToTeacher(
                 weekDayIdx, lessonIdx, teacherIdx);
@@ -476,24 +362,7 @@ namespace lessonplans {
             unsigned short weekDayIdToChange = weekDayIdx + 1;
             unsigned short lessonIdToChange = lessonIdx + 1;
 
-//            std::cout << "change 4" << std::endl;
-//            std::cout << reformRandomlySameLessonsData << std::endl;
-
-//            unsigned short randomNumber = RandomNumberGenerator::getRandomNumber(0, 10);
-//
-//            if (randomNumber == 0) {
-//            unsigned short weekDaysCount = schedulingProblemProperties->getWeekDaysCount();
-//            unsigned short lessonsCount = schedulingProblemProperties->getLessonsCount();
-//
-//            weekDayIdToChange = RandomNumberGenerator::getRandomNumber(1, weekDaysCount);
-//            lessonIdToChange = RandomNumberGenerator::getRandomNumber(1, lessonsCount);
-//
-////                std::cout << "change 4 b" << std::endl;
-//            }
-
-//            lessonplanIndividualDescriptor->decreaseAssignedLessonAndDayToClass(weekDayIdx, lessonIdx, classIdx);
             lessonplanIndividualDescriptor->decreaseAssignedLessonAndDayToTeacher(weekDayIdx, lessonIdx, teacherIdx);
-//            lessonplanIndividualDescriptor->decreaseAssignedLessonAndDayToRoom(weekDayIdx, lessonIdx, roomIdx);
 
             (*lessonplanDataItem)[0] = weekDayIdToChange;
             (*lessonplanDataItem)[1] = lessonIdToChange;
@@ -502,12 +371,8 @@ namespace lessonplans {
             unsigned short lessonIdxToChange = lessonIdToChange - 1;
             unsigned short teacherIdxToChange = teacherIdToChange - 1;
 
-//            lessonplanIndividualDescriptor->increaseAssignedLessonAndDayToClass(weekDayIdxToChange,
-//                                                                                lessonIdxToChange,
-//                                                                                classIdx);
             lessonplanIndividualDescriptor->increaseAssignedLessonAndDayToTeacher(weekDayIdxToChange, lessonIdxToChange,
                                                                                   teacherIdxToChange);
-//            lessonplanIndividualDescriptor->increaseAssignedLessonAndDayToRoom(weekDayIdxToChange, lessonIdxToChange, roomIdx);
         }
     }
 
@@ -519,8 +384,6 @@ namespace lessonplans {
 
         unsigned short weekDayIdx = (*lessonplanDataItem)[0] - 1;
         unsigned short lessonIdx = (*lessonplanDataItem)[1] - 1;
-        unsigned short classIdx = (*lessonplanDataItem)[2] - 1;
-        unsigned short teacherIdx = (*lessonplanDataItem)[4] - 1;
         unsigned short roomIdx = (*lessonplanDataItem)[5] - 1;
 
         unsigned short prevAssignedLessonAndDayToRoom = lessonplanIndividualDescriptor->getAssignedLessonAndDayToRoom(
@@ -531,18 +394,6 @@ namespace lessonplans {
             unsigned short weekDayIdToChange = weekDayIdx + 1;
             unsigned short lessonIdToChange = lessonIdx + 1;
 
-//            if (reformRandomlySameLessonsData) {
-//            unsigned short weekDaysCount = schedulingProblemProperties->getWeekDaysCount();
-//            unsigned short lessonsCount = schedulingProblemProperties->getLessonsCount();
-//
-//            weekDayIdToChange = RandomNumberGenerator::getRandomNumber(1, weekDaysCount);
-//            lessonIdToChange = RandomNumberGenerator::getRandomNumber(1, lessonsCount);
-//
-////                std::cout << "change 5" << std::endl;
-//            }
-
-//            lessonplanIndividualDescriptor->decreaseAssignedLessonAndDayToClass(weekDayIdx, lessonIdx, classIdx);
-//            lessonplanIndividualDescriptor->decreaseAssignedLessonAndDayToTeacher(weekDayIdx, lessonIdx, teacherIdx);
             lessonplanIndividualDescriptor->decreaseAssignedLessonAndDayToRoom(weekDayIdx, lessonIdx, roomIdx);
 
             (*lessonplanDataItem)[0] = weekDayIdToChange;
@@ -552,11 +403,6 @@ namespace lessonplans {
             unsigned short lessonIdxToChange = lessonIdToChange - 1;
             unsigned short roomIdxToChange = roomIdToChange - 1;
 
-//            lessonplanIndividualDescriptor->increaseAssignedLessonAndDayToClass(weekDayIdxToChange,
-//                                                                                lessonIdxToChange,
-//                                                                                classIdx);
-//            lessonplanIndividualDescriptor->increaseAssignedLessonAndDayToTeacher(weekDayIdxToChange, lessonIdxToChange,
-//                                                                                  teacherIdx);
             lessonplanIndividualDescriptor->increaseAssignedLessonAndDayToRoom(weekDayIdxToChange, lessonIdxToChange, roomIdxToChange);
         }
     }
@@ -630,7 +476,6 @@ namespace lessonplans {
         unsigned short classIdx = (*lessonplanDataItem)[2] - 1;
         unsigned short subjectIdx = (*lessonplanDataItem)[3] - 1;
         unsigned short teacherIdx = (*lessonplanDataItem)[4] - 1;
-        unsigned short roomIdx = (*lessonplanDataItem)[5] - 1;
 
         unsigned short assignedTeachersToClassSubjectWrong = lessonplanIndividualDescriptor->getAssignedTeachersToClassSubjectWrong(
                 classIdx, subjectIdx);
@@ -646,15 +491,7 @@ namespace lessonplans {
             unsigned short weekDayIdToChange = weekDayIdx + 1;
             unsigned short lessonIdToChange = lessonIdx + 1;
 
-//            unsigned short weekDaysCount = schedulingProblemProperties->getWeekDaysCount();
-//            unsigned short lessonsCount = schedulingProblemProperties->getLessonsCount();
-//
-//            unsigned short weekDayIdToChange = RandomNumberGenerator::getRandomNumber(1, weekDaysCount);
-//            unsigned short lessonIdToChange = RandomNumberGenerator::getRandomNumber(1, lessonsCount);
-
-//            lessonplanIndividualDescriptor->decreaseAssignedLessonAndDayToClass(weekDayIdx, lessonIdx, classIdx);
             lessonplanIndividualDescriptor->decreaseAssignedLessonAndDayToTeacher(weekDayIdx, lessonIdx, teacherIdx);
-//            lessonplanIndividualDescriptor->decreaseAssignedLessonAndDayToRoom(weekDayIdx, lessonIdx, roomIdx);
 
             (*lessonplanDataItem)[0] = weekDayIdToChange;
             (*lessonplanDataItem)[1] = lessonIdToChange;
@@ -663,12 +500,8 @@ namespace lessonplans {
             unsigned short lessonIdxToChange = lessonIdToChange - 1;
             unsigned short teacherIdxToAssign = teacherIdToAssign - 1;
 
-//            lessonplanIndividualDescriptor->increaseAssignedLessonAndDayToClass(weekDayIdxToChange,
-//                                                                                lessonIdxToChange,
-//                                                                                classIdx);
             lessonplanIndividualDescriptor->increaseAssignedLessonAndDayToTeacher(weekDayIdxToChange, lessonIdxToChange,
                                                                                   teacherIdxToAssign);
-//            lessonplanIndividualDescriptor->increaseAssignedLessonAndDayToRoom(weekDayIdxToChange, lessonIdxToChange, roomIdx);
         }
 
     }

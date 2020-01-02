@@ -72,10 +72,6 @@ namespace lessonplans {
                                                     unsigned short isWrong);
 
     private:
-        int invalidClassesSubjectsSameLessonsTimesCount;
-        int invalidTeachersSameLessonsTimesCount;
-        int invalidRoomsSameLessonTimesCount;
-
         vector<vector<vector<unsigned short>>> assignedLessonAndDaysToClasses;
         vector<vector<vector<unsigned short>>> assignedLessonAndDaysToTeachers;
         vector<vector<vector<unsigned short>>> assignedLessonAndDaysToRooms;
@@ -84,7 +80,6 @@ namespace lessonplans {
         vector<unsigned short> classesLessonsCountAverageDifferenceBetweenDays;
         vector<unsigned short> classesFreePeriodsExistenceBetweenLessonsCount;
 
-        int invalidTeachersChangesForClassesSubjectsCount;
         vector<vector<unsigned short>> assignedTeachersToClassesSubjectsWrong;
     };
 }

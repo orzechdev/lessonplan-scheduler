@@ -4,6 +4,10 @@
 using std::max_element;
 using std::distance;
 
+/*
+ * Note: Some of the methods might be indicated by IDE as unused - it might not be true,
+ * because IDE might not detect usages from Cython context.
+ */
 namespace lessonplans {
 
     vector<vector<unsigned short>> SchedulingEvolutionalSolution::getBestLessonplan() {

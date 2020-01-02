@@ -7,6 +7,10 @@
 #include "../../lessonplan/LessonplanScoreList.hpp"
 #include "../SchedulingEvolutionalSolution.hpp"
 
+/*
+ * Note: Some of the methods might be indicated by IDE as unused - it might not be true,
+ * because IDE might not detect usages from Cython context.
+ */
 namespace lessonplans {
     class SchedulingGeneticAlgorithm {
     public:
@@ -32,11 +36,6 @@ namespace lessonplans {
         void mutatePopulation(vector<LessonplanIndividual *> currentPopulation, SchedulingProblem *schedulingProblem, int generationIndex);
 
         int select(int generationIndex, int populationHardScoreSum, int populationSoftScoreSum, bool includeSoftScore, int excludeIndex);
-
-        void mutateWeekDays();
-        void mutateLessons();
-        void mutateTeachers();
-        void mutateRoom();
 
         LessonplanIndividual *
         reformLessonplan(LessonplanIndividual *lessonplanIndividual, SchedulingProblem *schedulingProblem, int generationIndex);

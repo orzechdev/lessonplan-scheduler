@@ -22,14 +22,6 @@ namespace lessonplans {
                                    unsigned short classId, unsigned short subjectId, unsigned short teacherId,
                                    unsigned short roomId);
 
-        void setLessonplanDataItemWeekDay(unsigned short dataIdx, unsigned short weekDayId);
-
-        void setLessonplanDataItemLesson(unsigned short dataIdx, unsigned short lessonId);
-
-        void setLessonplanDataItemTeacher(unsigned short dataIdx, unsigned short teacherId);
-
-        void setLessonplanDataItemRoom(unsigned short dataIdx, unsigned short roomId);
-
         static const short dataTypes = 6;
 
         LessonplanIndividualDescriptor *getLessonplanIndividualDescriptor() const;

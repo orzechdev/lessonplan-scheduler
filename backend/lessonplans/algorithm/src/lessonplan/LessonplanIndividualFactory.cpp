@@ -1,17 +1,8 @@
-#include <numeric>
-#include <chrono>
-#include <random>
 #include <algorithm>
 #include "../../include/lessonplan/LessonplanIndividualFactory.hpp"
 #include "../../include/utils/RandomNumberGenerator.hpp"
 
 namespace lessonplans {
-
-//    LessonplanIndividual *LessonplanIndividualFactory::createLessonplanIndividual(
-//            SchedulingProblemProperties *schedulingProblemProperties
-//    ) {
-//
-//    }
 
     LessonplanIndividual *LessonplanIndividualFactory::createLessonplanIndividual(
             SchedulingProblemProperties *schedulingProblemProperties
@@ -347,7 +338,7 @@ namespace lessonplans {
         lessonplanIndividual->setMaxDataCount(maxDataCount);
         lessonplanIndividual->setLessonplan(lessonplan);
 
-        LessonplanIndividualFactory::assignClassesWithSubjects(lessonplanIndividual, lessonplanIndividualDescriptor,
+        LessonplanIndividualFactory::assignClassesWithSubjectsGreedly(lessonplanIndividual, lessonplanIndividualDescriptor,
                                                                schedulingProblemProperties);
 
         return lessonplanIndividual;

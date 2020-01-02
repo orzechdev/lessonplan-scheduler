@@ -2,6 +2,10 @@
 #include <chrono>
 #include "../../../include/algorithm/random-search/SchedulingRandomSearchAlgorithm.hpp"
 
+/*
+ * Note: Some of the methods might be indicated by IDE as unused - it might not be true,
+ * because IDE might not detect usages from Cython context.
+ */
 namespace lessonplans {
 
     SchedulingRandomSearchAlgorithm::SchedulingRandomSearchAlgorithm(int calculationsTimeLimitInSeconds) {
