@@ -2,8 +2,9 @@
 
 ## Setup instruction
 
-- Install [Docker with Docker Compose](https://docs.docker.com/get-docker/)
-- From main project directory run `docker-compose up`
+- Make sure you have Internet connection - docker needs to pull its images and package managers their dependencies. Also it is better to have more than few GB of memory available to run all services properly.
+- Install [Docker with Docker Compose](https://docs.docker.com/get-docker/).
+- From main project directory run `docker-compose up` - Docker will pull and build all images, than it should build algorithm and start backend after a while on http://0.0.0.0:8000/ as well as frontend on http://localhost:8080/ - make sure it is started before use.
 
 ## Usage
 
