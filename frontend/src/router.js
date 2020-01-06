@@ -70,6 +70,12 @@ const router = new Router({
           props: { customAppBar: true }
         },
         {
+          path: 'lessons/edit/:dataId',
+          name: 'edit lesson',
+          component: AddLesson,
+          props: { customAppBar: true }
+        },
+        {
           path: 'rooms',
           name: 'rooms',
           component: AddRoomList
@@ -77,6 +83,12 @@ const router = new Router({
         {
           path: 'rooms/add',
           name: 'add room',
+          component: AddRoom,
+          props: { customAppBar: true }
+        },
+        {
+          path: 'rooms/edit/:dataId',
+          name: 'edit room',
           component: AddRoom,
           props: { customAppBar: true }
         },
@@ -92,6 +104,12 @@ const router = new Router({
           props: { customAppBar: true }
         },
         {
+          path: 'subjects/edit/:dataId',
+          name: 'edit subject',
+          component: AddSubject,
+          props: { customAppBar: true }
+        },
+        {
           path: 'teachers',
           name: 'teachers',
           component: AddTeacherList
@@ -103,6 +121,12 @@ const router = new Router({
           props: { customAppBar: true }
         },
         {
+          path: 'teachers/edit/:dataId',
+          name: 'edit teacher',
+          component: AddTeacher,
+          props: { customAppBar: true }
+        },
+        {
           path: 'classes',
           name: 'classes',
           component: AddClassList
@@ -110,6 +134,12 @@ const router = new Router({
         {
           path: 'classes/add',
           name: 'add class',
+          component: AddClass,
+          props: { customAppBar: true }
+        },
+        {
+          path: 'classes/edit/:dataId',
+          name: 'edit class',
           component: AddClass,
           props: { customAppBar: true }
         },

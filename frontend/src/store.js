@@ -161,6 +161,8 @@ export default new Vuex.Store({
         context.commit('SET_ERROR', error);
       } else {
         context.dispatch('getSubjects');
+        context.dispatch('getTeachers');
+        context.dispatch('getClasses');
       }
       context.commit('SET_SAVE_IN_PROGRESS', false);
     },
@@ -182,6 +184,130 @@ export default new Vuex.Store({
       const { value, error } = await MainApi.createClass(className, subjectsData);
 
       if (error || !value || !value.data || !value.data.createClass) {
+        context.commit('SET_ERROR', error);
+      } else {
+        context.dispatch('getClasses');
+      }
+      context.commit('SET_SAVE_IN_PROGRESS', false);
+    },
+    async updateLesson(context, payload) {
+      const { id, lessonNumber, startTime, endTime } = payload;
+      context.commit('SET_SAVE_IN_PROGRESS', true);
+      const { value, error } = await MainApi.updateLesson(id, lessonNumber, startTime, endTime);
+
+      if (error || !value || !value.data || !value.data.updateLesson) {
+        context.commit('SET_ERROR', error);
+      } else {
+        context.dispatch('getLessons');
+      }
+      context.commit('SET_SAVE_IN_PROGRESS', false);
+    },
+    async updateRoom(context, payload) {
+      const { id, roomName } = payload;
+      context.commit('SET_SAVE_IN_PROGRESS', true);
+      const { value, error } = await MainApi.updateRoom(id, roomName);
+
+      if (error || !value || !value.data || !value.data.updateRoom) {
+        context.commit('SET_ERROR', error);
+      } else {
+        context.dispatch('getRooms');
+      }
+      context.commit('SET_SAVE_IN_PROGRESS', false);
+    },
+    async updateSubject(context, payload) {
+      const { id, subjectName } = payload;
+      context.commit('SET_SAVE_IN_PROGRESS', true);
+      const { value, error } = await MainApi.updateSubject(id, subjectName);
+
+      if (error || !value || !value.data || !value.data.updateSubject) {
+        context.commit('SET_ERROR', error);
+      } else {
+        context.dispatch('getSubjects');
+        context.dispatch('getTeachers');
+        context.dispatch('getClasses');
+      }
+      context.commit('SET_SAVE_IN_PROGRESS', false);
+    },
+    async updateTeacher(context, payload) {
+      const { id, fullName, subjectsIds } = payload;
+      context.commit('SET_SAVE_IN_PROGRESS', true);
+      const { value, error } = await MainApi.updateTeacher(id, fullName, subjectsIds);
+
+      if (error || !value || !value.data || !value.data.updateTeacher) {
+        context.commit('SET_ERROR', error);
+      } else {
+        context.dispatch('getTeachers');
+      }
+      context.commit('SET_SAVE_IN_PROGRESS', false);
+    },
+    async updateClass(context, payload) {
+      const { id, className, subjectsData } = payload;
+      context.commit('SET_SAVE_IN_PROGRESS', true);
+      const { value, error } = await MainApi.updateClass(id, className, subjectsData);
+
+      if (error || !value || !value.data || !value.data.updateClass) {
+        context.commit('SET_ERROR', error);
+      } else {
+        context.dispatch('getClasses');
+      }
+      context.commit('SET_SAVE_IN_PROGRESS', false);
+    },
+    async deleteLesson(context, payload) {
+      const { id } = payload;
+      context.commit('SET_SAVE_IN_PROGRESS', true);
+      const { value, error } = await MainApi.deleteLesson(id);
+
+      if (error || !value || !value.data || !value.data.deleteLesson) {
+        context.commit('SET_ERROR', error);
+      } else {
+        context.dispatch('getLessons');
+      }
+      context.commit('SET_SAVE_IN_PROGRESS', false);
+    },
+    async deleteRoom(context, payload) {
+      const { id } = payload;
+      context.commit('SET_SAVE_IN_PROGRESS', true);
+      const { value, error } = await MainApi.deleteRoom(id);
+
+      if (error || !value || !value.data || !value.data.deleteRoom) {
+        context.commit('SET_ERROR', error);
+      } else {
+        context.dispatch('getRooms');
+      }
+      context.commit('SET_SAVE_IN_PROGRESS', false);
+    },
+    async deleteSubject(context, payload) {
+      const { id } = payload;
+      context.commit('SET_SAVE_IN_PROGRESS', true);
+      const { value, error } = await MainApi.deleteSubject(id);
+
+      if (error || !value || !value.data || !value.data.deleteSubject) {
+        context.commit('SET_ERROR', error);
+      } else {
+        context.dispatch('getSubjects');
+        context.dispatch('getTeachers');
+        context.dispatch('getClasses');
+      }
+      context.commit('SET_SAVE_IN_PROGRESS', false);
+    },
+    async deleteTeacher(context, payload) {
+      const { id } = payload;
+      context.commit('SET_SAVE_IN_PROGRESS', true);
+      const { value, error } = await MainApi.deleteTeacher(id);
+
+      if (error || !value || !value.data || !value.data.deleteTeacher) {
+        context.commit('SET_ERROR', error);
+      } else {
+        context.dispatch('getTeachers');
+      }
+      context.commit('SET_SAVE_IN_PROGRESS', false);
+    },
+    async deleteClass(context, payload) {
+      const { id } = payload;
+      context.commit('SET_SAVE_IN_PROGRESS', true);
+      const { value, error } = await MainApi.deleteClass(id);
+
+      if (error || !value || !value.data || !value.data.deleteClass) {
         context.commit('SET_ERROR', error);
       } else {
         context.dispatch('getClasses');

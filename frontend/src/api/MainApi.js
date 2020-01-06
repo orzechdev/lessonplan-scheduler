@@ -122,11 +122,29 @@ export default {
     });
     return response;
   },
-  getClass: async () => {
+  getWeekday: async id => {
+    const response = await fetchFromGraphApi({
+      body: {
+        query: gqlQuery.weekday,
+        variables: { id }
+      }
+    });
+    return response;
+  },
+  getLesson: async id => {
+    const response = await fetchFromGraphApi({
+      body: {
+        query: gqlQuery.lesson,
+        variables: { id }
+      }
+    });
+    return response;
+  },
+  getClass: async id => {
     const response = await fetchFromGraphApi({
       body: {
         query: gqlQuery.class,
-        variables: { id: 141 }
+        variables: { id }
       }
     });
     return response;
@@ -172,6 +190,96 @@ export default {
       body: {
         query: gqlQuery.createClass,
         variables: { name, classSubjects: subjectsData }
+      }
+    });
+    return response;
+  },
+  updateLesson: async (id, lessonNumber, startTime, endTime) => {
+    const response = await fetchFromGraphApi({
+      body: {
+        query: gqlQuery.updateLesson,
+        variables: { id, name: lessonNumber, startTime, endTime }
+      }
+    });
+    return response;
+  },
+  updateRoom: async (id, roomName) => {
+    const response = await fetchFromGraphApi({
+      body: {
+        query: gqlQuery.updateRoom,
+        variables: { id, name: roomName }
+      }
+    });
+    return response;
+  },
+  updateSubject: async (id, subjectName) => {
+    const response = await fetchFromGraphApi({
+      body: {
+        query: gqlQuery.updateSubject,
+        variables: { id, name: subjectName }
+      }
+    });
+    return response;
+  },
+  updateTeacher: async (id, fullName, subjectsIds) => {
+    const response = await fetchFromGraphApi({
+      body: {
+        query: gqlQuery.updateTeacher,
+        variables: { id, name: fullName, subjectsIds }
+      }
+    });
+    return response;
+  },
+  updateClass: async (id, name, subjectsData) => {
+    const response = await fetchFromGraphApi({
+      body: {
+        query: gqlQuery.updateClass,
+        variables: { id, name, classSubjects: subjectsData }
+      }
+    });
+    return response;
+  },
+  deleteLesson: async id => {
+    const response = await fetchFromGraphApi({
+      body: {
+        query: gqlQuery.deleteLesson,
+        variables: { id }
+      }
+    });
+    return response;
+  },
+  deleteRoom: async id => {
+    const response = await fetchFromGraphApi({
+      body: {
+        query: gqlQuery.deleteRoom,
+        variables: { id }
+      }
+    });
+    return response;
+  },
+  deleteSubject: async id => {
+    const response = await fetchFromGraphApi({
+      body: {
+        query: gqlQuery.deleteSubject,
+        variables: { id }
+      }
+    });
+    return response;
+  },
+  deleteTeacher: async id => {
+    const response = await fetchFromGraphApi({
+      body: {
+        query: gqlQuery.deleteTeacher,
+        variables: { id }
+      }
+    });
+    return response;
+  },
+  deleteClass: async id => {
+    const response = await fetchFromGraphApi({
+      body: {
+        query: gqlQuery.deleteClass,
+        variables: { id }
       }
     });
     return response;

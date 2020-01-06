@@ -5,7 +5,7 @@
         <v-icon color="#777">mdi-close</v-icon>
       </v-btn>
       <v-toolbar-title>
-        <span class="font-weight-medium">Add teacher</span>
+        <span class="font-weight-medium">{{dataId ? `Edit teacher` : `Add teacher`}}</span>
       </v-toolbar-title>
     </v-app-bar>
     <form-container>
@@ -22,7 +22,8 @@
         item-color="#f5c21a"
       ></v-combobox>
     </form-container>
-    <add-next-bottom-bar @addClick="onAddClick" @addNextClick="onAddNextClick"></add-next-bottom-bar>
+    <save-delete-bottom-bar v-if="dataId" @saveClick="onSaveClick" @deleteClick="onDeleteClick"></save-delete-bottom-bar>
+    <add-next-bottom-bar v-else @addClick="onAddClick" @addNextClick="onAddNextClick"></add-next-bottom-bar>
   </div>
 </template>
 
@@ -30,12 +31,13 @@
 import { mapState, mapActions } from 'vuex';
 import FormContainer from '@/components/FormContainer';
 import AddNextBottomBar from '@/components/AddNextBottomBar';
+import SaveDeleteBottomBar from '@/components/SaveDeleteBottomBar';
 
 export default {
   name: 'add-teacher',
-  components: { FormContainer, AddNextBottomBar },
+  components: { FormContainer, AddNextBottomBar, SaveDeleteBottomBar },
   computed: {
-    ...mapState(['saveInProgress', 'subjects'])
+    ...mapState(['teachers', 'subjects'])
   },
   data: () => ({
     items: [
@@ -44,12 +46,22 @@ export default {
       }
     ],
     nameAndSurname: '',
-    teachedSubjects: []
+    teachedSubjects: [],
+    dataId: undefined
   }),
   methods: {
-    ...mapActions(['createTeacher']),
+    ...mapActions(['createTeacher', 'updateTeacher', 'deleteTeacher']),
+    initData(paramDataId, teachers) {
+      if (paramDataId && !this.dataId && teachers && teachers.length) {
+        const data = teachers.find(dataItem => dataItem.id === paramDataId);
+        if (data) {
+          this.nameAndSurname = data.name;
+          this.teachedSubjects = data.teachersubjectSet.map(subjectSet => subjectSet.subject);
+          this.dataId = paramDataId;
+        }
+      }
+    },
     onAddClick() {
-      console.log('onAddClick TODO: add/mutate also teacher subjects');
       this.createTeacher({
         fullName: this.nameAndSurname,
         subjectsIds: this.teachedSubjects.map(({ id }) => id)
@@ -57,8 +69,33 @@ export default {
       this.$router.push('/example-school/management/teachers');
     },
     onAddNextClick() {
-      console.log('onAddNextClick');
+      this.createTeacher({
+        fullName: this.nameAndSurname,
+        subjectsIds: this.teachedSubjects.map(({ id }) => id)
+      });
+      this.nameAndSurname = '';
+      this.teachedSubjects = [];
+    },
+    onSaveClick() {
+      this.updateTeacher({
+        id: this.dataId,
+        fullName: this.nameAndSurname,
+        subjectsIds: this.teachedSubjects.map(({ id }) => id)
+      });
+      this.$router.push('/example-school/management/teachers');
+    },
+    onDeleteClick() {
+      this.deleteTeacher({ id: this.$route.params.dataId });
+      this.$router.push('/example-school/management/teachers');
     }
+  },
+  watch: {
+    teachers(teachers) {
+      this.initData(this.$route.params.dataId, teachers);
+    }
+  },
+  mounted() {
+    this.initData(this.$route.params.dataId, this.teachers);
   }
 };
 </script>

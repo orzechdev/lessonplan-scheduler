@@ -30,6 +30,13 @@ const gqlQuery = {
       allClasses {
         id
         name
+        classsubjectSet {
+          countInWeek
+          subject {
+            id
+            name
+          }
+        }
       }
     }
   `,
@@ -38,12 +45,36 @@ const gqlQuery = {
       allTeachers {
         id
         name
+        teachersubjectSet {
+          subject {
+            id
+            name
+          }
+        }
       }
     }
   `,
   rooms: `
     query {
       allRooms {
+        id
+        name
+      }
+    }
+  `,
+  lesson: `
+    query Lesson($id: Int) {
+      lesson(id: $id) {
+        id
+        name
+        startTime
+        endTime
+      }
+    }
+  `,
+  weekday: `
+    query Weekday ($id: Int) {
+      weekday(id: $id) {
         id
         name
       }
@@ -150,6 +181,104 @@ const gqlQuery = {
           }
           countInWeek
         }
+      }
+    }
+  `,
+  updateLesson: `
+    mutation UpdateLesson($id: Int!, $name: Int!, $startTime: Time!, $endTime: Time!) {
+      updateLesson(id: $id, name: $name, startTime: $startTime, endTime: $endTime) {
+        lesson {
+          id
+          name
+          startTime
+          endTime
+        }
+      }
+    }
+  `,
+  updateRoom: `
+    mutation UpdateRoom($id: Int!, $name: String!) {
+      updateRoom(id: $id, name: $name) {
+        room {
+          id
+          name
+        }
+      }
+    }
+  `,
+  updateSubject: `
+    mutation UpdateSubject($id: Int!, $name: String!) {
+      updateSubject(id: $id, name: $name) {
+        subject {
+          id
+          name
+        }
+      }
+    }
+  `,
+  updateTeacher: `
+    mutation UpdateTeacher($id: Int!, $name: String!, $subjectsIds: [Int]!) {
+      updateTeacher(id: $id, name: $name, subjectsIds: $subjectsIds) {
+        teacher {
+          id
+          name
+        }
+        teacherSubjects {
+          id
+          name
+        }
+      }
+    }
+  `,
+  updateClass: `
+    mutation UpdateClass($id: Int!, $name: String!, $classSubjects: [ClassSubjectInput]!) {
+      updateClass(id: $id, name: $name, subjects: $classSubjects) {
+        classModel {
+          id
+          name
+        }
+        classSubjects {
+          subject {
+            id
+            name
+          }
+          countInWeek
+        }
+      }
+    }
+  `,
+  deleteLesson: `
+    mutation DeleteLesson($id: Int!) {
+      deleteLesson(id: $id) {
+        ok
+      }
+    }
+  `,
+  deleteRoom: `
+    mutation DeleteRoom($id: Int!) {
+      deleteRoom(id: $id) {
+        ok
+      }
+    }
+  `,
+  deleteSubject: `
+    mutation DeleteSubject($id: Int!) {
+      deleteSubject(id: $id) {
+        ok
+      }
+    }
+  `,
+  deleteTeacher: `
+    mutation DeleteTeacher($id: Int!) {
+      deleteTeacher(id: $id) {
+        ok
+      }
+    }
+  `,
+  deleteClass: `
+    mutation DeleteClass($id: Int!) {
+      deleteClass(id: $id) {
+        ok
       }
     }
   `

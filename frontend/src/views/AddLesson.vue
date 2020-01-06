@@ -5,7 +5,7 @@
         <v-icon color="#777">mdi-close</v-icon>
       </v-btn>
       <v-toolbar-title>
-        <span class="font-weight-medium">Add lesson</span>
+        <span class="font-weight-medium">{{dataId ? `Edit lesson` : `Add lesson`}}</span>
       </v-toolbar-title>
     </v-app-bar>
     <form-container>
@@ -69,7 +69,8 @@
         </v-time-picker>
       </v-dialog>
     </form-container>
-    <add-next-bottom-bar @addClick="onAddClick" @addNextClick="onAddNextClick"></add-next-bottom-bar>
+    <save-delete-bottom-bar v-if="dataId" @saveClick="onSaveClick" @deleteClick="onDeleteClick"></save-delete-bottom-bar>
+    <add-next-bottom-bar v-else @addClick="onAddClick" @addNextClick="onAddNextClick"></add-next-bottom-bar>
   </div>
 </template>
 
@@ -77,12 +78,13 @@
 import { mapState, mapActions } from 'vuex';
 import FormContainer from '@/components/FormContainer';
 import AddNextBottomBar from '@/components/AddNextBottomBar';
+import SaveDeleteBottomBar from '@/components/SaveDeleteBottomBar';
 
 export default {
   name: 'add-lesson',
-  components: { FormContainer, AddNextBottomBar },
+  components: { FormContainer, AddNextBottomBar, SaveDeleteBottomBar },
   computed: {
-    ...mapState([])
+    ...mapState(['lessons'])
   },
   data: () => ({
     items: [
@@ -94,10 +96,22 @@ export default {
     startTime: null,
     startTimeModal: false,
     endTime: null,
-    endTimeModal: false
+    endTimeModal: false,
+    dataId: undefined
   }),
   methods: {
-    ...mapActions(['createLesson']),
+    ...mapActions(['createLesson', 'updateLesson', 'deleteLesson']),
+    initData(paramDataId, lessons) {
+      if (paramDataId && !this.dataId && lessons && lessons.length) {
+        const data = lessons.find(dataItem => dataItem.id === paramDataId);
+        if (data) {
+          this.lessonNumber = data.name;
+          this.startTime = data.startTime;
+          this.endTime = data.endTime;
+          this.dataId = paramDataId;
+        }
+      }
+    },
     onAddClick() {
       this.createLesson({
         lessonNumber: this.lessonNumber,
@@ -107,8 +121,36 @@ export default {
       this.$router.push('/example-school/management/lessons');
     },
     onAddNextClick() {
-      console.log('onAddNextClick');
+      this.createLesson({
+        lessonNumber: this.lessonNumber,
+        startTime: this.startTime,
+        endTime: this.endTime
+      });
+      this.lessonNumber = '';
+      this.startTime = null;
+      this.endTime = null;
+    },
+    onSaveClick() {
+      this.updateLesson({
+        id: this.dataId,
+        lessonNumber: this.lessonNumber,
+        startTime: this.startTime,
+        endTime: this.endTime
+      });
+      this.$router.push('/example-school/management/lessons');
+    },
+    onDeleteClick() {
+      this.deleteLesson({ id: this.$route.params.dataId });
+      this.$router.push('/example-school/management/lessons');
     }
+  },
+  watch: {
+    lessons(lessons) {
+      this.initData(this.$route.params.dataId, lessons);
+    }
+  },
+  mounted() {
+    this.initData(this.$route.params.dataId, this.lessons);
   }
 };
 </script>

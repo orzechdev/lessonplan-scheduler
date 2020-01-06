@@ -5,7 +5,7 @@
         <v-icon color="#777">mdi-close</v-icon>
       </v-btn>
       <v-toolbar-title>
-        <span class="font-weight-medium">Add class</span>
+        <span class="font-weight-medium">{{dataId ? `Edit class` : `Add class`}}</span>
       </v-toolbar-title>
     </v-app-bar>
     <form-container>
@@ -67,7 +67,8 @@
         </v-card>
       </v-dialog>
     </form-container>
-    <add-next-bottom-bar @addClick="onAddClick" @addNextClick="onAddNextClick"></add-next-bottom-bar>
+    <save-delete-bottom-bar v-if="dataId" @saveClick="onSaveClick" @deleteClick="onDeleteClick"></save-delete-bottom-bar>
+    <add-next-bottom-bar v-else @addClick="onAddClick" @addNextClick="onAddNextClick"></add-next-bottom-bar>
   </div>
 </template>
 
@@ -75,12 +76,13 @@
 import { mapState, mapActions } from 'vuex';
 import FormContainer from '@/components/FormContainer';
 import AddNextBottomBar from '@/components/AddNextBottomBar';
+import SaveDeleteBottomBar from '@/components/SaveDeleteBottomBar';
 
 export default {
   name: 'add-class',
-  components: { FormContainer, AddNextBottomBar },
+  components: { FormContainer, AddNextBottomBar, SaveDeleteBottomBar },
   computed: {
-    ...mapState(['saveInProgress', 'subjects'])
+    ...mapState(['saveInProgress', 'classes', 'subjects'])
   },
   data: () => ({
     items: [
@@ -94,31 +96,40 @@ export default {
     hoursPerWeekInDialog: 0,
     hoursSelectorDialog: false,
     hoursSelectorDialogDataIndex: null,
-    showDialogFileds: false
+    showDialogFileds: false,
+    dataId: undefined
   }),
-  watch: {
-    subjects: function(newSubjects) {
+  methods: {
+    ...mapActions(['createClass', 'updateClass', 'deleteClass']),
+    initData(paramDataId, classes, subjects) {
       if (
-        this.classSubjectsWithHoursPerWeek.length <= 0 &&
-        !this.classSubjectsWithHoursPerWeekAlreadySet
+        paramDataId &&
+        !this.dataId &&
+        classes &&
+        classes.length &&
+        subjects &&
+        subjects.length &&
+        this.classSubjectsWithHoursPerWeekAlreadySet
       ) {
-        this.classSubjectsWithHoursPerWeek = newSubjects.map(subject => ({
-          subject,
-          hoursPerWeek: 0
-        }));
-        this.classSubjectsWithHoursPerWeekAlreadySet = true;
+        const data = classes.find(dataItem => dataItem.id === paramDataId);
+        if (data) {
+          this.className = data.name;
+          this.classSubjectsWithHoursPerWeek = this.classSubjectsWithHoursPerWeek.map(
+            ({ subject, hoursPerWeek }) => {
+              const classSubject = data.classsubjectSet.find(
+                classSubject => classSubject.subject.id == subject.id
+              );
+              return {
+                subject,
+                hoursPerWeek: classSubject ? classSubject.countInWeek : hoursPerWeek
+              };
+            }
+          );
+          this.dataId = paramDataId;
+        }
       }
     },
-    hoursSelectorDialog: function(newHoursSelectorDialog) {
-      setTimeout(() => {
-        this.showDialogFileds = newHoursSelectorDialog;
-      }, 100);
-    }
-  },
-  methods: {
-    ...mapActions(['createClass']),
     onAddClick() {
-      console.log('onAddClick');
       this.createClass({
         className: this.className,
         subjectsData: this.classSubjectsWithHoursPerWeek
@@ -128,7 +139,54 @@ export default {
       this.$router.push('/example-school/management/classes');
     },
     onAddNextClick() {
-      console.log('onAddNextClick');
+      this.createClass({
+        className: this.className,
+        subjectsData: this.classSubjectsWithHoursPerWeek
+          .filter(({ hoursPerWeek }) => hoursPerWeek >= 1)
+          .map(({ subject, hoursPerWeek }) => ({ id: subject.id, countInWeek: hoursPerWeek }))
+      });
+      this.className = '';
+      this.classSubjectsWithHoursPerWeek = this.subjects.map(subject => ({
+        subject,
+        hoursPerWeek: 0
+      }));
+    },
+    onSaveClick() {
+      this.updateClass({
+        id: this.dataId,
+        className: this.className,
+        subjectsData: this.classSubjectsWithHoursPerWeek
+          .filter(({ hoursPerWeek }) => hoursPerWeek >= 1)
+          .map(({ subject, hoursPerWeek }) => ({ id: subject.id, countInWeek: hoursPerWeek }))
+      });
+      this.$router.push('/example-school/management/classes');
+    },
+    onDeleteClick() {
+      this.deleteClass({ id: this.$route.params.dataId });
+      this.$router.push('/example-school/management/classes');
+    }
+  },
+  watch: {
+    classes(classes) {
+      this.initData(this.$route.params.dataId, classes, this.subjects);
+    },
+    subjects(subjects) {
+      if (
+        this.classSubjectsWithHoursPerWeek.length <= 0 &&
+        !this.classSubjectsWithHoursPerWeekAlreadySet
+      ) {
+        this.classSubjectsWithHoursPerWeek = subjects.map(subject => ({
+          subject,
+          hoursPerWeek: 0
+        }));
+        this.classSubjectsWithHoursPerWeekAlreadySet = true;
+      }
+      this.initData(this.$route.params.dataId, this.classes, subjects);
+    },
+    hoursSelectorDialog: function(newHoursSelectorDialog) {
+      setTimeout(() => {
+        this.showDialogFileds = newHoursSelectorDialog;
+      }, 100);
     }
   },
   mounted() {
@@ -144,6 +202,7 @@ export default {
       }));
       this.classSubjectsWithHoursPerWeekAlreadySet = true;
     }
+    this.initData(this.$route.params.dataId, this.classes, this.subjects);
   }
 };
 </script>

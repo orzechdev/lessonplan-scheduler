@@ -7,12 +7,19 @@
     <div v-if="teachers.length > 0">
       <span class="list-header">Teachers</span>
       <v-list class="list-container">
-        <v-list-item
-          class="list-item"
-          v-for="dataItem in teachers"
-          :key="dataItem.id"
-          :to="`/example-school/lessonplans/` + dataItem.id"
-        >{{ dataItem.name }}</v-list-item>
+        <v-list-item class="list-item" v-for="dataItem in teachers" :key="dataItem.id">
+          {{ dataItem.name }}
+          <v-btn
+            text
+            class="item-edit-btn"
+            :to="`/example-school/management/teachers/edit/` + dataItem.id"
+          >
+            <v-icon>mdi-pencil</v-icon>
+          </v-btn>
+          <v-btn text class="item-delete-btn" @click="() => onDeleteClick(dataItem.id)">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </v-list-item>
       </v-list>
       <v-btn
         fab
@@ -35,7 +42,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import BackNextBottomBar from '@/components/BackNextBottomBar';
 import LessonplanCreatorStepper from '@/components/LessonplanCreatorStepper';
 
@@ -44,6 +51,12 @@ export default {
   components: { BackNextBottomBar, LessonplanCreatorStepper },
   computed: {
     ...mapState(['teachers', 'saveInProgress'])
+  },
+  methods: {
+    ...mapActions(['deleteTeacher']),
+    onDeleteClick(dataId) {
+      this.deleteTeacher({ id: dataId });
+    }
   }
 };
 </script>
@@ -63,6 +76,13 @@ export default {
 }
 .list-item {
   padding: 10px 20px;
+}
+.item-edit-btn {
+  margin-left: auto;
+  color: rgba(0, 0, 0, 0.5);
+}
+.item-delete-btn {
+  color: rgba(0, 0, 0, 0.5);
 }
 .list-container {
   margin: 0 0 70px 0;
