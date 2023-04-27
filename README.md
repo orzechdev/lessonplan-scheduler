@@ -1,6 +1,6 @@
 # Lesson plan scheduler
 
-Free, open source lesson plan scheduler for public education. Nowadays for primary schools in Poland. In the future for every public education sector on the whole world. To use by every public educational institution on [learntray.com](http://learntray.com), completely for free.
+Lesson plan scheduler adjusted for primary schools in Poland.
 
 ## Architecture
 
