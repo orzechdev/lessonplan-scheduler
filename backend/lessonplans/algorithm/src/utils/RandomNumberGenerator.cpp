@@ -32,9 +32,7 @@ namespace lessonplans {
     vector<unsigned short> RandomNumberGenerator::getRandomNumbersSequence(unsigned short sequenceSize,
                                                                                          unsigned short lowestNumber) {
         // Init vector with required size
-        vector<unsigned short> sequence = *new vector<unsigned short>(
-                sequenceSize
-        );
+        vector<unsigned short> sequence(sequenceSize);
 
         // Populate vector with increasing numbers
         std::iota(std::begin(sequence), std::end(sequence), lowestNumber);

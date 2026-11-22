@@ -16,6 +16,10 @@ namespace lessonplans {
         this->lessonplanScoreList = new LessonplanScoreList();
     }
 
+    SchedulingGreedyAlgorithm::~SchedulingGreedyAlgorithm() {
+        delete lessonplanScoreList;
+    }
+
     SchedulingSolution *SchedulingGreedyAlgorithm::findBestLessonplan(SchedulingProblem *schedulingProblem) {
         auto start = std::chrono::steady_clock::now();
         auto end = start;
@@ -67,10 +71,8 @@ namespace lessonplans {
         unsigned short classesCount = schedulingProblemProperties->getClassesCount();
         unsigned short subjectsCount = schedulingProblemProperties->getSubjectsCount();
 
-        vector<vector<unsigned short>> classesSubjectsTeachersToAssign = *new vector<vector<unsigned short>>(
-                classesCount, vector<unsigned short>(
-                        subjectsCount, 0
-                )
+        vector<vector<unsigned short>> classesSubjectsTeachersToAssign(
+                classesCount, vector<unsigned short>(subjectsCount, 0)
         );
 
         vector<vector<int>> obtainedScores = schedulingProblem->evaluateLessonplan(lessonplanIndividual);

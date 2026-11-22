@@ -17,28 +17,28 @@ namespace lessonplans {
         unsigned short teachersCount = schedulingProblemProperties->getTeachersCount();
         unsigned short roomsCount = schedulingProblemProperties->getRoomsCount();
 
-        vector<vector<vector<unsigned short>>> assignedLessonAndDaysToClasses = *new vector<vector<vector<unsigned short>>>(
+        vector<vector<vector<unsigned short>>> assignedLessonAndDaysToClasses(
                 weekDaysCount, vector<vector<unsigned short>>(
                         lessonsCount, vector<unsigned short>(
                                 classesCount, 0
                         )
                 )
         );
-        vector<vector<vector<unsigned short>>> assignedLessonAndDaysToTeachers = *new vector<vector<vector<unsigned short>>>(
+        vector<vector<vector<unsigned short>>> assignedLessonAndDaysToTeachers(
                 weekDaysCount, vector<vector<unsigned short>>(
                         lessonsCount, vector<unsigned short>(
                                 teachersCount, 0
                         )
                 )
         );
-        vector<vector<vector<unsigned short>>> assignedLessonAndDaysToRooms = *new vector<vector<vector<unsigned short>>>(
+        vector<vector<vector<unsigned short>>> assignedLessonAndDaysToRooms(
                 weekDaysCount, vector<vector<unsigned short>>(
                         lessonsCount, vector<unsigned short>(
                                 roomsCount, 0
                         )
                 )
         );
-        vector<vector<unsigned short>> assignedTeachersToClassesSubjects = *new vector<vector<unsigned short>>(
+        vector<vector<unsigned short>> assignedTeachersToClassesSubjects(
                 classesCount, vector<unsigned short>(
                         subjectsCount, 0
                 )
@@ -54,7 +54,7 @@ namespace lessonplans {
         unsigned int maxDataCount = LessonplanIndividualFactory::calculateMaxDataCount(
                 schedulingProblemProperties);
 
-        vector<vector<unsigned short>> lessonplan = *new vector<vector<unsigned short>>(
+        vector<vector<unsigned short>> lessonplan(
                 maxDataCount, vector<unsigned short>(
                         LessonplanIndividual::dataTypes
                 )
@@ -292,28 +292,28 @@ namespace lessonplans {
         unsigned short teachersCount = schedulingProblemProperties->getTeachersCount();
         unsigned short roomsCount = schedulingProblemProperties->getRoomsCount();
 
-        vector<vector<vector<unsigned short>>> assignedLessonAndDaysToClasses = *new vector<vector<vector<unsigned short>>>(
+        vector<vector<vector<unsigned short>>> assignedLessonAndDaysToClasses(
                 weekDaysCount, vector<vector<unsigned short>>(
                         lessonsCount, vector<unsigned short>(
                                 classesCount, 0
                         )
                 )
         );
-        vector<vector<vector<unsigned short>>> assignedLessonAndDaysToTeachers = *new vector<vector<vector<unsigned short>>>(
+        vector<vector<vector<unsigned short>>> assignedLessonAndDaysToTeachers(
                 weekDaysCount, vector<vector<unsigned short>>(
                         lessonsCount, vector<unsigned short>(
                                 teachersCount, 0
                         )
                 )
         );
-        vector<vector<vector<unsigned short>>> assignedLessonAndDaysToRooms = *new vector<vector<vector<unsigned short>>>(
+        vector<vector<vector<unsigned short>>> assignedLessonAndDaysToRooms(
                 weekDaysCount, vector<vector<unsigned short>>(
                         lessonsCount, vector<unsigned short>(
                                 roomsCount, 0
                         )
                 )
         );
-        vector<vector<unsigned short>> assignedTeachersToClassesSubjects = *new vector<vector<unsigned short>>(
+        vector<vector<unsigned short>> assignedTeachersToClassesSubjects(
                 classesCount, vector<unsigned short>(
                         subjectsCount, 0
                 )
@@ -329,7 +329,7 @@ namespace lessonplans {
         unsigned int maxDataCount = LessonplanIndividualFactory::calculateMaxDataCount(
                 schedulingProblemProperties);
 
-        vector<vector<unsigned short>> lessonplan = *new vector<vector<unsigned short>>(
+        vector<vector<unsigned short>> lessonplan(
                 maxDataCount, vector<unsigned short>(
                         LessonplanIndividual::dataTypes
                 )

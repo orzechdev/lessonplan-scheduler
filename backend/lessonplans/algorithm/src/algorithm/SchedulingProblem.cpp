@@ -40,16 +40,9 @@ namespace lessonplans {
         //-1pt - for each free period between lessons
         unsigned short invalidFreePeriodsCountBetweenLessons = this->checkFreePeriodsExistenceBetweenLessons(lessonplanIndividual);
 
-        vector<vector<int>> grades = *new vector<vector<int>>(
-                2
-        );
-
-        grades[0] = *new vector<int>(
-                LessonplanScoreList::hardScoresTypes
-        );
-        grades[1] = *new vector<int>(
-                LessonplanScoreList::softScoresTypes
-        );
+        vector<vector<int>> grades(2);
+        grades[0].resize(LessonplanScoreList::hardScoresTypes);
+        grades[1].resize(LessonplanScoreList::softScoresTypes);
 
         grades[0][0] = 0 - invalidClassSubjectSameLessonsTimes;
         grades[0][1] = 0 - invalidTeacherSameLessonsTimes;
@@ -170,17 +163,13 @@ namespace lessonplans {
 
         vector<vector<unsigned short>> lessonplan = lessonplanIndividual->getLessonplan();
 
-        vector<vector<unsigned short>> assignedTeachersToClassesSubjects = *new vector<vector<unsigned short>>(
-                classesCount, vector<unsigned short>(
-                        subjectsCount, 0
-                )
+        vector<vector<unsigned short>> assignedTeachersToClassesSubjects(
+                classesCount, vector<unsigned short>(subjectsCount, 0)
         );
         lessonplanIndividualDescriptor->setAssignedTeachersToClassesSubjectsWrong(assignedTeachersToClassesSubjects);
 
-        vector<vector<unsigned short>> lastAssignedTeachersIdsToClassesSubjects = *new vector<vector<unsigned short>>(
-                classesCount, vector<unsigned short>(
-                        subjectsCount, 0
-                )
+        vector<vector<unsigned short>> lastAssignedTeachersIdsToClassesSubjects(
+                classesCount, vector<unsigned short>(subjectsCount, 0)
         );
 
         for(unsigned int dataIdx = 0; dataIdx < maxDataCount; dataIdx++) {
@@ -226,15 +215,11 @@ namespace lessonplans {
 
         vector<vector<unsigned short>> lessonplan = lessonplanIndividual->getLessonplan();
 
-        vector<vector<unsigned short>> classesWeekDayStartLessonId = *new vector<vector<unsigned short>>(
-                classesCount, vector<unsigned short>(
-                        weekDaysCount, 0
-                )
+        vector<vector<unsigned short>> classesWeekDayStartLessonId(
+                classesCount, vector<unsigned short>(weekDaysCount, 0)
         );
 
-        vector<unsigned short> classesStartLessonsDifferenceCountAverage = *new vector<unsigned short>(
-                classesCount, 0
-        );
+        vector<unsigned short> classesStartLessonsDifferenceCountAverage(classesCount, 0);
 
         for(unsigned int dataIdx = 0; dataIdx < maxDataCount; dataIdx++) {
             unsigned short weekDayId = lessonplan[dataIdx][0];
@@ -297,15 +282,11 @@ namespace lessonplans {
 
         vector<vector<unsigned short>> lessonplan = lessonplanIndividual->getLessonplan();
 
-        vector<vector<unsigned short>> classesWeekDayLessonsCount = *new vector<vector<unsigned short>>(
-                classesCount, vector<unsigned short>(
-                        weekDaysCount, 0
-                )
+        vector<vector<unsigned short>> classesWeekDayLessonsCount(
+                classesCount, vector<unsigned short>(weekDaysCount, 0)
         );
 
-        vector<unsigned short> classesLessonsCountDifferenceBetweenDaysAverage = *new vector<unsigned short>(
-                classesCount, 0
-        );
+        vector<unsigned short> classesLessonsCountDifferenceBetweenDaysAverage(classesCount, 0);
 
         for(unsigned int dataIdx = 0; dataIdx < maxDataCount; dataIdx++) {
             unsigned short weekDayId = lessonplan[dataIdx][0];
@@ -348,26 +329,18 @@ namespace lessonplans {
 
         vector<vector<unsigned short>> lessonplan = lessonplanIndividual->getLessonplan();
 
-        vector<vector<unsigned short>> classesWeekDayStartLessonId = *new vector<vector<unsigned short>>(
-                classesCount, vector<unsigned short>(
-                        weekDaysCount, 0
-                )
+        vector<vector<unsigned short>> classesWeekDayStartLessonId(
+                classesCount, vector<unsigned short>(weekDaysCount, 0)
         );
-        vector<vector<unsigned short>> classesWeekDayEndLessonId = *new vector<vector<unsigned short>>(
-                classesCount, vector<unsigned short>(
-                        weekDaysCount, 0
-                )
+        vector<vector<unsigned short>> classesWeekDayEndLessonId(
+                classesCount, vector<unsigned short>(weekDaysCount, 0)
         );
 
-        vector<vector<unsigned short>> classesWeekDayFreePeriods = *new vector<vector<unsigned short>>(
-                classesCount, vector<unsigned short>(
-                        weekDaysCount, 0
-                )
+        vector<vector<unsigned short>> classesWeekDayFreePeriods(
+                classesCount, vector<unsigned short>(weekDaysCount, 0)
         );
 
-        vector<unsigned short> classesFreePeriodsExistenceBetweenLessonsCount = *new vector<unsigned short>(
-                classesCount, 0
-        );
+        vector<unsigned short> classesFreePeriodsExistenceBetweenLessonsCount(classesCount, 0);
 
         for(unsigned int dataIdx = 0; dataIdx < maxDataCount; dataIdx++) {
             unsigned short weekDayId = lessonplan[dataIdx][0];

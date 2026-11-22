@@ -75,6 +75,11 @@ namespace lessonplans {
                 generationIndex
         );
 
+        for (LessonplanScoreList *scoreList : lessonplanScoreListPopulation) {
+            delete scoreList;
+        }
+        lessonplanScoreListPopulation.clear();
+
         for (LessonplanIndividual *individual : currentPopulation) {
             if (individual != bestIndividual) {
                 delete individual;

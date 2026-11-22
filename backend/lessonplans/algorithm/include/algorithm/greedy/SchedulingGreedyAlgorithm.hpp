@@ -15,6 +15,9 @@ namespace lessonplans {
     class SchedulingGreedyAlgorithm {
     public:
         SchedulingGreedyAlgorithm(int iterationsCount);
+        ~SchedulingGreedyAlgorithm();
+        SchedulingGreedyAlgorithm(const SchedulingGreedyAlgorithm &) = delete;
+        SchedulingGreedyAlgorithm &operator=(const SchedulingGreedyAlgorithm &) = delete;
 
         SchedulingSolution *findBestLessonplan(SchedulingProblem *schedulingProblem);
 
