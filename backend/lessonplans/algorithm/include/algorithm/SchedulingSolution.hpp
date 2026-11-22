@@ -30,6 +30,13 @@ namespace lessonplans {
                 individualsSummarySoftScores(std::move(individualsSummarySoftScores)),
                 bestIndividualScoreIdx(bestIndividualScoreIdx) {}
 
+        ~SchedulingSolution() {
+            delete bestIndividual;
+        }
+
+        SchedulingSolution(const SchedulingSolution &) = delete;
+        SchedulingSolution &operator=(const SchedulingSolution &) = delete;
+
         vector<vector<unsigned short>> getBestLessonplan();
 
         vector<vector<int>> getAllLessonplansHardScores();

@@ -15,6 +15,9 @@ namespace lessonplans {
     class SchedulingRandomSearchAlgorithm {
     public:
         SchedulingRandomSearchAlgorithm(int calculationsTimeLimitInSeconds);
+        ~SchedulingRandomSearchAlgorithm();
+        SchedulingRandomSearchAlgorithm(const SchedulingRandomSearchAlgorithm &) = delete;
+        SchedulingRandomSearchAlgorithm &operator=(const SchedulingRandomSearchAlgorithm &) = delete;
 
         SchedulingSolution *findBestLessonplan(SchedulingProblem *schedulingProblem);
 

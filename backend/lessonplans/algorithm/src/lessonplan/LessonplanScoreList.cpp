@@ -5,24 +5,7 @@
 
 namespace lessonplans {
 
-    LessonplanScoreList::LessonplanScoreList() {
-        hardScores = *new vector<vector<int>>(
-                0, vector<int>(
-                        LessonplanScoreList::hardScoresTypes
-                )
-        );
-        softScores = *new vector<vector<int>>(
-                0, vector<int>(
-                        LessonplanScoreList::softScoresTypes
-                )
-        );
-        summaryHardScores = *new vector<int>(
-                0
-        );
-        summarySoftScores = *new vector<int>(
-                0
-        );
-    }
+    LessonplanScoreList::LessonplanScoreList() {}
 
     void LessonplanScoreList::add(vector<vector<int>> obtainedScores) {
         int newSummaryHardScore = LessonplanScoreList::calculateSummaryScore(obtainedScores[0]);

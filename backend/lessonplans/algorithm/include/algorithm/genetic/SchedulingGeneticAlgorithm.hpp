@@ -20,13 +20,15 @@ namespace lessonplans {
                 float crossoverProbability,
                 float mutationProbability
         );
+        ~SchedulingGeneticAlgorithm();
+        SchedulingGeneticAlgorithm(const SchedulingGeneticAlgorithm &) = delete;
+        SchedulingGeneticAlgorithm &operator=(const SchedulingGeneticAlgorithm &) = delete;
 
         SchedulingEvolutionalSolution *findBestLessonplan(SchedulingProblem *schedulingProblem);
 
     private:
         int calculationsTimeLimitInSeconds, populationCount;
         float crossoverProbability, mutationProbability;
-        LessonplanIndividual *bestIndividual;
         vector<LessonplanScoreList *> lessonplanScoreListPopulation;
 
         vector<LessonplanIndividual *> initializePopulation(SchedulingProblem *schedulingProblem);

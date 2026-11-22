@@ -14,6 +14,10 @@ namespace lessonplans {
         this->lessonplanScoreList = new LessonplanScoreList();
     }
 
+    SchedulingRandomSearchAlgorithm::~SchedulingRandomSearchAlgorithm() {
+        delete lessonplanScoreList;
+    }
+
     SchedulingSolution *SchedulingRandomSearchAlgorithm::findBestLessonplan(
             SchedulingProblem *schedulingProblem
     ) {
@@ -31,7 +35,10 @@ namespace lessonplans {
             lessonplanScoreList->add(obtainedScores);
 
             if (lessonplanScoreList->getLastScoreIndex() == lessonplanScoreList->getBestScoreIndex()) {
+                delete bestIndividual;
                 bestIndividual = currentIndividual;
+            } else {
+                delete currentIndividual;
             }
 
             end = std::chrono::steady_clock::now();

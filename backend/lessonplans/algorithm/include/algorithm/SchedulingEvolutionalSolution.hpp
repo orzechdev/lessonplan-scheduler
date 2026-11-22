@@ -25,6 +25,16 @@ namespace lessonplans {
                 schedulingSolutions(std::move(schedulingSolutions)),
                 bestIndividualGenerationIdx(bestIndividualGenerationIdx) {}
 
+        ~SchedulingEvolutionalSolution() {
+            delete bestIndividual;
+            for (SchedulingSolution *solution : schedulingSolutions) {
+                delete solution;
+            }
+        }
+
+        SchedulingEvolutionalSolution(const SchedulingEvolutionalSolution &) = delete;
+        SchedulingEvolutionalSolution &operator=(const SchedulingEvolutionalSolution &) = delete;
+
         vector<vector<unsigned short>> getBestLessonplan();
 
         vector<vector<vector<int>>> getAllLessonplansHardScores();

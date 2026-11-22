@@ -8,6 +8,10 @@
 
 namespace lessonplans {
 
+    LessonplanIndividual::~LessonplanIndividual() {
+        delete lessonplanIndividualDescriptor;
+    }
+
     vector<vector<unsigned short>> LessonplanIndividual::getLessonplan() {
         return this->lessonplan;
     }
