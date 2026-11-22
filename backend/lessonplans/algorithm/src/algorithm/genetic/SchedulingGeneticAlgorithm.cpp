@@ -16,10 +16,12 @@ namespace lessonplans {
         this->populationCount = populationCount;
         this->crossoverProbability = crossoverProbability;
         this->mutationProbability = mutationProbability;
+    }
 
-        this->lessonplanScoreListPopulation = *new vector<LessonplanScoreList*>(
-                0
-        );
+    SchedulingGeneticAlgorithm::~SchedulingGeneticAlgorithm() {
+        for (LessonplanScoreList *scoreList : lessonplanScoreListPopulation) {
+            delete scoreList;
+        }
     }
 
     SchedulingEvolutionalSolution *SchedulingGeneticAlgorithm::findBestLessonplan(SchedulingProblem *schedulingProblem) {
@@ -48,7 +50,7 @@ namespace lessonplans {
         }
 
         int bestScoreIndex = lessonplanScoreListPopulation[generationIndex]->getBestScoreIndex();
-        bestIndividual = currentPopulation[bestScoreIndex];
+        LessonplanIndividual *bestIndividual = currentPopulation[bestScoreIndex];
 
         vector<SchedulingSolution *> schedulingSolutions;
         std::transform(
@@ -73,13 +75,17 @@ namespace lessonplans {
                 generationIndex
         );
 
+        for (LessonplanIndividual *individual : currentPopulation) {
+            if (individual != bestIndividual) {
+                delete individual;
+            }
+        }
+
         return lessonplanSchedulingEvolutionalSoultion;
     }
 
     vector<LessonplanIndividual *> SchedulingGeneticAlgorithm::initializePopulation(SchedulingProblem *schedulingProblem) {
-        vector<LessonplanIndividual *> population = *new vector<LessonplanIndividual*>(
-                this->populationCount
-        );
+        vector<LessonplanIndividual *> population(this->populationCount);
 
         for (int i = 0; i < this->populationCount; i++) {
             population[i] = schedulingProblem->getSampleLessonplan();
@@ -89,9 +95,7 @@ namespace lessonplans {
     }
 
     vector<LessonplanIndividual *> SchedulingGeneticAlgorithm::crossoverPopulation(vector<LessonplanIndividual *> currentPopulation, SchedulingProblem *schedulingProblem, int generationIndex){
-        vector<vector<vector<unsigned short>>> nextPopulationLessonplans = *new vector<vector<vector<unsigned short>>>(
-                this->populationCount
-        );
+        vector<vector<vector<unsigned short>>> nextPopulationLessonplans(this->populationCount);
         vector<int> summaryHardScores = lessonplanScoreListPopulation[generationIndex]->getSummaryHardScores();
         vector<int> summarySoftScores = lessonplanScoreListPopulation[generationIndex]->getSummarySoftScores();
         int populationHardScoreSum = 0;
@@ -150,22 +154,18 @@ namespace lessonplans {
 
             unsigned short classesCount = schedulingProblem->getSchedulingProblemProperties()->getClassesCount();
             auto halfClassesCount = (unsigned short)(classesCount / 2);
-            vector<unsigned short> classesForMaleLessonplan = *new vector<unsigned short>(0);
+            vector<unsigned short> classesForMaleLessonplan;
 
             for (unsigned short classToTakeIdx = 0; classToTakeIdx < halfClassesCount; classToTakeIdx++) {
                 classesForMaleLessonplan.push_back(RandomNumberGenerator::getRandomNumber(0, classesCount - 1));
             }
 
             unsigned int maxDataCount = currentPopulation[selectedMaleIndividualIndex]->getMaxDataCount();
-            vector<vector<unsigned short>> childLessonplan = *new vector<vector<unsigned short>>(
-                    maxDataCount, vector<unsigned short>(
-                            LessonplanIndividual::dataTypes
-                    )
+            vector<vector<unsigned short>> childLessonplan(
+                    maxDataCount, vector<unsigned short>(LessonplanIndividual::dataTypes)
             );
 
-            vector<bool> femaleDataItemPossibleToUse = *new vector<bool>(
-                    maxDataCount, true
-            );
+            vector<bool> femaleDataItemPossibleToUse(maxDataCount, true);
 
             LessonplanIndividualDescriptor* lessonplanIndividualDescriptor = currentPopulation[currentIndividualIdx]->getLessonplanIndividualDescriptor();
             for (unsigned int dataItemIdx = 0; dataItemIdx < maxDataCount; dataItemIdx++) {
@@ -249,6 +249,7 @@ namespace lessonplans {
         if (addScoreForNewGeneration) {
             lessonplanScoreListPopulation.push_back(lessonplanScoreList);
         } else {
+            delete lessonplanScoreListPopulation.back();
             lessonplanScoreListPopulation.back() = lessonplanScoreList;
         }
     }
@@ -303,10 +304,8 @@ namespace lessonplans {
         unsigned short classesCount = schedulingProblemProperties->getClassesCount();
         unsigned short subjectsCount = schedulingProblemProperties->getSubjectsCount();
 
-        vector<vector<unsigned short>> classesSubjectsTeachersToAssign = *new vector<vector<unsigned short>>(
-                classesCount, vector<unsigned short>(
-                        subjectsCount, 0
-                )
+        vector<vector<unsigned short>> classesSubjectsTeachersToAssign(
+                classesCount, vector<unsigned short>(subjectsCount, 0)
         );
 
         vector<vector<int>> obtainedScores = schedulingProblem->evaluateLessonplan(lessonplanIndividual);

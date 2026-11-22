@@ -17,9 +17,7 @@ namespace lessonplans {
     vector<vector<vector<int>>> SchedulingEvolutionalSolution::getAllLessonplansHardScores() {
         int schedulingSolutionsCount = static_cast<int>(schedulingSolutions.size());
 
-        vector<vector<vector<int>>> hardScores = *new vector<vector<vector<int>>>(
-                schedulingSolutionsCount
-        );
+        vector<vector<vector<int>>> hardScores(schedulingSolutionsCount);
 
         for (int i = 0; i < schedulingSolutionsCount; i++) {
             hardScores[i] = schedulingSolutions[i]->getAllLessonplansHardScores();
@@ -31,9 +29,7 @@ namespace lessonplans {
     vector<vector<vector<int>>> SchedulingEvolutionalSolution::getAllLessonplansSoftScores() {
         int schedulingSolutionsCount = static_cast<int>(schedulingSolutions.size());
 
-        vector<vector<vector<int>>> softScores = *new vector<vector<vector<int>>>(
-                schedulingSolutionsCount
-        );
+        vector<vector<vector<int>>> softScores(schedulingSolutionsCount);
 
         for (int i = 0; i < schedulingSolutionsCount; i++) {
             softScores[i] = schedulingSolutions[i]->getAllLessonplansSoftScores();
@@ -45,9 +41,7 @@ namespace lessonplans {
     vector<vector<int>> SchedulingEvolutionalSolution::getAllLessonplansSummaryHardScores() {
         int schedulingSolutionsCount = static_cast<int>(schedulingSolutions.size());
 
-        vector<vector<int>> summaryHardScores = *new vector<vector<int>>(
-                schedulingSolutionsCount
-        );
+        vector<vector<int>> summaryHardScores(schedulingSolutionsCount);
 
         for (int i = 0; i < schedulingSolutionsCount; i++) {
             summaryHardScores[i] = schedulingSolutions[i]->getAllLessonplansSummaryHardScores();
@@ -59,9 +53,7 @@ namespace lessonplans {
     vector<vector<int>> SchedulingEvolutionalSolution::getAllLessonplansSummarySoftScores() {
         int schedulingSolutionsCount = static_cast<int>(schedulingSolutions.size());
 
-        vector<vector<int>> summarySoftScores = *new vector<vector<int>>(
-                schedulingSolutionsCount
-        );
+        vector<vector<int>> summarySoftScores(schedulingSolutionsCount);
 
         for (int i = 0; i < schedulingSolutionsCount; i++) {
             summarySoftScores[i] = schedulingSolutions[i]->getAllLessonplansSummarySoftScores();

@@ -11,6 +11,12 @@ using std::vector;
 namespace lessonplans {
     class LessonplanIndividual {
     public:
+        LessonplanIndividual() : lessonplanIndividualDescriptor(nullptr) {}
+        ~LessonplanIndividual();
+
+        LessonplanIndividual(const LessonplanIndividual &) = delete;
+        LessonplanIndividual &operator=(const LessonplanIndividual &) = delete;
+
         unsigned int getMaxDataCount() const;
         void setMaxDataCount(unsigned int maxDataCount);
 
@@ -31,7 +37,7 @@ namespace lessonplans {
     private:
         unsigned int maxDataCount;
         vector<vector<unsigned short>> lessonplan;
-        LessonplanIndividualDescriptor* lessonplanIndividualDescriptor;
+        LessonplanIndividualDescriptor *lessonplanIndividualDescriptor;
     };
 }
 
